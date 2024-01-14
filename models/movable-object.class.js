@@ -1,7 +1,15 @@
 class MovableObject {
-   x = 120;
-   y = 400;
+   x = 100;
+   y = 350;
    img;
+   height = 81.5;
+   width = 100;
+
+
+   loadImage(path) {
+      this.img = new Image();
+      this.img.src = path;
+   }
 
    swimLeft() {
       console.log('puffer swims left');
