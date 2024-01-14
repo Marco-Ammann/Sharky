@@ -1,9 +1,21 @@
 class MovableObject {
    x = 120;
    y = 400;
-   img = '../img/1.Sharkie/1.IDLE/1.png';
+   img;
 
-   moveRight() {
-      console.log('moving right');
+   swimLeft() {
+      console.log('puffer swims left');
+   }
+
+   swimRight() {
+      console.log('swimming right');
+   }
+
+   swimUp() {
+      console.log('swimming up');
+   }
+
+   swimDown() {
+      console.log('swimming down');
    }
 }
