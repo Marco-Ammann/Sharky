@@ -4,7 +4,7 @@ class BarrierTunnel extends StaticObjects {
       this.x = 800;
       this.y = 0;
       this.height = 480;
-      this.width = this.height * 1.6;
+      this.width = this.height * 1.557;
    }
 }
 

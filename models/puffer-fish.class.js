@@ -4,6 +4,6 @@ class PufferFish extends MovableObject {
       this.x = 350 + Math.random() * 400;
       this.y = 10 + Math.random() * 400;
       this.height = 60;
-      this.width = this.height * 1.2;
+      this.width = this.height * 1.217;
    }
 }
