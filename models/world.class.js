@@ -1,6 +1,8 @@
 class World {
    character = new Character();
    enemies = [new PufferFish(), new PufferFish(), new PufferFish()];
+   barriers = [new BarrierTunnel(), new BarrierStone()];
+
    canvas;
    ctx;
 
@@ -12,18 +14,18 @@ class World {
 
    draw() {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-      this.ctx.drawImage(
-         this.character.img,
-         this.character.x,
-         this.character.y,
-         this.character.width,
-         this.character.height
-      );
+      let c = this.character;
+      this.ctx.drawImage(c.img, c.x, c.y, c.width, c.height);
 
       this.enemies.forEach((enemy) => {
          this.ctx.drawImage(enemy.img, enemy.x, enemy.y, enemy.width, enemy.height);
       });
+
+      this.barriers.forEach((barrier)=> {
+         this.ctx.drawImage(barrier.img, barrier.x, barrier.y, barrier.width, barrier.height);
+      });
+
+      
 
       setTimeout(() => {
          requestAnimationFrame(() => this.draw());
