@@ -2,12 +2,12 @@ class World {
    character = new Character();
    enemies = [new PufferFish(), new PufferFish(), new PufferFish()];
    barriers = [new BarrierTunnel(), new BarrierStone()];
-   backgroundObjects = [
-      new WaterLayer(),
-      new BackgroundLayer(),
-      new MiddlegroundLayer(),
-      new FloorLayer(),
-      new LightLayer(),
+   backgroundLayers = [
+      new BackgroundLayer('img/3.Background/Layers/5. Water/D.png', 0), //water
+      new BackgroundLayer('img/3.Background/Layers/4.Fondo 2/D.png', 0), //Background
+      new BackgroundLayer('img/3.Background/Layers/3.Fondo 1/D.png', 0), //middleground
+      new BackgroundLayer('img/3.Background/Layers/2. Floor/D.png', 0), //floor
+      new BackgroundLayer('img/3.Background/Layers/1. Light/COMPLETO.png', 0) //light
    ];
 
    canvas;
@@ -21,21 +21,20 @@ class World {
 
    draw() {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-      this.backgroundObjects.forEach((bg) => {
-         this.addToMap(bg);
-      });
-
-      this.barriers.forEach((barrier) => {
-         this.addToMap(barrier);
-      });
-
+      
+      this.addObjectsToMap(this.backgroundLayers);
+      this.addObjectsToMap(this.barriers);
+      this.addObjectsToMap(this.enemies);
       this.addToMap(this.character);
 
-      this.enemies.forEach((enemy) => {
-         this.addToMap(enemy);
-      });
       requestAnimationFrame(() => this.draw());
+   }
+
+   addObjectsToMap(objects){
+      objects.forEach(o => {
+         this.addToMap(o);
+      });
+
    }
 
    addToMap(MovObj) {
