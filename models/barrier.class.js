@@ -1,4 +1,4 @@
-class BarrierTunnel extends StaticObjects {
+class BarrierTunnel extends MovableObject {
    constructor() {
       super().loadImage('img/3.Background/Barrier/1.png');
       this.x = 800;
@@ -10,7 +10,7 @@ class BarrierTunnel extends StaticObjects {
 
 
 
-class BarrierStone extends StaticObjects {
+class BarrierStone extends MovableObject {
    constructor() {
       super().loadImage('img/3.Background/Barrier/2.png');
       this.x = 500;

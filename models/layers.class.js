@@ -1,4 +1,4 @@
-class WaterLayer extends BackgroundObjects {
+class WaterLayer extends MovableObject {
     constructor() {
         super().loadImage('img/3.Background/Layers/5. Water/D.png');
         this.x = 0;
@@ -8,7 +8,7 @@ class WaterLayer extends BackgroundObjects {
     }
 }
 
-class BackgroundLayer extends BackgroundObjects {
+class BackgroundLayer extends MovableObject {
     constructor() {
         super().loadImage('img/3.Background/Layers/4.Fondo 2/D.png');
         this.x = 0;
@@ -18,7 +18,7 @@ class BackgroundLayer extends BackgroundObjects {
     }
 }
 
-class MiddlegroundLayer extends BackgroundObjects {
+class MiddlegroundLayer extends MovableObject {
     constructor() {
         super().loadImage('img/3.Background/Layers/3.Fondo 1/D.png');
         this.x = 0;
@@ -28,7 +28,7 @@ class MiddlegroundLayer extends BackgroundObjects {
     }
 }
 
-class FloorLayer extends BackgroundObjects {
+class FloorLayer extends MovableObject {
     constructor() {
         super().loadImage('img/3.Background/Layers/2. Floor/D.png');
         this.x = 0;
@@ -38,7 +38,7 @@ class FloorLayer extends BackgroundObjects {
     }
 }
 
-class LightLayer extends BackgroundObjects {
+class LightLayer extends MovableObject {
     constructor() {
         super().loadImage('img/3.Background/Layers/1. Light/COMPLETO.png');
         this.x = 0;

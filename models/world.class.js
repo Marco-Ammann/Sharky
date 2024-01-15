@@ -23,20 +23,22 @@ class World {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
       this.backgroundObjects.forEach((bg) => {
-         this.ctx.drawImage(bg.img, bg.x, bg.y, bg.width, bg.height);
-      });
-
-      let c = this.character;
-      this.ctx.drawImage(c.img, c.x, c.y, c.width, c.height);
-
-      this.enemies.forEach((enemy) => {
-         this.ctx.drawImage(enemy.img, enemy.x, enemy.y, enemy.width, enemy.height);
+         this.addToMap(bg);
       });
 
       this.barriers.forEach((barrier) => {
-         this.ctx.drawImage(barrier.img, barrier.x, barrier.y, barrier.width, barrier.height);
+         this.addToMap(barrier);
       });
 
-         requestAnimationFrame(() => this.draw());
+      this.addToMap(this.character);
+
+      this.enemies.forEach((enemy) => {
+         this.addToMap(enemy);
+      });
+      requestAnimationFrame(() => this.draw());
+   }
+
+   addToMap(MovObj) {
+      this.ctx.drawImage(MovObj.img, MovObj.x, MovObj.y, MovObj.width, MovObj.height);
    }
 }
