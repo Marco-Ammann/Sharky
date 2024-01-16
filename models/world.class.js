@@ -17,24 +17,24 @@ class World {
       this.ctx = canvas.getContext('2d');
       this.canvas = canvas;
       this.draw();
+      this.backgroundLayers[4].animate();
    }
 
    draw() {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      
+
       this.addObjectsToMap(this.backgroundLayers);
-      this.addObjectsToMap(this.barriers);
       this.addObjectsToMap(this.enemies);
       this.addToMap(this.character);
+      this.addObjectsToMap(this.barriers);
 
       requestAnimationFrame(() => this.draw());
    }
 
-   addObjectsToMap(objects){
-      objects.forEach(o => {
+   addObjectsToMap(objects) {
+      objects.forEach((o) => {
          this.addToMap(o);
       });
-
    }
 
    addToMap(MovObj) {

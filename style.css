@@ -1,5 +1,7 @@
 * {
     font-family: 'system-ui', 'open-sans';
+    color: white;
+    margin: 0;
 }
 
 body{
@@ -8,6 +10,8 @@ body{
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    background-image: url('img/3.Background/Layers/5. Water/D1.png');
+    background-size: cover;
 }
 
 
