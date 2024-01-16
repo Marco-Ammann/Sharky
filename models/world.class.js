@@ -9,7 +9,7 @@ class World {
       new BackgroundLayer('img/3.Background/Layers/2. Floor/D.png', 0), //floor
       new BackgroundLayer('img/3.Background/Layers/1. Light/COMPLETO.png', 0) //light
    ];
-
+   
    canvas;
    ctx;
 
@@ -19,6 +19,7 @@ class World {
       this.draw();
       this.backgroundLayers[4].animate();
    }
+
 
    draw() {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -31,11 +32,13 @@ class World {
       requestAnimationFrame(() => this.draw());
    }
 
+
    addObjectsToMap(objects) {
       objects.forEach((o) => {
          this.addToMap(o);
       });
    }
+
 
    addToMap(MovObj) {
       this.ctx.drawImage(MovObj.img, MovObj.x, MovObj.y, MovObj.width, MovObj.height);
