@@ -8,7 +8,6 @@ class BarrierTunnel extends MovableObject {
    }
 }
 
-
 class BarrierStone extends MovableObject {
    constructor() {
       super().loadImage('img/3.Background/Barrier/2.png');

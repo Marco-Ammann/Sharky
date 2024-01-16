@@ -1,4 +1,4 @@
-class MovableObject{
+class MovableObject {
    x;
    y;
    img;
@@ -6,39 +6,40 @@ class MovableObject{
    width;
    imageCache = {};
    currentImage = 0;
+   speed = 0.15;
 
-   
    loadImage(path) {
       this.img = new Image();
       this.img.src = path;
    }
 
    /**
-    * 
+    *
     * @param {Array} arr - ['img/umage1.png', 'img/image2.png']
     */
    loadImages(arr) {
       arr.forEach((path) => {
-
-      let img = new Image();
-      img.src = path;
-      this.imageCache[path] = img;
+         let img = new Image();
+         img.src = path;
+         this.imageCache[path] = img;
       });
    }
 
-   swimLeft() {
-      console.log('puffer swims left');
+   moveLeft() {
+      setInterval(() => {
+         this.x -= this.speed;
+      }, 1000 / 60);
    }
 
-   swimRight() {
+   moveRight() {
       console.log('swimming right');
    }
 
-   swimUp() {
+   moveUp() {
       console.log('swimming up');
    }
 
-   swimDown() {
+   moveDown() {
       console.log('swimming down');
    }
 }

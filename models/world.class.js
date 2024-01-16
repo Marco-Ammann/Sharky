@@ -7,9 +7,9 @@ class World {
       new BackgroundLayer('img/3.Background/Layers/4.Fondo 2/D.png', 0), //Background
       new BackgroundLayer('img/3.Background/Layers/3.Fondo 1/D.png', 0), //middleground
       new BackgroundLayer('img/3.Background/Layers/2. Floor/D.png', 0), //floor
-      new BackgroundLayer('img/3.Background/Layers/1. Light/COMPLETO.png', 0) //light
+      new BackgroundLayer('img/3.Background/Layers/1. Light/COMPLETO.png', 0), //light
    ];
-   
+
    canvas;
    ctx;
 
@@ -17,9 +17,7 @@ class World {
       this.ctx = canvas.getContext('2d');
       this.canvas = canvas;
       this.draw();
-      this.backgroundLayers[4].animate();
    }
-
 
    draw() {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -32,13 +30,11 @@ class World {
       requestAnimationFrame(() => this.draw());
    }
 
-
    addObjectsToMap(objects) {
       objects.forEach((o) => {
          this.addToMap(o);
       });
    }
-
 
    addToMap(MovObj) {
       this.ctx.drawImage(MovObj.img, MovObj.x, MovObj.y, MovObj.width, MovObj.height);
