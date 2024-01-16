@@ -1,9 +1,45 @@
 class PufferFish extends MovableObject {
+
+   height = 60;
+   width = this.height * 1.217;
+   
+   IMAGES_SWIM = [
+      'img/2.Enemy/1.Puffer_fish/1.Swim/3.swim1.png',
+      'img/2.Enemy/1.Puffer_fish/1.Swim/3.swim2.png',
+      'img/2.Enemy/1.Puffer_fish/1.Swim/3.swim3.png',
+      'img/2.Enemy/1.Puffer_fish/1.Swim/3.swim4.png',
+      'img/2.Enemy/1.Puffer_fish/1.Swim/3.swim5.png'
+   ];
+
    constructor() {
-      super().loadImage('../img/2.Enemy/1.Puffer_fish/1.Swim/3.swim1.png');
+      super().loadImage('img/2.Enemy/1.Puffer_fish/1.Swim/3.swim1.png');
       this.x = 350 + Math.random() * 400;
       this.y = 10 + Math.random() * 400;
-      this.height = 60;
-      this.width = this.height * 1.217;
+      this.loadImages(this.IMAGES_SWIM);
+      this.animate();
    }
+
+
+
+   animate() {
+      setInterval(() => {
+         let i = this.currentImage % this.IMAGES_SWIM.length;
+         let path = this.IMAGES_SWIM[i];
+         this.img = this.imageCache[path];
+         this.currentImage++;
+      }, 1000 / 8);
+   }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }
