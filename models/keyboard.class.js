@@ -29,12 +29,6 @@ class Keyboard {
         const keyState = this.keyMap[event.code];
         if (keyState) {
             this[keyState] = isKeyDown;
-            
-            if (isKeyDown) {
-                console.log(`${keyState} Taste wurde gedrückt`);
-            } else {
-                console.log(`${keyState} Taste wurde losgelassen`);
-            }
         }
     }
 }
