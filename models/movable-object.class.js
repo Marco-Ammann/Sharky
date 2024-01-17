@@ -7,11 +7,13 @@ class MovableObject {
    imageCache = {};
    currentImage = 0;
    speed = 0.15;
+   otherDirection = false;
 
    loadImage(path) {
       this.img = new Image();
       this.img.src = path;
    }
+
 
    /**
     *
@@ -24,6 +26,7 @@ class MovableObject {
          this.imageCache[path] = img;
       });
    }
+   
 
    moveLeft() {
       setInterval(() => {
@@ -31,13 +34,16 @@ class MovableObject {
       }, 1000 / 60);
    }
 
+
    moveRight() {
       console.log('swimming right');
    }
 
+
    moveUp() {
       console.log('swimming up');
    }
+
 
    moveDown() {
       console.log('swimming down');

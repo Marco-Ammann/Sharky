@@ -9,6 +9,7 @@ class PufferFish extends MovableObject {
       'img/2.Enemy/1.Puffer_fish/1.Swim/3.swim4.png',
       'img/2.Enemy/1.Puffer_fish/1.Swim/3.swim5.png',
    ];
+   
 
    constructor() {
       super().loadImage('img/2.Enemy/1.Puffer_fish/1.Swim/3.swim1.png');
@@ -20,6 +21,7 @@ class PufferFish extends MovableObject {
 
       this.animate();
    }
+
 
    animate() {
       this.moveLeft();
