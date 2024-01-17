@@ -22,7 +22,7 @@ class BarrierStone extends MovableObject {
 class BarrierPillar extends MovableObject {
    constructor() {
       super().loadImage('img/3.Background/Barrier/3.png');
-      this.x = 800 + 2880 + Math.random() * 1440;
+      this.x = 900 + 2780 + Math.random() * 1440;
       this.height = 300;
       this.y = 480 - this.height;
       this.width = this.height * 0.487;

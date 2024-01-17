@@ -2,11 +2,6 @@ const level1 = new Level(
    [new PufferFish(), new PufferFish(), new PufferFish()],
    [new BarrierTunnel(), new BarrierStone(), new BarrierPillar()],
    [
-      new BackgroundLayer('img/3.Background/Layers/5. Water/D.png', -480 * 3.55), //water
-      new BackgroundLayer('img/3.Background/Layers/4.Fondo 2/D.png', -480 * 3.55), //Background
-      new BackgroundLayer('img/3.Background/Layers/3.Fondo 1/D.png', -480 * 3.55), //middleground
-      new BackgroundLayer('img/3.Background/Layers/2. Floor/D.png', -480 * 3.55), //floor * 2
-
       new BackgroundLayer('img/3.Background/Layers/5. Water/D.png', 0), //water
       new BackgroundLayer('img/3.Background/Layers/4.Fondo 2/D.png', 0), //Background
       new BackgroundLayer('img/3.Background/Layers/3.Fondo 1/D.png', 0), //middleground

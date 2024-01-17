@@ -1,10 +1,10 @@
 class Character extends MovableObject {
    height = 200;
    width = this.height * 1.227;
-   x = 10;
+   x = 80;
    y = 200;
    world;
-   speed = 4;
+   speed = 8;
 
    IMAGES_IDLE = [
       'img/1.Sharkie/1.IDLE/1.png',
@@ -47,21 +47,21 @@ class Character extends MovableObject {
 
    animate() {
       setInterval(() => {
-         if (this.world.keyboard.RIGHT) {
+         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
             this.x += this.speed;
             this.otherDirection = false;
-            this.world.camera_x = -this.x;
+            this.world.camera_x = -this.x + 80;
          }
-         if (this.world.keyboard.UP) {
+         if (this.world.keyboard.UP && this.y > 0 - this.height / 2.5) {
             this.y -= this.speed;
          }
-         if (this.world.keyboard.DOWN) {
+         if (this.world.keyboard.DOWN && this.y < 480 - this.height * 0.85) {
             this.y += this.speed;
          }
-         if (this.world.keyboard.LEFT) {
+         if (this.world.keyboard.LEFT && this.x > 80) {
             this.x -= this.speed;
             this.otherDirection = true;
-            this.world.camera_x = -this.x;
+            this.world.camera_x = -this.x + 80;
          }
       }, 1000 / 60);
 
