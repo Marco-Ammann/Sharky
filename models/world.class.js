@@ -19,7 +19,10 @@ class World {
       this.setWorld();
       this.music.volume = 0.05;
       this.music.loop = true;
-      this.music.play();
+      setTimeout(() => {
+         
+         this.music.play();
+      }, 1);
    }
    
 

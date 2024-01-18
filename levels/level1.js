@@ -1,5 +1,5 @@
 const level1 = new Level(
-   [new PufferFish(), new PufferFish(), new PufferFish()],
+   [new PufferFish(), new PufferFish(), new PufferFish(), new Endboss()],
    [new BarrierTunnel(), new BarrierStone(), new BarrierPillar()],
    [
       new BackgroundLayer('img/3.Background/Layers/5. Water/D.png', 0), //water
