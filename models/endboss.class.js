@@ -1,5 +1,5 @@
 class Endboss extends MovableObject {
-   height = 360;
+   height = 600;
    width = this.height * 1.168;
 
    IMAGES_SWIM = [
@@ -22,7 +22,7 @@ class Endboss extends MovableObject {
       super().loadImage('img/2.Enemy/3.Final_Enemy/2.floating/1.png');
       this.loadImages(this.IMAGES_SWIM);
       this.x = 350;
-      this.y = 0;
+      this.y = -100;
 
       this.animate();
    }
