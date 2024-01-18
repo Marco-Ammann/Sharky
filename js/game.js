@@ -8,3 +8,9 @@ function init() {
 
    console.log('My Character is', world.character);
 }
+
+function switchSoundMute() {
+   const isMuted = world.toggleMusic();
+   const button = document.querySelector('button');
+   button.textContent = isMuted ? 'Unmute Music' : 'Mute Music';
+}

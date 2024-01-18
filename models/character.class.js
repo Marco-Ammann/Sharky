@@ -36,6 +36,7 @@ class Character extends MovableObject {
       'img/1.Sharkie/3.Swim/6.png',
    ];
    
+   swim_sound = new Audio('audio/swim_sound.mp3');
 
    constructor() {
       super().loadImage('../img/1.Sharkie/1.IDLE/1.png');
@@ -51,17 +52,25 @@ class Character extends MovableObject {
             this.x += this.speed;
             this.otherDirection = false;
             this.world.camera_x = -this.x + 80;
+            this.swim_sound.play();
+            this.swim_sound.volume = 0.15;
          }
          if (this.world.keyboard.UP && this.y > 0 - this.height / 2.5) {
             this.y -= this.speed;
+            this.swim_sound.play();
+            this.swim_sound.volume = 0.15;
          }
          if (this.world.keyboard.DOWN && this.y < 480 - this.height * 0.85) {
             this.y += this.speed;
+            this.swim_sound.play();
+            this.swim_sound.volume = 0.15;
          }
          if (this.world.keyboard.LEFT && this.x > 80) {
             this.x -= this.speed;
             this.otherDirection = true;
             this.world.camera_x = -this.x + 80;
+            this.swim_sound.play();
+            this.swim_sound.volume = 0.15;
          }
       }, 1000 / 60);
 
@@ -81,6 +90,11 @@ class Character extends MovableObject {
          } else {
             i = this.currentImage % this.IMAGES_IDLE.length;
             path = this.IMAGES_IDLE[i];
+         }
+
+         if (!isMoving) {
+            this.swim_sound.pause();
+            this.swim_sound.currentTime = 0;
          }
 
          this.img = this.imageCache[path];

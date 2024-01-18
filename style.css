@@ -1,7 +1,9 @@
 * {
     font-family: 'system-ui', 'open-sans';
     color: white;
+    font-size: 1.5rem;
     margin: 0;
+    text-transform: uppercase;
 }
 
 body{
@@ -17,4 +19,29 @@ body{
 
 canvas {
     background-color: lightblue;
+}
+
+button {
+    padding: 5px 10px;
+    background-color: #0077CC; /* Ocean blue color */
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s ease;
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+button:hover {
+    background-color: #005FA3; /* A darker shade of blue for hover effect */
+}
+
+button:active {
+    background-color: #003157; /* Even darker for the active state */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }

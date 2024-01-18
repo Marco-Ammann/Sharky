@@ -8,12 +8,18 @@ class World {
    keyboard;
    camera_x= 0;
 
-   constructor(canvas, keyboard) {
+   music = new Audio('audio/game_music.mp3');
+
+
+   constructor(canvas, keyboard) { 
       this.ctx = canvas.getContext('2d');
       this.canvas = canvas;
       this.keyboard = keyboard;
       this.draw();
       this.setWorld();
+      this.music.volume = 0.05;
+      this.music.loop = true;
+      this.music.play();
    }
    
 
@@ -60,4 +66,12 @@ class World {
          this.ctx.restore();
       }
    }
+
+
+   toggleMusic() {
+      this.music.muted = !this.music.muted;
+      return this.music.muted;
+  }
+
+
 }
