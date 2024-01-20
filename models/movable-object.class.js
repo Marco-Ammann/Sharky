@@ -14,7 +14,6 @@ class MovableObject {
       this.img.src = path;
    }
 
-
    /**
     *
     * @param {Array} arr - ['img/umage1.png', 'img/image2.png']
@@ -26,7 +25,21 @@ class MovableObject {
          this.imageCache[path] = img;
       });
    }
-   
+
+
+   draw(ctx) {
+      ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+   }
+
+
+   drawFrame(ctx) {
+      ctx.beginPath();
+      ctx.lineWidth = '3';
+      ctx.strokeStyle = 'lightgreen';
+      ctx.rect(this.x, this.y, this.width, this.height);
+      ctx.stroke();
+   }
+
 
    moveLeft() {
       this.x -= this.speed;
@@ -47,12 +60,14 @@ class MovableObject {
       this.y += this.speed;
    }
 
+
    playAnimation(images) {
       let i = this.currentImage % images.length;
       let path = images[i];
       this.img = this.imageCache[path];
       this.currentImage++;
    }
+   
 
    playSwimSound() {
       this.swim_sound.play();

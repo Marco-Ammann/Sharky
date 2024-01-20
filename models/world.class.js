@@ -6,11 +6,10 @@ class World {
    canvas;
    ctx;
    keyboard;
-   camera_x= 0;
+   camera_x = 0;
    isLoaded = false;
 
-
-   constructor(canvas, keyboard) { 
+   constructor(canvas, keyboard) {
       this.ctx = canvas.getContext('2d');
       this.canvas = canvas;
       this.keyboard = keyboard;
@@ -19,18 +18,20 @@ class World {
       this.isLoaded = true;
    }
 
+
    startMusic() {
       this.level.music.volume = 0.05;
       this.level.music.loop = true;
       this.level.music.play();
    }
 
+
    stopMusic() {
       this.level.music.volume = 0.05;
       this.level.music.loop = true;
       this.level.music.play();
    }
-   
+
 
    setWorld() {
       this.character.world = this;
@@ -62,17 +63,28 @@ class World {
 
    addToMap(MovObj) {
       if (MovObj.otherDirection) {
-         this.ctx.save();
-         this.ctx.translate(MovObj.width, 0);
-         this.ctx.scale(-1, 1);
-         MovObj.x = MovObj.x * -1;
+         this.flipImage(MovObj);
       }
 
-      this.ctx.drawImage(MovObj.img, MovObj.x, MovObj.y, MovObj.width, MovObj.height);
+      MovObj.draw(this.ctx);
+      MovObj.drawFrame(this.ctx);
 
       if (MovObj.otherDirection) {
-         MovObj.x = MovObj.x * -1;
-         this.ctx.restore();
+         this.flipImageBack(MovObj);
       }
+   }
+
+
+   flipImage(MovObj) {
+      this.ctx.save();
+      this.ctx.translate(MovObj.width, 0);
+      this.ctx.scale(-1, 1);
+      MovObj.x = MovObj.x * -1;
+   }
+
+
+   flipImageBack(MovObj) {
+      MovObj.x = MovObj.x * -1;
+      this.ctx.restore();
    }
 }

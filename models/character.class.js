@@ -35,7 +35,7 @@ class Character extends MovableObject {
       'img/1.Sharkie/3.Swim/5.png',
       'img/1.Sharkie/3.Swim/6.png',
    ];
-   
+
    swim_sound = new Audio('audio/swim_sound.mp3');
 
    constructor() {
@@ -88,7 +88,7 @@ class Character extends MovableObject {
          }
       }, 1000 / 8);
    }
-
+   
 
    shootBubble() {
       console.log('shooting bubble');
