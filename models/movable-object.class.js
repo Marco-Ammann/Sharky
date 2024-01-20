@@ -9,24 +9,24 @@ class MovableObject {
    speed = 0.15;
    otherDirection = false;
 
-       // Collision box properties
-       collisionBoxWidth;
-       collisionBoxHeight;
-       collisionBoxOffsetX = 0; // Offset from the object's x position
-       collisionBoxOffsetY = 0;
+   // Collision box properties
+   collisionBoxWidth;
+   collisionBoxHeight;
+   collisionBoxOffsetX = 0; // Offset from the object's x position
+   collisionBoxOffsetY = 0;
 
+   constructor() {
+      // Initialize default collision box size to match object size
+      this.collisionBoxWidth = this.width;
+      this.collisionBoxHeight = this.height;
+   }
 
-       constructor() {
-         // Initialize default collision box size to match object size
-         this.collisionBoxWidth = this.width;
-         this.collisionBoxHeight = this.height;
-     }
-   
 
    loadImage(path) {
       this.img = new Image();
       this.img.src = path;
    }
+
 
    /**
     *
@@ -47,13 +47,17 @@ class MovableObject {
 
 
    drawFrame(ctx) {
+      const rectX = this.x + this.collisionBoxOffsetX;
+      const rectY = this.y + this.collisionBoxOffsetY;
+      const rectWidth = this.collisionBoxWidth;
+      const rectHeight = this.collisionBoxHeight;
+
       ctx.beginPath();
       ctx.lineWidth = '3';
       ctx.strokeStyle = 'lightgreen';
-      // Use the collision box properties for drawing
-      ctx.rect(this.x + this.collisionBoxOffsetX, this.y + this.collisionBoxOffsetY, this.collisionBoxWidth, this.collisionBoxHeight);
+      ctx.rect(rectX, rectY, rectWidth, rectHeight);
       ctx.stroke();
-  }
+   }
 
 
    moveLeft() {
@@ -82,7 +86,7 @@ class MovableObject {
       this.img = this.imageCache[path];
       this.currentImage++;
    }
-
+   
 
    playSwimSound() {
       this.swim_sound.play();
