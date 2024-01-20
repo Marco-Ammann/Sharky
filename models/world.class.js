@@ -29,7 +29,7 @@ class World {
    stopMusic() {
       this.level.music.volume = 0.05;
       this.level.music.loop = true;
-      this.level.music.play();
+      this.level.music.pause();
    }
 
 
