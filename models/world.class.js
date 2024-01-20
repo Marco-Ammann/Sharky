@@ -67,13 +67,14 @@ class World {
       }
 
       MovObj.draw(this.ctx);
+
       MovObj.drawFrame(this.ctx);
 
       if (MovObj.otherDirection) {
          this.flipImageBack(MovObj);
       }
    }
-
+   
 
    flipImage(MovObj) {
       this.ctx.save();

@@ -1,6 +1,12 @@
 class Endboss extends MovableObject {
    height = 600;
    width = this.height * 1.168;
+   x = 6450;
+   y = -100;
+   collisionBoxWidth = this.width * 0.85;
+   collisionBoxHeight = this.height * 0.35; 
+   collisionBoxOffsetX = 40;
+   collisionBoxOffsetY = 280;
 
    IMAGES_SWIM = [
       'img/2.Enemy/3.Final_Enemy/2.floating/1.png',
@@ -21,9 +27,6 @@ class Endboss extends MovableObject {
    constructor() {
       super().loadImage('img/2.Enemy/3.Final_Enemy/2.floating/1.png');
       this.loadImages(this.IMAGES_SWIM);
-      this.x = 6450;
-      this.y = -100;
-
       this.animate();
    }
 

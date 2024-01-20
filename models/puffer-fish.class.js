@@ -1,6 +1,13 @@
 class PufferFish extends MovableObject {
    height = 60;
    width = this.height * 1.217;
+   x = 350 + Math.random() * 5800;
+   y = 10 + Math.random() * 400;
+   speed = 0.1 + Math.random() * 0.3;
+   collisionBoxWidth = this.width * 0.89;
+   collisionBoxHeight = this.height * 0.73; 
+   collisionBoxOffsetX = 0;
+   collisionBoxOffsetY = 0;
 
    IMAGES_SWIM = [
       'img/2.Enemy/1.Puffer_fish/1.Swim/3.swim1.png',
@@ -14,11 +21,6 @@ class PufferFish extends MovableObject {
    constructor() {
       super().loadImage('img/2.Enemy/1.Puffer_fish/1.Swim/3.swim1.png');
       this.loadImages(this.IMAGES_SWIM);
-
-      this.x = 350 + Math.random() * 5800;
-      this.y = 10 + Math.random() * 400;
-      this.speed = 0.1 + Math.random() * 0.3;
-
       this.animate();
    }
    
