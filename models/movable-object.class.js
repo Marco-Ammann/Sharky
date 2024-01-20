@@ -29,24 +29,22 @@ class MovableObject {
    
 
    moveLeft() {
-      setInterval(() => {
-         this.x -= this.speed;
-      }, 1000 / 60);
+      this.x -= this.speed;
    }
 
 
    moveRight() {
-      console.log('swimming right');
+      this.x += this.speed;
    }
 
 
    moveUp() {
-      console.log('swimming up');
+      this.y -= this.speed;
    }
 
 
    moveDown() {
-      console.log('swimming down');
+      this.y += this.speed;
    }
 
    playAnimation(images) {
@@ -54,5 +52,10 @@ class MovableObject {
       let path = images[i];
       this.img = this.imageCache[path];
       this.currentImage++;
+   }
+
+   playSwimSound() {
+      this.swim_sound.play();
+      this.swim_sound.volume = 0.15;
    }
 }

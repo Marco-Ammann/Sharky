@@ -1,6 +1,7 @@
 let canvas;
 let world;
 let keyboard = new Keyboard();
+let musicIsPlaying = false;
 
 function init() {
    canvas = document.getElementById('canvas');
@@ -10,7 +11,8 @@ function init() {
 }
 
 function switchSoundMute() {
-   const isMuted = world.toggleMusic();
-   const button = document.querySelector('button');
-   button.textContent = isMuted ? 'Unmute Music' : 'Mute Music';
+   const button = document.getElementById('musicButton');
+   musicIsPlaying = !musicIsPlaying;
+   musicIsPlaying ? world.startMusic() : world.stopMusic();
+   button.textContent = musicIsPlaying ? 'stop music' : 'start music';
 }

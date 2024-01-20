@@ -4,7 +4,7 @@ class Character extends MovableObject {
    x = 80;
    y = 200;
    world;
-   speed = 8;
+   speed = 38;
 
    IMAGES_IDLE = [
       'img/1.Sharkie/1.IDLE/1.png',
@@ -48,41 +48,34 @@ class Character extends MovableObject {
 
    animate() {
       setInterval(() => {
-         if (this.world.keyboard.RIGHT && this.x < this.world.level.level_end_x) {
-            this.x += this.speed;
+         const { RIGHT, LEFT, UP, DOWN } = this.world.keyboard;
+         if (RIGHT && this.x < this.world.level.level_end_x) {
+            this.moveRight();
             this.otherDirection = false;
             this.world.camera_x = -this.x + 80;
-            this.swim_sound.play();
-            this.swim_sound.volume = 0.15;
+            this.playSwimSound();
          }
-         if (this.world.keyboard.UP && this.y > 0 - this.height / 2.5) {
-            this.y -= this.speed;
-            this.swim_sound.play();
-            this.swim_sound.volume = 0.15;
+         if (UP && this.y > 0 - this.height / 2.5) {
+            this.moveUp();
+            this.playSwimSound();
          }
-         if (this.world.keyboard.DOWN && this.y < 480 - this.height * 0.85) {
-            this.y += this.speed;
-            this.swim_sound.play();
-            this.swim_sound.volume = 0.15;
+         if (DOWN && this.y < 480 - this.height * 0.85) {
+            this.moveDown();
+            this.playSwimSound();
          }
-         if (this.world.keyboard.LEFT && this.x > 80) {
-            this.x -= this.speed;
+         if (LEFT && this.x > 80) {
+            this.moveLeft();
             this.otherDirection = true;
             this.world.camera_x = -this.x + 80;
-            this.swim_sound.play();
-            this.swim_sound.volume = 0.15;
+            this.playSwimSound();
          }
       }, 1000 / 60);
 
       setInterval(() => {
+         const { RIGHT, LEFT, UP, DOWN } = this.world.keyboard;
          let isMoving = false;
 
-         if (
-            this.world.keyboard.RIGHT ||
-            this.world.keyboard.UP ||
-            this.world.keyboard.DOWN ||
-            this.world.keyboard.LEFT
-         ) {
+         if (RIGHT || UP || DOWN || LEFT) {
             this.playAnimation(this.IMAGES_SWIM);
             isMoving = true;
          } else {
@@ -93,8 +86,6 @@ class Character extends MovableObject {
             this.swim_sound.pause();
             this.swim_sound.currentTime = 0;
          }
-
-
       }, 1000 / 8);
    }
 
