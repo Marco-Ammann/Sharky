@@ -8,8 +8,6 @@ const level1 = new Level(
       new PufferFish(),
       new PufferFish(),
       new PufferFish(),
-      new PufferFish(),
-      new PufferFish(),
       new Endboss(),
    ],
    [new BarrierStone(), new BarrierPillar()],

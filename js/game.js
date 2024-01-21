@@ -16,7 +16,3 @@ function switchSoundMute() {
    musicIsPlaying ? world.startMusic() : world.stopMusic();
    button.textContent = musicIsPlaying ? 'stop music' : 'start music';
 }
-
-setInterval(() => {
-   window.location.reload();
-}, 15000);

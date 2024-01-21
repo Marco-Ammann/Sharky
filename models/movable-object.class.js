@@ -9,14 +9,12 @@ class MovableObject {
    speed = 0.15;
    otherDirection = false;
 
-   // Collision box properties
    collisionBoxWidth;
    collisionBoxHeight;
-   collisionBoxOffsetX = 0; // Offset from the object's x position
+   collisionBoxOffsetX = 0;
    collisionBoxOffsetY = 0;
 
    constructor() {
-      // Initialize default collision box size to match object size
       this.collisionBoxWidth = this.width;
       this.collisionBoxHeight = this.height;
    }
@@ -40,23 +38,29 @@ class MovableObject {
       });
    }
 
-
    draw(ctx) {
       ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
    }
 
-
    drawFrame(ctx) {
-      const rectX = this.x + this.collisionBoxOffsetX;
-      const rectY = this.y + this.collisionBoxOffsetY;
-      const rectWidth = this.collisionBoxWidth;
-      const rectHeight = this.collisionBoxHeight;
+      if (
+         this instanceof Character ||
+         this instanceof Endboss ||
+         this instanceof PufferFish ||
+         this instanceof BarrierPillar ||
+         this instanceof BarrierStone
+      ) {
+         const rectX = this.x + this.collisionBoxOffsetX;
+         const rectY = this.y + this.collisionBoxOffsetY;
+         const rectWidth = this.collisionBoxWidth;
+         const rectHeight = this.collisionBoxHeight;
 
-      ctx.beginPath();
-      ctx.lineWidth = '3';
-      ctx.strokeStyle = 'lightgreen';
-      ctx.rect(rectX, rectY, rectWidth, rectHeight);
-      ctx.stroke();
+         ctx.beginPath();
+         ctx.lineWidth = '3';
+         ctx.strokeStyle = 'lightgreen';
+         ctx.rect(rectX, rectY, rectWidth, rectHeight);
+         ctx.stroke();
+      }
    }
 
 

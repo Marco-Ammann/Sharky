@@ -7,7 +7,6 @@ class World {
    ctx;
    keyboard;
    camera_x = 0;
-   isLoaded = false;
 
    constructor(canvas, keyboard) {
       this.ctx = canvas.getContext('2d');
@@ -15,7 +14,6 @@ class World {
       this.keyboard = keyboard;
       this.draw();
       this.setWorld();
-      this.isLoaded = true;
    }
 
 
@@ -51,6 +49,7 @@ class World {
       this.ctx.translate(-this.camera_x, 0);
 
       requestAnimationFrame(() => this.draw());
+
    }
 
 
@@ -67,7 +66,6 @@ class World {
       }
 
       MovObj.draw(this.ctx);
-
       MovObj.drawFrame(this.ctx);
 
       if (MovObj.otherDirection) {
