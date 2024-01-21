@@ -8,11 +8,36 @@ class MovableObject {
    currentImage = 0;
    speed = 0.15;
    otherDirection = false;
+   speedY = 0;
+   acceleration = 2.5;
+   healthPoints = 100;
+   immunity = false;
 
    collisionBoxWidth;
    collisionBoxHeight;
    collisionBoxOffsetX = 0;
    collisionBoxOffsetY = 0;
+
+   applyGravity() {
+      setInterval(() => {
+         if (this.speedY) {
+            this.y -= this.speedY;
+            this.speedY -= this.acceleration;
+         }
+      }, 1000 / 25);
+   }
+
+
+   getDamage() {
+      if (!this.immunity) {
+         this.healthPoints -= 20;
+         console.log('Energy lost! Energy left:', this.healthPoints);
+         this.immunity = true;
+         setTimeout(() => {
+            this.immunity = false;
+         }, 600);
+      }
+   }
 
    constructor() {
       this.collisionBoxWidth = this.width;
@@ -38,9 +63,11 @@ class MovableObject {
       });
    }
 
+
    draw(ctx) {
       ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
    }
+
 
    drawFrame(ctx) {
       if (
@@ -90,10 +117,24 @@ class MovableObject {
       this.img = this.imageCache[path];
       this.currentImage++;
    }
-   
+
 
    playSwimSound() {
       this.swim_sound.play();
       this.swim_sound.volume = 0.15;
+   }
+
+
+   isColliding(obj) {
+      return (
+         this.x + this.collisionBoxOffsetX + this.collisionBoxWidth >=
+            obj.x + obj.collisionBoxOffsetX &&
+         this.x + this.collisionBoxOffsetX <=
+            obj.x + obj.collisionBoxOffsetX + obj.collisionBoxWidth &&
+         this.y + this.collisionBoxOffsetY + this.collisionBoxHeight >=
+            obj.y + obj.collisionBoxOffsetY &&
+         this.y + this.collisionBoxOffsetY <=
+            obj.y + obj.collisionBoxOffsetY + obj.collisionBoxHeight
+      );
    }
 }

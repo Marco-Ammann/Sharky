@@ -1,12 +1,12 @@
 class Endboss extends MovableObject {
    height = 600;
    width = this.height * 1.168;
-   x = 6450;
+   x = 5800;
    y = -100;
-   collisionBoxWidth = this.width * 0.85;
-   collisionBoxHeight = this.height * 0.35; 
-   collisionBoxOffsetX = 40;
-   collisionBoxOffsetY = 280;
+   collisionBoxWidth = this.width * 0.75;
+   collisionBoxHeight = this.height * 0.30; 
+   collisionBoxOffsetX = 50;
+   collisionBoxOffsetY = 295;
 
    IMAGES_SWIM = [
       'img/2.Enemy/3.Final_Enemy/2.floating/1.png',

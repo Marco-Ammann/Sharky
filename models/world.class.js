@@ -14,7 +14,23 @@ class World {
       this.keyboard = keyboard;
       this.draw();
       this.setWorld();
+      this.checkCollisions();
    }
+
+   checkCollisions() {
+      setInterval(() => {
+          this.level.enemies.forEach((enemy) => {
+              if (this.character.isColliding(enemy)) {
+               this.character.getDamage();
+               }
+          });
+          this.level.barriers.forEach((barrier) => {
+              if (this.character.isColliding(barrier)) {
+                  this.character.getDamage();
+              }
+          });
+      }, 1000 / 20);
+  }
 
 
    startMusic() {

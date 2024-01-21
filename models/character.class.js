@@ -5,10 +5,11 @@ class Character extends MovableObject {
    y = 200;
    world;
    speed = 8;
-   collisionBoxWidth = this.width * 0.65;
-   collisionBoxHeight = this.height * 0.27; 
-   collisionBoxOffsetX = 40;
-   collisionBoxOffsetY = 100;
+   collisionBoxWidth = this.width * 0.55;
+   collisionBoxHeight = this.height * 0.20; 
+   collisionBoxOffsetX = 55;
+   collisionBoxOffsetY = 108;
+   healthPoints = 100;
 
    IMAGES_IDLE = [
       'img/1.Sharkie/1.IDLE/1.png',
