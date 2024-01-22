@@ -138,8 +138,14 @@ class MovableObject {
               this.currentImage++;
           }
           else {
-              this.currentImage = images.length - 1;
+             this.currentImage = images.length - 1;
+               clearInterval(this.movementInterval);
+               this.world.level.enemies.forEach((enemy) => {
+                  clearInterval(enemy.movementInterval);
+                  clearInterval(enemy.animationInterval);
+               });
           }
+
       } else {
           let i = this.currentImage % images.length;
           let path = images[i];

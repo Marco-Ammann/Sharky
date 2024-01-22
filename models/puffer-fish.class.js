@@ -9,6 +9,7 @@ class PufferFish extends MovableObject {
    collisionBoxOffsetX = 10;
    collisionBoxOffsetY = 9;
    healthPoints = 20;
+   world;
 
    IMAGES_SWIM = [
       'img/2.Enemy/1.Puffer_fish/1.Swim/3.swim1.png',
@@ -27,10 +28,10 @@ class PufferFish extends MovableObject {
    
 
    animate() {
-      setInterval(() => {
+      this.movementInterval = setInterval(() => {
          this.moveLeft();
       }, 1000 / 60);
-      setInterval(() => {
+      this.animationInterval = setInterval(() => {
          this.playAnimation(this.IMAGES_SWIM);
       }, 1000 / 8);
    }

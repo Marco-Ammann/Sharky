@@ -41,8 +41,8 @@ class Character extends MovableObject {
    ];
 
    IMAGES_DEAD = [
-      'img/1.Sharkie/6.dead/1.Poisoned/1.png',
-      'img/1.Sharkie/6.dead/1.Poisoned/2.png',
+      'img/1.Sharkie/6.dead/1.Poisoned/1.png', // 0
+      'img/1.Sharkie/6.dead/1.Poisoned/2.png', 
       'img/1.Sharkie/6.dead/1.Poisoned/3.png',
       'img/1.Sharkie/6.dead/1.Poisoned/4.png',
       'img/1.Sharkie/6.dead/1.Poisoned/5.png',
@@ -52,7 +52,7 @@ class Character extends MovableObject {
       'img/1.Sharkie/6.dead/1.Poisoned/9.png',
       'img/1.Sharkie/6.dead/1.Poisoned/10.png',
       'img/1.Sharkie/6.dead/1.Poisoned/11.png',
-      'img/1.Sharkie/6.dead/1.Poisoned/12.png',
+      'img/1.Sharkie/6.dead/1.Poisoned/12.png', //11
    ];
 
    IMAGES_HURT = [
@@ -110,7 +110,6 @@ class Character extends MovableObject {
          } else if (this.isHurt()) {
             this.playAnimation(this.IMAGES_HURT);
          } else {
-            // Reset death animation flag if the character is alive
             this.deathAnimationPlayed = false;
 
             if (RIGHT || UP || DOWN || LEFT) {

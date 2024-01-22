@@ -17,7 +17,10 @@ class World {
       this.canvas = canvas;
       this.keyboard = keyboard;
       this.draw();
-      this.setWorld();
+      this.setWorld(this.character);
+      this.level.enemies.forEach((enemy) =>{
+         this.setWorld(enemy);
+      });
    }
 
 
@@ -56,8 +59,8 @@ class World {
    }
 
 
-   setWorld() {
-      this.character.world = this;
+   setWorld(obj) {
+      obj.world = this;
    }
 
 
