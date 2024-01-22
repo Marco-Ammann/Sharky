@@ -12,42 +12,61 @@ class MovableObject {
    acceleration = 2.5;
    healthPoints = 100;
    immunity = false;
+   damage = 20;
+   lastHit = 0;
+   dead = false;
 
    collisionBoxWidth;
    collisionBoxHeight;
    collisionBoxOffsetX = 0;
    collisionBoxOffsetY = 0;
 
-   applyGravity() {
-      setInterval(() => {
-         if (this.speedY) {
-            this.y -= this.speedY;
-            this.speedY -= this.acceleration;
-         }
-      }, 1000 / 25);
-   }
-
-
-   getDamage() {
-      if (!this.immunity) {
-         this.healthPoints -= 20;
-         console.log('Energy lost! Energy left:', this.healthPoints);
-         this.immunity = true;
-         setTimeout(() => {
-            this.immunity = false;
-         }, 600);
-      }
-   }
+   // applyGravity() {
+   //    setInterval(() => {
+   //       if (this.speedY) {
+   //          this.y -= this.speedY;
+   //          this.speedY -= this.acceleration;
+   //       }
+   //    }, 1000 / 25);
+   // }
 
    constructor() {
       this.collisionBoxWidth = this.width;
       this.collisionBoxHeight = this.height;
    }
-
+   
 
    loadImage(path) {
       this.img = new Image();
       this.img.src = path;
+   }
+
+
+   getDamage() {
+      if (!this.immunity && this.healthPoints > 0) {
+         this.healthPoints -= this.damage;
+         this.immunity = true;
+         setTimeout(() => {
+            this.immunity = false;
+         }, 500);
+      } else {
+         this.lastHit = new Date().getTime();
+      }
+   }
+
+
+   isDead() {
+      if (this.healthPoints == 0) {
+         this.dead = true;
+      }
+      return this.dead;
+   }
+
+
+   isHurt() {
+      let timepassed = new Date().getTime() - this.lastHit;
+      timepassed = timepassed / 1000; //difference in s
+      return timepassed < 0.5;
    }
 
 
@@ -112,12 +131,22 @@ class MovableObject {
 
 
    playAnimation(images) {
-      let i = this.currentImage % images.length;
-      let path = images[i];
-      this.img = this.imageCache[path];
-      this.currentImage++;
-   }
-
+      if (this.isDead()) {
+          if (this.currentImage < images.length) {
+              let path = images[this.currentImage];
+              this.img = this.imageCache[path];
+              this.currentImage++;
+          }
+          else {
+              this.currentImage = images.length - 1;
+          }
+      } else {
+          let i = this.currentImage % images.length;
+          let path = images[i];
+          this.img = this.imageCache[path];
+          this.currentImage++;
+      }
+  }
 
    playSwimSound() {
       this.swim_sound.play();

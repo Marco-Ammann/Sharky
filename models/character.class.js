@@ -6,10 +6,9 @@ class Character extends MovableObject {
    world;
    speed = 8;
    collisionBoxWidth = this.width * 0.55;
-   collisionBoxHeight = this.height * 0.20; 
+   collisionBoxHeight = this.height * 0.2;
    collisionBoxOffsetX = 55;
    collisionBoxOffsetY = 108;
-   healthPoints = 100;
 
    IMAGES_IDLE = [
       'img/1.Sharkie/1.IDLE/1.png',
@@ -41,19 +40,45 @@ class Character extends MovableObject {
       'img/1.Sharkie/3.Swim/6.png',
    ];
 
+   IMAGES_DEAD = [
+      'img/1.Sharkie/6.dead/1.Poisoned/1.png',
+      'img/1.Sharkie/6.dead/1.Poisoned/2.png',
+      'img/1.Sharkie/6.dead/1.Poisoned/3.png',
+      'img/1.Sharkie/6.dead/1.Poisoned/4.png',
+      'img/1.Sharkie/6.dead/1.Poisoned/5.png',
+      'img/1.Sharkie/6.dead/1.Poisoned/6.png',
+      'img/1.Sharkie/6.dead/1.Poisoned/7.png',
+      'img/1.Sharkie/6.dead/1.Poisoned/8.png',
+      'img/1.Sharkie/6.dead/1.Poisoned/9.png',
+      'img/1.Sharkie/6.dead/1.Poisoned/10.png',
+      'img/1.Sharkie/6.dead/1.Poisoned/11.png',
+      'img/1.Sharkie/6.dead/1.Poisoned/12.png',
+   ];
+
+   IMAGES_HURT = [
+      'img/1.Sharkie/5.Hurt/1.Poisoned/1.png',
+      'img/1.Sharkie/5.Hurt/1.Poisoned/2.png',
+      'img/1.Sharkie/5.Hurt/1.Poisoned/3.png',
+      'img/1.Sharkie/5.Hurt/1.Poisoned/4.png',
+      'img/1.Sharkie/5.Hurt/1.Poisoned/5.png',
+   ];
+
    swim_sound = new Audio('audio/swim_sound.mp3');
 
    constructor() {
       super().loadImage('img/1.Sharkie/1.IDLE/1.png');
       this.loadImages(this.IMAGES_IDLE);
       this.loadImages(this.IMAGES_SWIM);
+      this.loadImages(this.IMAGES_DEAD);
+      this.loadImages(this.IMAGES_HURT);
       this.animate();
    }
-
+   
 
    animate() {
-      setInterval(() => {
+      this.movementInterval = setInterval(() => {
          const { RIGHT, LEFT, UP, DOWN } = this.world.keyboard;
+
          if (RIGHT && this.x < this.world.level.level_end_x) {
             this.moveRight();
             this.otherDirection = false;
@@ -76,24 +101,33 @@ class Character extends MovableObject {
          }
       }, 1000 / 60);
 
-      setInterval(() => {
+      this.animationInterval = setInterval(() => {
          const { RIGHT, LEFT, UP, DOWN } = this.world.keyboard;
          let isMoving = false;
 
-         if (RIGHT || UP || DOWN || LEFT) {
-            this.playAnimation(this.IMAGES_SWIM);
-            isMoving = true;
+         if (this.isDead()) {
+            this.playAnimation(this.IMAGES_DEAD);
+         } else if (this.isHurt()) {
+            this.playAnimation(this.IMAGES_HURT);
          } else {
-            this.playAnimation(this.IMAGES_IDLE);
-         }
+            // Reset death animation flag if the character is alive
+            this.deathAnimationPlayed = false;
 
-         if (!isMoving) {
-            this.swim_sound.pause();
-            this.swim_sound.currentTime = 0;
+            if (RIGHT || UP || DOWN || LEFT) {
+               this.playAnimation(this.IMAGES_SWIM);
+               isMoving = true;
+            } else {
+               this.playAnimation(this.IMAGES_IDLE);
+            }
+
+            if (!isMoving) {
+               this.swim_sound.pause();
+               this.swim_sound.currentTime = 0;
+            }
          }
       }, 1000 / 8);
    }
-   
+
 
    shootBubble() {
       console.log('shooting bubble');

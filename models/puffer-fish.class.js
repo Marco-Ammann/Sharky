@@ -8,6 +8,7 @@ class PufferFish extends MovableObject {
    collisionBoxHeight = this.height * 0.50; 
    collisionBoxOffsetX = 10;
    collisionBoxOffsetY = 9;
+   healthPoints = 20;
 
    IMAGES_SWIM = [
       'img/2.Enemy/1.Puffer_fish/1.Swim/3.swim1.png',
