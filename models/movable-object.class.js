@@ -21,6 +21,8 @@ class MovableObject {
    collisionBoxOffsetX = 0;
    collisionBoxOffsetY = 0;
 
+
+
    // applyGravity() {
    //    setInterval(() => {
    //       if (this.speedY) {
@@ -144,8 +146,8 @@ class MovableObject {
                   clearInterval(enemy.movementInterval);
                   clearInterval(enemy.animationInterval);
                });
-          }
 
+          }
       } else {
           let i = this.currentImage % images.length;
           let path = images[i];
@@ -158,6 +160,8 @@ class MovableObject {
       this.swim_sound.play();
       this.swim_sound.volume = 0.15;
    }
+
+
 
 
    isColliding(obj) {

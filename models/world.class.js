@@ -10,7 +10,9 @@ class World {
 
    lastCollisionCheck = 0;
    collisionCheckInterval = 1000 / 20;
-   isGameOver = false;
+   isGameOver = false;  
+   gameOverSound = new Audio('audio/death_sound.mp3');
+
 
    constructor(canvas, keyboard) {
       this.ctx = canvas.getContext('2d');
@@ -30,6 +32,7 @@ class World {
             this.character.getDamage();
             if (this.character.healthPoints == 0) {
                console.log('you are dead!');
+               this.playGameOverSound();
             }
          }
       });
@@ -38,10 +41,17 @@ class World {
             this.character.getDamage();
             if (this.character.healthPoints == 0) {
                console.log('you are dead!');
+               this.playGameOverSound();
             }
          }
       });
+   }
 
+
+   playGameOverSound() {
+      this.gameOverSound.volume = 0.15;
+      this.gameOverSound.loop = false;
+      this.gameOverSound.play();
    }
 
 
@@ -84,7 +94,7 @@ class World {
 
       requestAnimationFrame(() => this.draw());
    }
-   
+
 
    addObjectsToMap(objects) {
       objects.forEach((o) => {
@@ -115,6 +125,7 @@ class World {
       MovObj.x = MovObj.x * -1;
    }
 
+   
    flipImageBack(MovObj) {
       MovObj.x = MovObj.x * -1;
       this.ctx.restore();
