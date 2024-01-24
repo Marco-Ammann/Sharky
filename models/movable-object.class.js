@@ -1,11 +1,5 @@
-class MovableObject {
-   x;
-   y;
-   img;
-   height;
-   width;
-   imageCache = {};
-   currentImage = 0;
+class MovableObject extends DrawableObject{
+
    speed = 0.15;
    otherDirection = false;
    speedY = 0;
@@ -22,7 +16,6 @@ class MovableObject {
    collisionBoxOffsetY = 0;
 
 
-
    // applyGravity() {
    //    setInterval(() => {
    //       if (this.speedY) {
@@ -33,16 +26,11 @@ class MovableObject {
    // }
 
    constructor() {
+      super();
       this.collisionBoxWidth = this.width;
       this.collisionBoxHeight = this.height;
    }
    
-
-   loadImage(path) {
-      this.img = new Image();
-      this.img.src = path;
-   }
-
 
    getDamage() {
       if (!this.immunity && this.healthPoints > 0) {
@@ -69,24 +57,6 @@ class MovableObject {
       let timepassed = new Date().getTime() - this.lastHit;
       timepassed = timepassed / 1000; //difference in s
       return timepassed < 0.5;
-   }
-
-
-   /**
-    *
-    * @param {Array} arr - ['img/umage1.png', 'img/image2.png']
-    */
-   loadImages(arr) {
-      arr.forEach((path) => {
-         let img = new Image();
-         img.src = path;
-         this.imageCache[path] = img;
-      });
-   }
-
-
-   draw(ctx) {
-      ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
    }
 
 
@@ -156,12 +126,11 @@ class MovableObject {
       }
   }
 
+
    playSwimSound() {
       this.swim_sound.play();
       this.swim_sound.volume = 0.15;
    }
-
-
 
 
    isColliding(obj) {
