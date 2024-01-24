@@ -29,14 +29,13 @@ class StatusBar extends DrawableObject {
    }
 
    resolveImageIndex() {
-    const thresholds = [80, 60, 40, 20, 0];
-    for (let i = 0; i < thresholds.length; i++) {
-        if (this.percentage > thresholds[i]) {
-            return 5 - i;
-        }
-    }
-    return 0;
-}
+      if (this.percentage === 100) return 5;
+      else if (this.percentage >= 80) return 4; 
+      else if (this.percentage >= 60) return 3;
+      else if (this.percentage >= 40) return 2;
+      else if (this.percentage >= 20) return 1;
+      else return 0;
+  }
 
 
 

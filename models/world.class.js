@@ -2,7 +2,9 @@ class World {
    character = new Character();
 
    level = level1;
-   statusBar = new StatusBar;
+   statusBar = new StatusBar();
+   poisonBar = new PoisonBar();
+   coinBar = new CoinBar();
 
    canvas;
    ctx;
@@ -92,6 +94,8 @@ class World {
       //----------space for fixed Objects------------
       this.ctx.translate(-this.camera_x, 0);
       this.addToMap(this.statusBar);
+      this.addToMap(this.poisonBar);
+      this.addToMap(this.coinBar);
       this.ctx.translate(this.camera_x, 0);
       //---------------------------------------------
 
