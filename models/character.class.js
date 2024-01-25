@@ -10,6 +10,9 @@ class Character extends MovableObject {
    collisionBoxOffsetX = 55;
    collisionBoxOffsetY = 108;
 
+   bubbleCooldown = false;
+
+
    IMAGES_IDLE = [
       'img/1.Sharkie/1.IDLE/1.png',
       'img/1.Sharkie/1.IDLE/2.png',
@@ -42,7 +45,7 @@ class Character extends MovableObject {
 
    IMAGES_DEAD = [
       'img/1.Sharkie/6.dead/1.Poisoned/1.png', // 0
-      'img/1.Sharkie/6.dead/1.Poisoned/2.png', 
+      'img/1.Sharkie/6.dead/1.Poisoned/2.png',
       'img/1.Sharkie/6.dead/1.Poisoned/3.png',
       'img/1.Sharkie/6.dead/1.Poisoned/4.png',
       'img/1.Sharkie/6.dead/1.Poisoned/5.png',
@@ -73,11 +76,10 @@ class Character extends MovableObject {
       this.loadImages(this.IMAGES_HURT);
       this.animate();
    }
-   
 
    animate() {
       this.movementInterval = setInterval(() => {
-         const { RIGHT, LEFT, UP, DOWN } = this.world.keyboard;
+         const { RIGHT, LEFT, UP, DOWN, SPACE } = this.world.keyboard;
 
          if (RIGHT && this.x < this.world.level.level_end_x) {
             this.moveRight();
@@ -99,6 +101,10 @@ class Character extends MovableObject {
             this.world.camera_x = -this.x + 80;
             this.playSwimSound();
          }
+
+         if (SPACE) {
+            this.shootBubble();
+        }
       }, 1000 / 60);
 
       this.animationInterval = setInterval(() => {
@@ -127,8 +133,21 @@ class Character extends MovableObject {
       }, 1000 / 8);
    }
 
-
    shootBubble() {
-      console.log('shooting bubble');
-   }
+      if (!this.isDead() && !this.bubbleCooldown) {
+          console.log('Shooting bubble');
+          let bubble = new ThrowableObject(this.x, this.y, this.otherDirection);
+          this.world.throwables.push(bubble);
+
+          setTimeout(() => {
+              bubble.removeBubble();
+          }, 2000);
+
+          this.bubbleCooldown = true;
+          setTimeout(() => {
+              this.bubbleCooldown = false;
+          }, 1000);
+      }
+  }
+  
 }

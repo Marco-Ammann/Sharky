@@ -6,6 +6,8 @@ class World {
    poisonBar = new PoisonBar();
    coinBar = new CoinBar();
 
+   throwables = [];
+
    canvas;
    ctx;
    keyboard;
@@ -53,6 +55,29 @@ class World {
    }
 
 
+   checkBubbleCollisions() {
+      this.throwables.forEach((bubble, bubbleIndex) => {
+          this.level.enemies.forEach((enemy, enemyIndex) => {
+              if (bubble.isColliding(enemy)) {
+                  console.log(`Bubble hit enemy at index ${enemyIndex}!`);
+                  bubble.removeBubble();
+  
+                  // Example effect: reduce enemy health or remove enemy
+                  // enemy.health -= someDamageValue;
+                  // if (enemy.health <= 0) {
+                  //     console.log(`Enemy at index ${enemyIndex} is defeated!`);
+                  //     this.level.enemies.splice(enemyIndex, 1); // Remove defeated enemy
+                  // }
+              }
+          });
+  
+          if (bubble.toBeRemoved) {
+              this.throwables.splice(bubbleIndex, 1);
+          }
+      });
+  }
+
+
    playGameOverSound() {
       this.gameOverSound.volume = 0.15;
       this.gameOverSound.loop = false;
@@ -83,6 +108,8 @@ class World {
       let now = Date.now();
       if (now - this.lastCollisionCheck > this.collisionCheckInterval) {
          this.checkCollisions();
+         this.checkBubbleCollisions();
+         
          this.lastCollisionCheck = now;
       }
 
@@ -98,10 +125,16 @@ class World {
       this.addToMap(this.coinBar);
       this.ctx.translate(this.camera_x, 0);
       //---------------------------------------------
-
+      
       this.addObjectsToMap(this.level.enemies);
       this.addToMap(this.character);
       this.addObjectsToMap(this.level.barriers);
+      this.throwables.forEach(throwable => {
+         throwable.move();
+         this.addToMap(throwable);
+     });
+     this.throwables = this.throwables.filter(bubble => !bubble.toBeRemoved);
+
 
       this.ctx.translate(-this.camera_x, 0);
       
@@ -127,7 +160,7 @@ class World {
 
       if (MovObj.otherDirection) {
          this.flipImageBack(MovObj);
-      }
+      } 
    }
 
 

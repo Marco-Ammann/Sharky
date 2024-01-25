@@ -16,14 +16,12 @@ class MovableObject extends DrawableObject{
    collisionBoxOffsetY = 0;
 
 
-   // applyGravity() {
-   //    setInterval(() => {
-   //       if (this.speedY) {
-   //          this.y -= this.speedY;
-   //          this.speedY -= this.acceleration;
-   //       }
-   //    }, 1000 / 25);
-   // }
+   applyGravity() {
+      this.gravityInterval = setInterval(() => {
+          this.y -= this.speedY;
+          this.speedY += this.acceleration;
+      }, 1000 / 60);
+  }
 
    constructor() {
       super();

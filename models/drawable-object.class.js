@@ -18,7 +18,8 @@ class DrawableObject{
          this instanceof Endboss ||
          this instanceof PufferFish ||
          this instanceof BarrierPillar ||
-         this instanceof BarrierStone
+         this instanceof BarrierStone ||
+         this instanceof ThrowableObject
       ) {
          const rectX = this.x + this.collisionBoxOffsetX;
          const rectY = this.y + this.collisionBoxOffsetY;
