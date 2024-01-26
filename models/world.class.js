@@ -73,6 +73,7 @@ class World {
   }
 
 
+
    playGameOverSound() {
       this.gameOverSound.volume = 0.15;
       this.gameOverSound.loop = false;

@@ -77,6 +77,15 @@ class Character extends MovableObject {
    ];
 
    swim_sound = new Audio('audio/swim_sound.mp3');
+   attack_sound = new Audio('audio/bubble_attack_sound.mp3');
+
+   playAttackSound() {
+      this.attack_sound.play();
+      this.attack_sound.volume = 0.15;
+      setTimeout(() => {
+         this.attack_sound.stop();
+      }, 150);
+   }
 
    constructor() {
       super().loadImage('img/1.Sharkie/1.IDLE/1.png');
@@ -143,6 +152,7 @@ class Character extends MovableObject {
          if (this.isAttacking) {
             if (now - lastAttackFrameTime > attackFrameRate) {
                this.playAttackAnimation();
+               this.playAttackSound();
                lastAttackFrameTime = now;
             }
          } else {
@@ -167,8 +177,11 @@ class Character extends MovableObject {
       }, 1000 / 10);
    }
 
+
+
    shootBubble() {
       if (!this.isDead() && !this.bubbleCooldown) {
+
          let bubble = new ThrowableObject(this.x, this.y, this.otherDirection);
          this.world.throwables.push(bubble);
          setTimeout(() => {
