@@ -42,6 +42,7 @@ class World {
             }
          }
       });
+
       this.level.barriers.forEach((barrier) => {
          if (this.character.isColliding(barrier)) {
             this.character.getDamage();
@@ -61,13 +62,6 @@ class World {
               if (bubble.isColliding(enemy)) {
                   console.log(`Bubble hit enemy at index ${enemyIndex}!`);
                   bubble.removeBubble();
-  
-                  // Example effect: reduce enemy health or remove enemy
-                  // enemy.health -= someDamageValue;
-                  // if (enemy.health <= 0) {
-                  //     console.log(`Enemy at index ${enemyIndex} is defeated!`);
-                  //     this.level.enemies.splice(enemyIndex, 1); // Remove defeated enemy
-                  // }
               }
           });
   

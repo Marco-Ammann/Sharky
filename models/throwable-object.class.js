@@ -1,7 +1,7 @@
 class ThrowableObject extends MovableObject {
     IMAGE = 'img/1.Sharkie/4.Attack/Bubble trap/Bubble.png';
 
-    height = 45;
+    height = 35;
     width = this.height;
 
     constructor(x, y, otherDirection) {
@@ -9,15 +9,15 @@ class ThrowableObject extends MovableObject {
         this.loadImage(this.IMAGE);
         this.otherDirection = otherDirection;
         if (this.otherDirection) {
-            this.x = x + 10;  // Adjust for left direction
-            this.speed = -3.5; // Negative speed for left direction
+            this.x = x + 10;
+            this.speed = -4.2;
         } else {
-            this.x = x + 190;  // Adjust for right direction
-            this.speed = 3.5;  // Positive speed for right direction
+            this.x = x + 190;
+            this.speed = 4.2;
         }
-        this.y = y + 110;
-        this.speedY = -2;
-        this.acceleration = 0.3;
+        this.y = y + 105;
+        this.speedY = -1.7;
+        this.acceleration = 0.12;
         this.applyGravity();
 
         this.collisionBoxWidth = this.width;
