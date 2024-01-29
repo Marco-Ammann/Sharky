@@ -4,7 +4,7 @@ class Character extends MovableObject {
    x = 80;
    y = 200;
    world;
-   speed = 6;
+   speed = 5;
    collisionBoxWidth = this.width * 0.55;
    collisionBoxHeight = this.height * 0.2;
    collisionBoxOffsetX = 55;

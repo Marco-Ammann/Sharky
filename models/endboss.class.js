@@ -1,7 +1,7 @@
 class Endboss extends MovableObject {
    height = 600;
    width = this.height * 1.168;
-   x = 5800 - 5300;
+   x = 5800;
    y = -145;
    collisionBoxWidth = this.width * 0.75;
    collisionBoxHeight = this.height * 0.3;
@@ -65,6 +65,7 @@ class Endboss extends MovableObject {
       'img/2.Enemy/3.Final_Enemy/Dead/Mesa de trabajo 2 copia 10.png',
    ];
 
+
    constructor() {
       super().loadImage('img/2.Enemy/3.Final_Enemy/2.floating/1.png');
       this.loadImages(this.IMAGES_SWIM);
@@ -73,66 +74,103 @@ class Endboss extends MovableObject {
       this.loadImages(this.IMAGES_DEAD);
 
       this.animate();
-      this.isHurt = false;
    }
 
+
    isDead() {
-      if (this.healthPoints == 0) {
-         return true;
-      } else if (this.healthPoints > 0) {
-         return false;
-      }
+      return this.healthPoints === 0;
    }
+
 
    getDamage() {
       if (!this.immunity && this.healthPoints > 0) {
          this.healthPoints -= this.damage;
-         this.isHurt = true;
-         this.isHurtAnimationPlaying = true;
-         this.immunity = true;
+         this.setHurtedState();
          setTimeout(() => {
-            this.immunity = false;
-            this.isHurt = false;
-            this.isHurtAnimationPlaying = false;
+            this.unsetHurtedState();
          }, 500);
       }
    }
 
+
+   setHurtedState() {
+      this.isHurt = true;
+      this.isHurtAnimationPlaying = true;
+      this.immunity = true;
+   }
+
+
+   unsetHurtedState() {
+      this.immunity = false;
+      this.isHurt = false;
+      this.isHurtAnimationPlaying = false;
+   }
+
+
+
    move() {
+      this.moveVertically();
+      this.moveHorizontally();
+   }
+
+   
+   moveVertically() {
       this.y += this.verticalSpeed * this.verticalDirection;
-      if (
-         this.y > this.originalY + this.verticalRange ||
-         this.y < this.originalY - this.verticalRange
-      ) {
+      if (this.hitVerticalMovementLimit()) {
          this.verticalDirection *= -1;
-      }
-
-      this.x -= this.horizontalSpeed;
-
-      if (this.x < 100) {
-         this.x = this.originalX;
       }
    }
 
+   
+   moveHorizontally() {
+      this.x -= this.horizontalSpeed;
+      if (this.isHorizontalOutOfRange()) {
+         this.resetHorizontalPosition();
+      }
+   }
+
+   
+   hitVerticalMovementLimit() {
+      return this.y > this.originalY + this.verticalRange || this.y < this.originalY - this.verticalRange;
+   }
+
+   
+   isHorizontalOutOfRange() {
+      return this.x < 100;
+   }
+
+   
+   resetHorizontalPosition() {
+      this.x = this.originalX;
+   }
+
+
    animate() {
+      this.setupMovementAnimation();
+      this.setupAttackAnimation();
+   
       if (!this.isDead()) {
          this.moveInterval = setInterval(() => {
             this.move();
          }, 1000 / 60);
       }
-
-
+   }
+   
+   
+   setupMovementAnimation() {
       this.animationInterval = setInterval(() => {
          if (this.isDead()) {
             this.playAnimation(this.IMAGES_DEAD);
-            console.log('boss is dead');
-         } else if (!this.isDead() && this.isHurt) {
+         } else if (this.isHurt) {
             this.playHurtAnimation();
-         } else if (!this.isDead() && !this.isAttacking && !this.isHurtAnimationPlaying) {
+         } else if (!this.isAttacking && !this.isHurtAnimationPlaying) {
             this.playAnimation(this.IMAGES_SWIM);
          }
       }, 1000 / 10);
+   }
 
+   
+   setupAttackAnimation() {
       if (!this.isDead()) {
          this.attackInterval = setInterval(() => {
             if (!this.isAttacking && !this.isHurt && !this.isHurtAnimationPlaying) {
@@ -145,6 +183,7 @@ class Endboss extends MovableObject {
          }, 2000);
       }
    }
+
 
    playHurtAnimation() {
       if (this.currentHurtImage < this.IMAGES_HURT.length) {
@@ -160,6 +199,7 @@ class Endboss extends MovableObject {
          }
       }
    }
+
 
    playAttackAnimation() {
       let i = 0;
