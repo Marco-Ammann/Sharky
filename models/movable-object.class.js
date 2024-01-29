@@ -30,15 +30,14 @@ class MovableObject extends DrawableObject {
 
    getDamage() {
       if (!this.immunity && this.healthPoints > 0) {
-         this.healthPoints -= this.damage;
-         this.immunity = true;
-         setTimeout(() => {
-            this.immunity = false;
-         }, 500);
-      } else {
-         this.lastHit = new Date().getTime();
+          this.healthPoints -= this.damage;
+          this.immunity = true;
+          this.lastHit = new Date().getTime();
+          setTimeout(() => {
+              this.immunity = false;
+          }, 500);
       }
-   }
+  }
 
    isDead() {
       if (this.healthPoints == 0) {
@@ -49,9 +48,8 @@ class MovableObject extends DrawableObject {
 
    isHurt() {
       let timepassed = new Date().getTime() - this.lastHit;
-      timepassed = timepassed / 1000; //difference in s
-      return timepassed < 0.5;
-   }
+      return timepassed < 500;
+  }
 
    moveLeft() {
       this.x -= this.speed;
@@ -82,6 +80,7 @@ class MovableObject extends DrawableObject {
                clearInterval(enemy.movementInterval);
                clearInterval(enemy.animationInterval);
                clearInterval(enemy.attackInterval);
+               clearInterval(enemy.moveInterval);
                
             });
          }
@@ -110,4 +109,10 @@ class MovableObject extends DrawableObject {
             obj.y + obj.collisionBoxOffsetY + obj.collisionBoxHeight
       );
    }
+
+   stopAnimations() {
+      clearInterval(this.animationInterval);
+      clearInterval(this.attackInterval);
+      clearInterval(this.moveInterval);
+  }
 }

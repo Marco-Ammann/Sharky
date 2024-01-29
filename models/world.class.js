@@ -60,9 +60,13 @@ class World {
       this.throwables.forEach((bubble, bubbleIndex) => {
           this.level.enemies.forEach((enemy, enemyIndex) => {
               if (bubble.isColliding(enemy)) {
-               //enemy kill animation
-               this.level.enemies.splice(enemyIndex, 1);
-               bubble.removeBubble();
+                  enemy.getDamage();
+                  bubble.removeBubble();
+  
+                  if (enemy.isDead()) {
+                      enemy.stopAnimations();
+                      this.level.enemies.splice(enemyIndex, 1);
+                  }
               }
           });
   

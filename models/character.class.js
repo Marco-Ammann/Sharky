@@ -4,7 +4,7 @@ class Character extends MovableObject {
    x = 80;
    y = 200;
    world;
-   speed = 46;
+   speed = 6;
    collisionBoxWidth = this.width * 0.55;
    collisionBoxHeight = this.height * 0.2;
    collisionBoxOffsetX = 55;
@@ -83,9 +83,10 @@ class Character extends MovableObject {
       this.attack_sound.play();
       this.attack_sound.volume = 0.15;
       setTimeout(() => {
-         this.attack_sound.stop();
-      }, 150);
-   }
+          this.attack_sound.pause();
+          this.attack_sound.currentTime = 0;
+      }, 370);
+  }
 
    constructor() {
       super().loadImage('img/1.Sharkie/1.IDLE/1.png');

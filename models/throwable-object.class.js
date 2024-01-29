@@ -10,14 +10,14 @@ class ThrowableObject extends MovableObject {
         this.otherDirection = otherDirection;
         if (this.otherDirection) {
             this.x = x + 10;
-            this.speed = -4.2;
+            this.speed = -3.7;
         } else {
             this.x = x + 190;
-            this.speed = 4.2;
+            this.speed = 3.7;
         }
         this.y = y + 105;
         this.speedY = -1.7;
-        this.acceleration = 0.12;
+        this.acceleration = 0.16;
         this.applyGravity();
 
         this.collisionBoxWidth = this.width;
