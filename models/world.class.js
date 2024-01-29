@@ -67,6 +67,9 @@ class World {
                      console.log('death animation will be played');
                      console.log(enemy.isDead());
                      enemy.animate();
+                     if (enemy.healthPoints == 0) {
+                        this.character.clearIntervals();
+                     }
                   } else {
                      this.level.enemies.splice(enemyIndex, 1);
                      enemy.stopAnimations();

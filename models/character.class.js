@@ -180,10 +180,15 @@ class Character extends MovableObject {
    }
 
 
+   clearIntervals() {
+      clearInterval(this.movementInterval);
+      clearInterval(this.animationInterval);
+   }
+
+
 
    shootBubble() {
       if (!this.isDead() && !this.bubbleCooldown) {
-
          let bubble = new ThrowableObject(this.x, this.y, this.otherDirection);
          this.world.throwables.push(bubble);
          setTimeout(() => {
