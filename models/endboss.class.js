@@ -1,7 +1,7 @@
 class Endboss extends MovableObject {
    height = 600;
    width = this.height * 1.168;
-   x = 5800;
+   x = 5800 - 5400;
    y = -100;
    collisionBoxWidth = this.width * 0.75;
    collisionBoxHeight = this.height * 0.3;
@@ -43,19 +43,35 @@ class Endboss extends MovableObject {
    }
 
    animate() {
-
-      
       this.animationInterval = setInterval(() => {
-         this.playAnimation(this.IMAGES_SWIM);
+         if (!this.isAttacking) {
+            this.playAnimation(this.IMAGES_SWIM);
+         }
       }, 1000 / 8);
 
-      this.attackIntervall = setInterval(() => {
-         this.isAttacking = true;
-         this.playAnimation(this.IMAGES_ATTACK);
-         setTimeout(() => {
-            this.isAttacking = false;
-         }, 300);
-      }, 1500);
-      
+      this.attackInterval = setInterval(() => {
+         if (!this.isAttacking) {
+            this.isAttacking = true;
+            this.playAttackAnimation();
+            setTimeout(() => {
+               this.isAttacking = false;
+            }, this.IMAGES_ATTACK.length * 100);
+         }
+      }, 2000); 
+   }
+
+   playAttackAnimation() {
+      let i = 0;
+      const attackAnimation = setInterval(() => {
+         if (i < this.IMAGES_ATTACK.length) {
+            let path = this.IMAGES_ATTACK[i];
+            this.img = this.imageCache[path];
+            i++;
+            this.collisionBoxOffsetX -= 5.5;
+         } else {
+            this.collisionBoxOffsetX = 50;
+            clearInterval(attackAnimation);
+         }
+      }, 100);
    }
 }

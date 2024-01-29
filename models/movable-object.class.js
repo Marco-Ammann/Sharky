@@ -81,6 +81,8 @@ class MovableObject extends DrawableObject {
             this.world.level.enemies.forEach((enemy) => {
                clearInterval(enemy.movementInterval);
                clearInterval(enemy.animationInterval);
+               clearInterval(enemy.attackInterval);
+               
             });
          }
       } else {
