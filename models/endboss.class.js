@@ -1,7 +1,9 @@
 class Endboss extends MovableObject {
+
+   
    height = 600;
    width = this.height * 1.168;
-   x = 5800;
+   x = 5800 - 5300;
    y = -145;
    collisionBoxWidth = this.width * 0.75;
    collisionBoxHeight = this.height * 0.3;
@@ -16,10 +18,10 @@ class Endboss extends MovableObject {
 
    healthPoints = 40;
 
-   verticalSpeed = 2;
+   verticalSpeed = 1;
    verticalRange = 140;
    verticalDirection = 1;
-   horizontalSpeed = 0.4;
+   horizontalSpeed = 0;
    originalY = -145;
    originalX = 5800;
 
@@ -208,11 +210,19 @@ class Endboss extends MovableObject {
             let path = this.IMAGES_ATTACK[i];
             this.img = this.imageCache[path];
             i++;
-            this.collisionBoxOffsetX -= 10;
+            this.collisionBoxOffsetX -= 12;
+            this.verticalSpeed = 5;
+            if (i < this.IMAGES_ATTACK.length) {
+               this.x -= 12;
+            } else {
+               this.x += 60;
+            }
+
          } else {
             this.collisionBoxOffsetX = 50;
+            this.verticalSpeed = 1;
             clearInterval(attackAnimation);
          }
-      }, 100);
+      }, 1000 / 10);
    }
 }

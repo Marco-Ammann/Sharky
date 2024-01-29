@@ -13,6 +13,7 @@ class World {
    keyboard;
    camera_x = 0;
 
+
    lastCollisionCheck = 0;
    collisionCheckInterval = 1000 / 20;
    isGameOver = false;
@@ -58,22 +59,17 @@ class World {
       this.throwables.forEach((bubble, bubbleIndex) => {
          this.level.enemies.forEach((enemy, enemyIndex) => {
             if (bubble.isColliding(enemy)) {
-               console.log(enemyIndex)
                enemy.getDamage();
                bubble.removeBubble();
    
                if (enemy.isDead()) {
                   if (enemy instanceof Endboss) {
-                     console.log('death animation will be played');
-                     console.log(enemy.isDead());
                      enemy.animate();
                      if (enemy.healthPoints == 0) {
                         this.character.clearIntervals();
                      }
                   } else {
                      this.level.enemies.splice(enemyIndex, 1);
-                     enemy.stopAnimations();
-                     console.log('stop animations');
                   }
                }
             }
@@ -85,11 +81,13 @@ class World {
       });
    }
 
+
    playGameOverSound() {
       this.gameOverSound.volume = 0.15;
       this.gameOverSound.loop = false;
       this.gameOverSound.play();
    }
+
 
    startMusic() {
       this.level.music.volume = 0.05;
@@ -97,15 +95,18 @@ class World {
       this.level.music.play();
    }
 
+
    stopMusic() {
       this.level.music.volume = 0.05;
       this.level.music.loop = true;
       this.level.music.pause();
    }
 
+
    setWorld(obj) {
       obj.world = this;
    }
+
 
    draw() {
       let now = Date.now();
@@ -143,11 +144,13 @@ class World {
       requestAnimationFrame(() => this.draw());
    }
 
+
    addObjectsToMap(objects) {
       objects.forEach((o) => {
          this.addToMap(o);
       });
    }
+
 
    addToMap(MovObj) {
       if (MovObj.otherDirection) {
@@ -162,6 +165,7 @@ class World {
       }
    }
 
+
    flipImage(MovObj) {
       this.ctx.save();
       this.ctx.translate(MovObj.width, 0);
@@ -169,6 +173,7 @@ class World {
 
       MovObj.x = MovObj.x * -1;
    }
+   
 
    flipImageBack(MovObj) {
       MovObj.x = MovObj.x * -1;

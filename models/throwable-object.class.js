@@ -25,10 +25,12 @@ class ThrowableObject extends MovableObject {
         this.collisionBoxOffsetX = 0;
         this.collisionBoxOffsetY = 0;
     }
+    
 
     move() {
         this.x += this.speed;
     }
+
 
     removeBubble() {
         this.toBeRemoved = true;

@@ -80,6 +80,10 @@ class Character extends MovableObject {
    swim_sound = new Audio('audio/swim_sound.mp3');
    attack_sound = new Audio('audio/bubble_attack_sound.mp3');
 
+   attackAnimationFrame = 0;
+   isAttacking = false;
+   
+
    playAttackSound() {
       this.attack_sound.play();
       this.attack_sound.volume = 0.15;
@@ -87,7 +91,8 @@ class Character extends MovableObject {
           this.attack_sound.pause();
           this.attack_sound.currentTime = 0;
       }, 370);
-  }
+   }
+
 
    constructor() {
       super().loadImage('img/1.Sharkie/1.IDLE/1.png');
@@ -99,6 +104,7 @@ class Character extends MovableObject {
       this.animate();
    }
 
+
    playAttackAnimation() {
       if (this.attackAnimationFrame < this.IMAGES_ATTACK.length) {
          let path = this.IMAGES_ATTACK[this.attackAnimationFrame];
@@ -109,74 +115,84 @@ class Character extends MovableObject {
          this.attackAnimationFrame = 0;
       }
    }
+   
+
+   movement() {
+      const { RIGHT, LEFT, UP, DOWN } = this.world.keyboard;
+
+      if (RIGHT && this.x < this.world.level.level_end_x) {
+         this.moveRight();
+         this.otherDirection = false;
+         this.world.camera_x = -this.x + 80;
+         this.playSwimSound();
+      }
+      if (UP && this.y > 0 - this.height / 2.5) {
+         this.moveUp();
+         this.playSwimSound();
+      }
+      if (DOWN && this.y < 480 - this.height * 0.85) {
+         this.moveDown();
+         this.playSwimSound();
+      }
+      if (LEFT && this.x > 80) {
+         this.moveLeft();
+         this.otherDirection = true;
+         this.world.camera_x = -this.x + 80;
+         this.playSwimSound();
+      }
+      if (this.world.keyboard.SPACE && !this.isAttacking && !this.bubbleCooldown) {
+         this.isAttacking = true;
+         setTimeout(() => {
+            this.shootBubble();
+         }, 600);
+      }
+   }
+
 
    animate() {
       this.movementInterval = setInterval(() => {
-         const { RIGHT, LEFT, UP, DOWN } = this.world.keyboard;
-
-         if (RIGHT && this.x < this.world.level.level_end_x) {
-            this.moveRight();
-            this.otherDirection = false;
-            this.world.camera_x = -this.x + 80;
-            this.playSwimSound();
-         }
-         if (UP && this.y > 0 - this.height / 2.5) {
-            this.moveUp();
-            this.playSwimSound();
-         }
-         if (DOWN && this.y < 480 - this.height * 0.85) {
-            this.moveDown();
-            this.playSwimSound();
-         }
-         if (LEFT && this.x > 80) {
-            this.moveLeft();
-            this.otherDirection = true;
-            this.world.camera_x = -this.x + 80;
-            this.playSwimSound();
-         }
-         if (this.world.keyboard.SPACE && !this.isAttacking && !this.bubbleCooldown) {
-            this.isAttacking = true;
-            setTimeout(() => {
-               this.shootBubble();
-            }, 600);
-         }
+         this.movement();
       }, 1000 / 60);
-
 
       let attackFrameRate = 1000 / 100;
       let lastAttackFrameTime = 0;
 
       this.animationInterval = setInterval(() => {
-         const { RIGHT, LEFT, UP, DOWN} = this.world.keyboard;
-         let isMoving = false;
-         let now = Date.now();
+         this.animateActions(lastAttackFrameTime, attackFrameRate);
+      }, 1000 / 10);
+   }
 
-         if (this.isAttacking) {
-            if (now - lastAttackFrameTime > attackFrameRate) {
-               this.playAttackAnimation();
-               this.playAttackSound();
-               lastAttackFrameTime = now;
+
+   animateActions(lastAttackFrameTime, attackFrameRate) {
+      const { RIGHT, LEFT, UP, DOWN } = this.world.keyboard;
+      let isMoving = false;
+      let now = Date.now();
+
+      if (this.isAttacking) {
+         if (now - lastAttackFrameTime > attackFrameRate) {
+            this.playAttackAnimation();
+            this.playAttackSound();
+            lastAttackFrameTime = now;
+         }
+      } else {
+         if (this.isDead()) {
+            this.playAnimation(this.IMAGES_DEAD);
+         } else if (this.isHurt()) {
+            this.playAnimation(this.IMAGES_HURT);
+         } else if (!this.isAttacking) {
+            if (RIGHT || UP || DOWN || LEFT) {
+               this.playAnimation(this.IMAGES_SWIM);
+               isMoving = true;
+            } else {
+               this.playAnimation(this.IMAGES_IDLE);
             }
-         } else {
-            if (this.isDead()) {
-               this.playAnimation(this.IMAGES_DEAD);
-            } else if (this.isHurt()) {
-               this.playAnimation(this.IMAGES_HURT);
-            } else if (!this.isAttacking) {
-               if (RIGHT || UP || DOWN || LEFT) {
-                  this.playAnimation(this.IMAGES_SWIM);
-                  isMoving = true;
-               } else {
-                  this.playAnimation(this.IMAGES_IDLE);
-               }
 
-               if (!isMoving) {
-                  this.swim_sound.pause();
-                  this.swim_sound.currentTime = 0;
-               }
+            if (!isMoving) {
+               this.swim_sound.pause();
+               this.swim_sound.currentTime = 0;
             }
          }
-      }, 1000 / 10);
+      }
    }
 
 
