@@ -9,6 +9,7 @@ class Character extends MovableObject {
    collisionBoxHeight = this.height * 0.2;
    collisionBoxOffsetX = 55;
    collisionBoxOffsetY = 108;
+   floorY = 380;
 
    bubbleCooldown = false;
 

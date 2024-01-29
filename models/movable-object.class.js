@@ -9,6 +9,7 @@ class MovableObject extends DrawableObject {
    lastHit = 0;
    dead = false;
    isAttacking = false;
+   floorY = 480;
 
    collisionBoxWidth;
    collisionBoxHeight;
@@ -94,7 +95,7 @@ class MovableObject extends DrawableObject {
 
    sink() {
       setInterval(() => {         
-         if (this.y <= 380) {
+         if (this.y <= this.floorY) {
             this.y += 0.1;
             this.collisionBoxOffsetY = 3500;
          }

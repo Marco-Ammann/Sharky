@@ -8,6 +8,8 @@ class Endboss extends MovableObject {
    collisionBoxOffsetX = 50;
    collisionBoxOffsetY = 295;
 
+   floorY = 150;
+
    isAttacking = false;
    isHurt = false;
    isHurtAnimationPlaying = false;
@@ -119,14 +121,6 @@ class Endboss extends MovableObject {
          }, 1000 / 60);
       }
 
-      if (this.isDead()) {
-         setInterval(() => {
-            if (this.y <= this.originalY + 300) {
-               this.y += this.verticalSpeed;
-               this.collisionBoxOffsetY = 3500;
-            }            
-         }, 1000 / 60);
-      }
 
       this.animationInterval = setInterval(() => {
          if (this.isDead()) {
