@@ -69,6 +69,7 @@ class MovableObject extends DrawableObject {
 
    playAnimation(images) {
       if (this.isDead()) {
+         this.sink();
          if (this.currentImage < images.length) {
             let path = images[this.currentImage];
             this.img = this.imageCache[path];
@@ -81,7 +82,6 @@ class MovableObject extends DrawableObject {
                clearInterval(enemy.animationInterval);
                clearInterval(enemy.attackInterval);
                clearInterval(enemy.moveInterval);
-               
             });
          }
       } else {
@@ -90,6 +90,15 @@ class MovableObject extends DrawableObject {
          this.img = this.imageCache[path];
          this.currentImage++;
       }
+   }
+
+   sink() {
+      setInterval(() => {         
+         if (this.y <= 380) {
+            this.y += 0.1;
+            this.collisionBoxOffsetY = 3500;
+         }
+      }, 1000 / 60);
    }
 
    playSwimSound() {

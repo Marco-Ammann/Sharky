@@ -146,7 +146,7 @@ class Character extends MovableObject {
       let lastAttackFrameTime = 0;
 
       this.animationInterval = setInterval(() => {
-         const { RIGHT, LEFT, UP, DOWN, SPACE } = this.world.keyboard;
+         const { RIGHT, LEFT, UP, DOWN} = this.world.keyboard;
          let isMoving = false;
          let now = Date.now();
 

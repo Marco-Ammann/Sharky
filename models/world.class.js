@@ -15,21 +15,20 @@ class World {
 
    lastCollisionCheck = 0;
    collisionCheckInterval = 1000 / 20;
-   isGameOver = false;  
+   isGameOver = false;
    gameOverSound = new Audio('audio/death_sound.mp3');
 
-
    constructor(canvas, keyboard) {
+      this.enemies = [];
       this.ctx = canvas.getContext('2d');
       this.canvas = canvas;
       this.keyboard = keyboard;
       this.draw();
       this.setWorld(this.character);
-      this.level.enemies.forEach((enemy) =>{
+      this.level.enemies.forEach((enemy) => {
          this.setWorld(enemy);
       });
    }
-
 
    checkCollisions() {
       this.level.enemies.forEach((enemy) => {
@@ -55,28 +54,33 @@ class World {
       });
    }
 
-
    checkBubbleCollisions() {
       this.throwables.forEach((bubble, bubbleIndex) => {
-          this.level.enemies.forEach((enemy, enemyIndex) => {
-              if (bubble.isColliding(enemy)) {
-                  enemy.getDamage();
-                  bubble.removeBubble();
-  
-                  if (enemy.isDead()) {
-                      enemy.stopAnimations();
-                      this.level.enemies.splice(enemyIndex, 1);
+         this.level.enemies.forEach((enemy, enemyIndex) => {
+            if (bubble.isColliding(enemy)) {
+               console.log(enemyIndex)
+               enemy.getDamage();
+               bubble.removeBubble();
+   
+               if (enemy.isDead()) {
+                  if (enemy instanceof Endboss) {
+                     console.log('death animation will be played');
+                     console.log(enemy.isDead());
+                     enemy.animate();
+                  } else {
+                     this.level.enemies.splice(enemyIndex, 1);
+                     enemy.stopAnimations();
+                     console.log('stop animations');
                   }
-              }
-          });
-  
-          if (bubble.toBeRemoved) {
-              this.throwables.splice(bubbleIndex, 1);
-          }
+               }
+            }
+         });
+   
+         if (bubble.toBeRemoved) {
+            this.throwables.splice(bubbleIndex, 1);
+         }
       });
-  }
-
-
+   }
 
    playGameOverSound() {
       this.gameOverSound.volume = 0.15;
@@ -84,13 +88,11 @@ class World {
       this.gameOverSound.play();
    }
 
-
    startMusic() {
       this.level.music.volume = 0.05;
       this.level.music.loop = true;
       this.level.music.play();
    }
-
 
    stopMusic() {
       this.level.music.volume = 0.05;
@@ -98,18 +100,16 @@ class World {
       this.level.music.pause();
    }
 
-
    setWorld(obj) {
       obj.world = this;
    }
-
 
    draw() {
       let now = Date.now();
       if (now - this.lastCollisionCheck > this.collisionCheckInterval) {
          this.checkCollisions();
          this.checkBubbleCollisions();
-         
+
          this.lastCollisionCheck = now;
       }
 
@@ -125,30 +125,26 @@ class World {
       this.addToMap(this.coinBar);
       this.ctx.translate(this.camera_x, 0);
       //---------------------------------------------
-      
+
       this.addObjectsToMap(this.level.enemies);
       this.addToMap(this.character);
       this.addObjectsToMap(this.level.barriers);
-      this.throwables.forEach(throwable => {
+      this.throwables.forEach((throwable) => {
          throwable.move();
          this.addToMap(throwable);
-     });
-     this.throwables = this.throwables.filter(bubble => !bubble.toBeRemoved);
-
+      });
+      this.throwables = this.throwables.filter((bubble) => !bubble.toBeRemoved);
 
       this.ctx.translate(-this.camera_x, 0);
-      
 
       requestAnimationFrame(() => this.draw());
    }
-
 
    addObjectsToMap(objects) {
       objects.forEach((o) => {
          this.addToMap(o);
       });
    }
-
 
    addToMap(MovObj) {
       if (MovObj.otherDirection) {
@@ -160,19 +156,17 @@ class World {
 
       if (MovObj.otherDirection) {
          this.flipImageBack(MovObj);
-      } 
+      }
    }
-
 
    flipImage(MovObj) {
       this.ctx.save();
       this.ctx.translate(MovObj.width, 0);
       this.ctx.scale(-1, 1);
-      
+
       MovObj.x = MovObj.x * -1;
    }
 
-   
    flipImageBack(MovObj) {
       MovObj.x = MovObj.x * -1;
       this.ctx.restore();

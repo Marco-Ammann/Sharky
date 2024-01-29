@@ -10,14 +10,14 @@ class Endboss extends MovableObject {
 
    isAttacking = false;
    isHurt = false;
+   isHurtAnimationPlaying = false;
 
-
-   healthPoints = 100;
+   healthPoints = 40;
 
    verticalSpeed = 2;
    verticalRange = 140;
    verticalDirection = 1;
-   horizontalSpeed = 1.4;
+   horizontalSpeed = 0.4;
    originalY = -145;
    originalX = 5800;
 
@@ -55,29 +55,46 @@ class Endboss extends MovableObject {
       'img/2.Enemy/3.Final_Enemy/Hurt/4.png',
    ];
 
+   IMAGES_DEAD = [
+      'img/2.Enemy/3.Final_Enemy/Dead/Mesa de trabajo 2 copia 6.png',
+      'img/2.Enemy/3.Final_Enemy/Dead/Mesa de trabajo 2 copia 7.png',
+      'img/2.Enemy/3.Final_Enemy/Dead/Mesa de trabajo 2 copia 8.png',
+      'img/2.Enemy/3.Final_Enemy/Dead/Mesa de trabajo 2 copia 9.png',
+      'img/2.Enemy/3.Final_Enemy/Dead/Mesa de trabajo 2 copia 10.png',
+   ];
+
    constructor() {
       super().loadImage('img/2.Enemy/3.Final_Enemy/2.floating/1.png');
       this.loadImages(this.IMAGES_SWIM);
       this.loadImages(this.IMAGES_ATTACK);
       this.loadImages(this.IMAGES_HURT);
+      this.loadImages(this.IMAGES_DEAD);
 
       this.animate();
-      this. isHurt = false;
+      this.isHurt = false;
+   }
+
+   isDead() {
+      if (this.healthPoints == 0) {
+         return true;
+      } else if (this.healthPoints > 0) {
+         return false;
+      }
    }
 
    getDamage() {
       if (!this.immunity && this.healthPoints > 0) {
-          this.healthPoints -= this.damage;
-          console.log(`Endboss hit! Health remaining: ${this.healthPoints}`);
-          this.isHurt = true;
-          this.immunity = true;
-          setTimeout(() => {
-              this.immunity = false;
-              this.isHurt = false;
-          }, 500);
+         this.healthPoints -= this.damage;
+         this.isHurt = true;
+         this.isHurtAnimationPlaying = true;
+         this.immunity = true;
+         setTimeout(() => {
+            this.immunity = false;
+            this.isHurt = false;
+            this.isHurtAnimationPlaying = false;
+         }, 500);
       }
-  }
-
+   }
 
    move() {
       this.y += this.verticalSpeed * this.verticalDirection;
@@ -96,43 +113,59 @@ class Endboss extends MovableObject {
    }
 
    animate() {
-      this.moveInterval = setInterval(() => {
-          this.move();
-      }, 1000 / 60);
-  
+      if (!this.isDead()) {
+         this.moveInterval = setInterval(() => {
+            this.move();
+         }, 1000 / 60);
+      }
+
+      if (this.isDead()) {
+         setInterval(() => {
+            if (this.y <= this.originalY + 300) {
+               this.y += this.verticalSpeed;
+               this.collisionBoxOffsetY = 3500;
+            }            
+         }, 1000 / 60);
+      }
+
       this.animationInterval = setInterval(() => {
-          if (this.isHurt) {
-              this.playHurtAnimation();
-          } else if (!this.isAttacking) {
-              this.playAnimation(this.IMAGES_SWIM);
-          }
-      }, 1000 / 8);
-  
-      this.attackInterval = setInterval(() => {
-          if (!this.isAttacking && !this.isHurt) {
-              this.isAttacking = true;
-              this.playAttackAnimation();
-              setTimeout(() => {
+         if (this.isDead()) {
+            this.playAnimation(this.IMAGES_DEAD);
+            console.log('boss is dead');
+         } else if (!this.isDead() && this.isHurt) {
+            this.playHurtAnimation();
+         } else if (!this.isDead() && !this.isAttacking && !this.isHurtAnimationPlaying) {
+            this.playAnimation(this.IMAGES_SWIM);
+         }
+      }, 1000 / 10);
+
+      if (!this.isDead()) {
+         this.attackInterval = setInterval(() => {
+            if (!this.isAttacking && !this.isHurt && !this.isHurtAnimationPlaying) {
+               this.isAttacking = true;
+               this.playAttackAnimation();
+               setTimeout(() => {
                   this.isAttacking = false;
-              }, this.IMAGES_ATTACK.length * 100);
-          }
-      }, 2000);
-  }
+               }, this.IMAGES_ATTACK.length * 100);
+            }
+         }, 2000);
+      }
+   }
 
    playHurtAnimation() {
       if (this.currentHurtImage < this.IMAGES_HURT.length) {
-          let path = this.IMAGES_HURT[this.currentHurtImage];
-          this.img = this.imageCache[path];
-          this.currentHurtImage++;
+         let path = this.IMAGES_HURT[this.currentHurtImage];
+         this.img = this.imageCache[path];
+         this.currentHurtImage++;
       } else {
-          this.currentHurtImage = 0;
-          if (this.isAttacking) {
-              this.playAttackAnimation();
-          } else {
-              this.playAnimation(this.IMAGES_SWIM);
-          }
+         this.currentHurtImage = 0;
+         if (this.isAttacking) {
+            this.playAttackAnimation();
+         } else {
+            this.playAnimation(this.IMAGES_SWIM);
+         }
       }
-  }
+   }
 
    playAttackAnimation() {
       let i = 0;
