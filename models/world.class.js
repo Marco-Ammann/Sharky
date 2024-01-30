@@ -61,14 +61,15 @@ class World {
                collectable.playPickupSound();
                this.character.inventory.poisonBottles += 1;
                console.log(this.character.inventory.poisonBottles + ' Poisonbottles collected')
-               //update poison bar
+               this.poisonBar.setPercentage(this.character.inventory.poisonBottles * 20);
+
             } else if (collectable instanceof Coin) {
                console.log('collided with Coin at Index', index);
                this.level.collectables.splice(index, 1);
                collectable.playPickupSound();
                this.character.inventory.coins += 1;
                console.log(this.character.inventory.coins + ' Coins collected')
-               //update coinbar
+               this.coinBar.setPercentage(this.character.inventory.coins * 20);
             }
          }
       });
