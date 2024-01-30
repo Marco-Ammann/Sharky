@@ -132,15 +132,16 @@ class World {
 
       this.addObjectsToMap(this.level.enemies);
       this.addToMap(this.character);
+      this.addObjectsToMap(this.level.collectables);
       this.addObjectsToMap(this.level.barriers);
       this.throwables.forEach((throwable) => {
          throwable.move();
          this.addToMap(throwable);
       });
       this.throwables = this.throwables.filter((bubble) => !bubble.toBeRemoved);
-
+      
       this.ctx.translate(-this.camera_x, 0);
-
+      
       requestAnimationFrame(() => this.draw());
    }
 

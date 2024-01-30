@@ -33,5 +33,27 @@ const level1 = new Level(
       new BackgroundLayer('img/3.Background/Layers/3.Fondo 1/D.png', 480 * 3.55 * 3), //middleground
       new BackgroundLayer('img/3.Background/Layers/2. Floor/D.png', 480 * 3.55 * 3), //floor
    ],
-   new Audio('audio/game_music.mp3')
+   new Audio('audio/game_music.mp3'),
+   [
+      new Poison(),
+      new Poison(),
+      new Poison(),
+      new Poison(),
+      new Poison(),
+      new Poison(),
+      new Poison(),
+      new Poison(),
+      new Poison(),
+      new Poison(),
+      new Coin(),
+      new Coin(),
+      new Coin(),
+      new Coin(),
+      new Coin(),
+      new Coin(),
+      new Coin(),
+      new Coin(),
+      new Coin(),
+      new Coin(),
+   ]
 );

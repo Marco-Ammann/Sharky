@@ -16,6 +16,14 @@ class MovableObject extends DrawableObject {
    collisionBoxOffsetX = 0;
    collisionBoxOffsetY = 0;
 
+
+   constructor() {
+      super();
+      this.collisionBoxWidth = this.width;
+      this.collisionBoxHeight = this.height;
+   }
+
+   
    applyGravity() {
       this.gravityInterval = setInterval(() => {
          this.y -= this.speedY;
@@ -23,11 +31,6 @@ class MovableObject extends DrawableObject {
       }, 1000 / 60);
    }
 
-   constructor() {
-      super();
-      this.collisionBoxWidth = this.width;
-      this.collisionBoxHeight = this.height;
-   }
 
    getDamage() {
       if (!this.immunity && this.healthPoints > 0) {
