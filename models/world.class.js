@@ -59,12 +59,15 @@ class World {
                console.log('collided with poison at Index', index);
                this.level.collectables.splice(index, 1);
                collectable.playPickupSound();
-               //add 1 posion to "inventory"
+               this.character.inventory.poisonBottles += 1;
+               console.log(this.character.inventory.poisonBottles + ' Poisonbottles collected')
                //update poison bar
             } else if (collectable instanceof Coin) {
                console.log('collided with Coin at Index', index);
                this.level.collectables.splice(index, 1);
-               collectable.playPickupSound();               //add 1 coin to inventory
+               collectable.playPickupSound();
+               this.character.inventory.coins += 1;
+               console.log(this.character.inventory.coins + ' Coins collected')
                //update coinbar
             }
          }

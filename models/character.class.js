@@ -13,6 +13,11 @@ class Character extends MovableObject {
 
    bubbleCooldown = false;
 
+   inventory = {
+      coins: 0,
+      poisonBottles: 0
+   }
+
    IMAGES_IDLE = [
       'img/1.Sharkie/1.IDLE/1.png',
       'img/1.Sharkie/1.IDLE/2.png',
