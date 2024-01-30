@@ -11,6 +11,8 @@ class MovableObject extends DrawableObject {
    isAttacking = false;
    floorY = 480;
 
+   impact_sound = new Audio ('audio/bubble_impact_sound.mp3');
+
    collisionBoxWidth;
    collisionBoxHeight;
    collisionBoxOffsetX = 0;
@@ -30,6 +32,27 @@ class MovableObject extends DrawableObject {
          this.speedY += this.acceleration;
       }, 1000 / 60);
    }
+
+
+   playAttackSound() {
+      this.attack_sound.play();
+      this.attack_sound.volume = 0.15;
+      setTimeout(() => {
+          this.attack_sound.pause();
+          this.attack_sound.currentTime = 0;
+      }, 370);
+  }
+
+
+  playImpactSound() {
+   this.impact_sound.currentTime = 0;
+   this.impact_sound.play();
+   this.impact_sound.volume = 0.2;
+   setTimeout(() => {
+       this.impact_sound.pause();
+       this.impact_sound.currentTime = 0;
+   }, 1000);
+  }
 
 
    getDamage() {

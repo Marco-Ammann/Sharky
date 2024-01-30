@@ -17,6 +17,7 @@ class World {
    collisionCheckInterval = 1000 / 20;
    isGameOver = false;
    gameOverSound = new Audio('audio/death_sound.mp3');
+   gameWonSound = new Audio('audio/win_sound.mp3');
 
    constructor(canvas, keyboard) {
       this.enemies = [];
@@ -56,19 +57,15 @@ class World {
       this.level.collectables.forEach((collectable, index) => {
          if (this.character.isColliding(collectable)) {
             if (collectable instanceof Poison) {
-               console.log('collided with poison at Index', index);
                this.level.collectables.splice(index, 1);
                collectable.playPickupSound();
                this.character.inventory.poisonBottles += 1;
-               console.log(this.character.inventory.poisonBottles + ' Poisonbottles collected')
                this.poisonBar.setPercentage(this.character.inventory.poisonBottles * 20);
 
             } else if (collectable instanceof Coin) {
-               console.log('collided with Coin at Index', index);
                this.level.collectables.splice(index, 1);
                collectable.playPickupSound();
                this.character.inventory.coins += 1;
-               console.log(this.character.inventory.coins + ' Coins collected')
                this.coinBar.setPercentage(this.character.inventory.coins * 20);
             }
          }
@@ -79,22 +76,21 @@ class World {
       this.throwables.forEach((bubble, bubbleIndex) => {
          this.level.enemies.forEach((enemy, enemyIndex) => {
             if (bubble.isColliding(enemy)) {
-               console.log(enemyIndex);
+               this.character.playImpactSound();
                enemy.getDamage();
                bubble.removeBubble();
 
                if (enemy.isDead()) {
                   if (enemy instanceof Endboss) {
-                     console.log('death animation will be played');
-                     console.log(enemy.isDead());
                      enemy.animate();
                      if (enemy.healthPoints == 0) {
                         this.character.clearIntervals();
+                        this.playWonSound();
                      }
                   } else {
                      this.level.enemies.splice(enemyIndex, 1);
                      enemy.stopAnimations();
-                     console.log('stop animations');
+                     
                   }
                }
             }
@@ -110,6 +106,12 @@ class World {
       this.gameOverSound.volume = 0.15;
       this.gameOverSound.loop = false;
       this.gameOverSound.play();
+   }
+
+   playWonSound() {
+      this.gameWonSound.volume = 0.15;
+      this.gameWonSound.loop = false;
+      this.gameWonSound.play();
    }
 
    startMusic() {
