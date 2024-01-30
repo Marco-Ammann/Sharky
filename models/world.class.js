@@ -52,16 +52,33 @@ class World {
             }
          }
       });
+
+      this.level.collectables.forEach((collectable, index) => {
+         if (this.character.isColliding(collectable)) {
+            if (collectable instanceof Poison) {
+               console.log('collided with poison at Index', index);
+               this.level.collectables.splice(index, 1);
+               collectable.playPickupSound();
+               //add 1 posion to "inventory"
+               //update poison bar
+            } else if (collectable instanceof Coin) {
+               console.log('collided with Coin at Index', index);
+               this.level.collectables.splice(index, 1);
+               collectable.playPickupSound();               //add 1 coin to inventory
+               //update coinbar
+            }
+         }
+      });
    }
 
    checkBubbleCollisions() {
       this.throwables.forEach((bubble, bubbleIndex) => {
          this.level.enemies.forEach((enemy, enemyIndex) => {
             if (bubble.isColliding(enemy)) {
-               console.log(enemyIndex)
+               console.log(enemyIndex);
                enemy.getDamage();
                bubble.removeBubble();
-   
+
                if (enemy.isDead()) {
                   if (enemy instanceof Endboss) {
                      console.log('death animation will be played');
@@ -78,7 +95,7 @@ class World {
                }
             }
          });
-   
+
          if (bubble.toBeRemoved) {
             this.throwables.splice(bubbleIndex, 1);
          }
@@ -138,9 +155,9 @@ class World {
          this.addToMap(throwable);
       });
       this.throwables = this.throwables.filter((bubble) => !bubble.toBeRemoved);
-      
+
       this.ctx.translate(-this.camera_x, 0);
-      
+
       requestAnimationFrame(() => this.draw());
    }
 

@@ -42,18 +42,10 @@ const level1 = new Level(
       new Poison(),
       new Poison(),
       new Poison(),
-      new Poison(),
-      new Poison(),
-      new Poison(),
       new Coin(),
       new Coin(),
       new Coin(),
       new Coin(),
-      new Coin(),
-      new Coin(),
-      new Coin(),
-      new Coin(),
-      new Coin(),
-      new Coin(),
+      new Coin()
    ]
 );

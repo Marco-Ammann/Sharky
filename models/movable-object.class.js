@@ -105,10 +105,8 @@ class MovableObject extends DrawableObject {
       }, 1000 / 60);
    }
 
-   playSwimSound() {
-      this.swim_sound.play();
-      this.swim_sound.volume = 0.15;
-   }
+
+
 
    isColliding(obj) {
       return (

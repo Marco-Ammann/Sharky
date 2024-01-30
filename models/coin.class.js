@@ -9,6 +9,8 @@ class Coin extends MovableObject {
     collisionBoxOffsetX = 3;
     collisionBoxOffsetY = 3;
 
+
+
     IMAGES_COIN = [
         'img/4.Markers/1. Coins/1.png',
         'img/4.Markers/1. Coins/2.png',
@@ -16,7 +18,7 @@ class Coin extends MovableObject {
         'img/4.Markers/1. Coins/4.png'
      ];
 
-
+     pickup_sound = new Audio ('audio/coin_pickup_sound.mp3');
 
 
 
@@ -25,6 +27,17 @@ class Coin extends MovableObject {
         this.loadImages(this.IMAGES_COIN);
         this.animate();
     }
+
+
+    playPickupSound() {
+        this.pickup_sound.play();
+        this.pickup_sound.volume = 0.15;
+        setTimeout(() => {
+            this.pickup_sound.pause();
+            this.pickup_sound.currentTime = 0;
+        }, 370);
+     }
+
 
     animate() {
         this.animationInterval = setInterval(() => {

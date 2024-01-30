@@ -110,6 +110,11 @@ class Character extends MovableObject {
       }
    }
 
+   playSwimSound() {
+      this.swim_sound.play();
+      this.swim_sound.volume = 0.15;
+   }
+
    animate() {
       this.movementInterval = setInterval(() => {
          const { RIGHT, LEFT, UP, DOWN } = this.world.keyboard;

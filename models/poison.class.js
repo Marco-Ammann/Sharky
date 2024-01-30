@@ -21,6 +21,7 @@ class Poison extends MovableObject {
      ];
 
 
+     pickup_sound = new Audio ('audio/bottle_sound.mp3');
 
 
 
@@ -29,6 +30,17 @@ class Poison extends MovableObject {
         this.loadImages(this.IMAGES_POISON);
         this.animate();
     }
+
+
+    playPickupSound() {
+        this.pickup_sound.play();
+        this.pickup_sound.volume = 0.15;
+        setTimeout(() => {
+            this.pickup_sound.pause();
+            this.pickup_sound.currentTime = 0;
+        }, 370);
+     }
+
 
     animate() {
         this.animationInterval = setInterval(() => {

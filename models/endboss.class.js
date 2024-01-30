@@ -16,10 +16,10 @@ class Endboss extends MovableObject {
 
    healthPoints = 40;
 
-   verticalSpeed = 2;
+   verticalSpeed = 1;
    verticalRange = 140;
    verticalDirection = 1;
-   horizontalSpeed = 0.4;
+   horizontalSpeed = 0;
    originalY = -145;
    originalX = 5800;
 
@@ -75,7 +75,7 @@ class Endboss extends MovableObject {
 
       this.animate();
    }
-
+ 
 
    isDead() {
       return this.healthPoints === 0;
@@ -209,8 +209,13 @@ class Endboss extends MovableObject {
             this.img = this.imageCache[path];
             i++;
             this.collisionBoxOffsetX -= 10;
+            this.verticalSpeed = 7;
+            this.x -= 25;
          } else {
             this.collisionBoxOffsetX = 50;
+            this.verticalSpeed = 1;
+            this.x += 150;
+
             clearInterval(attackAnimation);
          }
       }, 100);
