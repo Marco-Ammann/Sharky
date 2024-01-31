@@ -1,7 +1,7 @@
 class World {
    character = new Character();
 
-   level = level1;
+   level;
    statusBar = new StatusBar();
    poisonBar = new PoisonBar();
    coinBar = new CoinBar();
@@ -20,6 +20,7 @@ class World {
    gameWonSound = new Audio('audio/win_sound.mp3');
 
    constructor(canvas, keyboard) {
+      this.level = level1;
       this.enemies = [];
       this.ctx = canvas.getContext('2d');
       this.canvas = canvas;
@@ -30,6 +31,7 @@ class World {
          this.setWorld(enemy);
       });
    }
+
 
    checkCollisions() {
       this.level.enemies.forEach((enemy) => {
@@ -61,7 +63,7 @@ class World {
                collectable.playPickupSound();
                this.character.inventory.poisonBottles += 1;
                this.poisonBar.setPercentage(this.character.inventory.poisonBottles * 20);
-
+            
             } else if (collectable instanceof Coin) {
                this.level.collectables.splice(index, 1);
                collectable.playPickupSound();
@@ -71,6 +73,7 @@ class World {
          }
       });
    }
+
 
    checkBubbleCollisions() {
       this.throwables.forEach((bubble, bubbleIndex) => {
@@ -88,13 +91,11 @@ class World {
                         this.playWonSound();
                      }
                   } else {
-                     this.level.enemies[enemyIndex].animate();
+                     enemy.animate();
                      enemy.stopAnimations();
                      setTimeout(() => {
                         this.level.enemies.splice(enemyIndex, 1);
-                        //dead animation                        
-                     }, 5000);
-                     
+                     }, 3000);
                   }
                }
             }
@@ -106,11 +107,13 @@ class World {
       });
    }
 
+
    playGameOverSound() {
       this.gameOverSound.volume = 0.15;
       this.gameOverSound.loop = false;
       this.gameOverSound.play();
    }
+
 
    playWonSound() {
       this.gameWonSound.volume = 0.15;
@@ -118,11 +121,13 @@ class World {
       this.gameWonSound.play();
    }
 
+
    startMusic() {
       this.level.music.volume = 0.05;
       this.level.music.loop = true;
       this.level.music.play();
    }
+
 
    stopMusic() {
       this.level.music.volume = 0.05;
@@ -130,9 +135,11 @@ class World {
       this.level.music.pause();
    }
 
+
    setWorld(obj) {
       obj.world = this;
    }
+
 
    draw() {
       let now = Date.now();
@@ -171,11 +178,13 @@ class World {
       requestAnimationFrame(() => this.draw());
    }
 
+
    addObjectsToMap(objects) {
       objects.forEach((o) => {
          this.addToMap(o);
       });
    }
+
 
    addToMap(MovObj) {
       if (MovObj.otherDirection) {
@@ -190,6 +199,7 @@ class World {
       }
    }
 
+
    flipImage(MovObj) {
       this.ctx.save();
       this.ctx.translate(MovObj.width, 0);
@@ -197,6 +207,7 @@ class World {
 
       MovObj.x = MovObj.x * -1;
    }
+   
 
    flipImageBack(MovObj) {
       MovObj.x = MovObj.x * -1;

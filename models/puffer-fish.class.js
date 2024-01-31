@@ -5,11 +5,13 @@ class PufferFish extends MovableObject {
    y = 10 + Math.random() * 400;
    speed = 0.1 + Math.random() * 0.3;
    collisionBoxWidth = this.width * 0.75;
-   collisionBoxHeight = this.height * 0.50; 
+   collisionBoxHeight = this.height * 0.5;
    collisionBoxOffsetX = 10;
    collisionBoxOffsetY = 9;
    healthPoints = 20;
    world;
+
+
 
    IMAGES_SWIM = [
       'img/2.Enemy/1.Puffer_fish/1.Swim/3.swim1.png',
@@ -26,29 +28,34 @@ class PufferFish extends MovableObject {
       super().loadImage('img/2.Enemy/1.Puffer_fish/1.Swim/3.swim1.png');
       this.loadImages(this.IMAGES_SWIM);
       this.loadImage(this.IMAGES_DEAD);
-      this.animate();
+      setTimeout(() => {
+         this.animate();
+      }, 1500);
    }
-   
+
+
+   moveLeft() {
+      this.x -= this.speed;
+   }
+
 
    animate() {
-      
-      if (!this.isDead()) {         
+      if (!this.isDead()) {
          this.movementInterval = setInterval(() => {
             this.moveLeft();
          }, 1000 / 60);
          this.animationInterval = setInterval(() => {
             this.playAnimation(this.IMAGES_SWIM);
          }, 1000 / 8);
-
-      } else if (this.isDead()){
+      } else if (this.isDead()) {
          this.img.src = this.IMAGES_DEAD;
          setInterval(() => {
-            this.y -= 2;
-          }, 1000 / 60);
-       }
-
-
+            this.y -= 3;
+            this.collisionBoxOffsetY = -500;
+         }, 1000 / 60);
+      }
    }
+
 
    isDead() {
       return this.healthPoints === 0;
