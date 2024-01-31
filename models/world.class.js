@@ -88,8 +88,12 @@ class World {
                         this.playWonSound();
                      }
                   } else {
-                     this.level.enemies.splice(enemyIndex, 1);
+                     this.level.enemies[enemyIndex].animate();
                      enemy.stopAnimations();
+                     setTimeout(() => {
+                        this.level.enemies.splice(enemyIndex, 1);
+                        //dead animation                        
+                     }, 5000);
                      
                   }
                }
