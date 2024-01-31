@@ -11,6 +11,9 @@ class PufferFish extends MovableObject {
    healthPoints = 20;
    world;
 
+   characterCenterY;
+   centerY;
+
 
 
    IMAGES_SWIM = [
@@ -35,7 +38,14 @@ class PufferFish extends MovableObject {
 
 
    moveLeft() {
+      this.characterCenterY = this.world.character.y + this.world.character.collisionBoxOffsetY + (this.world.character.collisionBoxHeight / 2);
+      this.centerY = this.y + this.collisionBoxOffsetY + (this.collisionBoxHeight /2);
       this.x -= this.speed;
+
+      if (Math.abs(this.characterCenterY - this.centerY) < 20) {
+         this.x -= this.speed * 30;
+
+      }
    }
 
 

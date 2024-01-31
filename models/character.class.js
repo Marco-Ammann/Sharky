@@ -11,6 +11,7 @@ class Character extends MovableObject {
    collisionBoxOffsetY = 108;
    floorY = 380;
 
+   
    bubbleCooldown = false;
 
    inventory = {
