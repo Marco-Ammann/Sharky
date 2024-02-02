@@ -57,7 +57,7 @@ class PufferFish extends MovableObject {
       this.loadImages(this.IMAGES_WINDUP);
       setTimeout(() => {
          this.animate();
-      }, 2000);
+      }, 4000);
    }
 
 

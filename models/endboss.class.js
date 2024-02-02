@@ -90,7 +90,7 @@ class Endboss extends MovableObject {
       this.loadImages(this.IMAGES_INTRODUCION);
       setTimeout(() => {
          this.checkForCharacter();
-      }, 1500);
+      }, 3500);
    }
 
    isDead() {
