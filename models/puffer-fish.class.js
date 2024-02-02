@@ -51,12 +51,13 @@ class PufferFish extends MovableObject {
     * After a delay, starts the animation of the pufferfish.
     */
    constructor() {
-      super().loadImage('img/2.Enemy/1.Puffer_fish/1.Swim/3.swim1.png');
+      super().loadImage(this.IMAGES_DEAD);
       this.loadImages(this.IMAGES_SWIM);
       this.loadImages(this.IMAGES_SPEED);
-      this.loadImage(this.IMAGES_DEAD);
+      this.loadImage('img/2.Enemy/1.Puffer_fish/1.Swim/3.swim1.png');
+      this.loadImages(this.IMAGES_SWIM);
       this.loadImages(this.IMAGES_WINDUP);
-      this.animate();
+      // this.animate(); is callet upon starting the game with the button
    }
 
 
@@ -113,7 +114,7 @@ class PufferFish extends MovableObject {
          this.moveLeft();
       }, 1000 / 60);
 
-      setInterval(() => {
+      this.vertivalMovementInterval = setInterval(() => {
          this.direction = this.direction *-1;
       }, 3000 * Math.random());
 
