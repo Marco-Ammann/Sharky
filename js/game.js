@@ -3,14 +3,16 @@ let world;
 let keyboard;
 
 let musicIsPlaying = false;
-
+let characterCheckInterval;
 
 
 function startGame() {
    document.getElementById('main-menu').style.display = 'none';
    document.getElementById('canvas').style.display = 'block';
    document.getElementById('musicButton').style.display = 'block';
+   init();
    switchSoundMute();
+   checkIfCharacterIsAlive();
    world.level.enemies.forEach((enemy) => {
       if (enemy instanceof Endboss) {
          enemy.checkForCharacter();
@@ -18,6 +20,17 @@ function startGame() {
          enemy.animate()
       }
    });
+}
+
+function checkIfCharacterIsAlive() {
+   characterCheckInterval = setInterval(() => {
+      if (world.character.healthPoints == 0) {
+         console.log('game.js character seems to be dead');
+         
+         switchSoundMute();
+         clearInterval(characterCheckInterval);
+      }      
+   }, 1000/10);
 }
 
 function init() {
