@@ -2,7 +2,7 @@ class Endboss extends MovableObject {
    world;
    height = 500;
    width = this.height * 1.168;
-   x = 5800 - 5000;
+   x = 5800;
    y = -605;
    collisionBoxWidth = this.width * 0.75;
    collisionBoxHeight = this.height * 0.3;
@@ -24,7 +24,7 @@ class Endboss extends MovableObject {
    verticalDirection = 1;
    horizontalSpeed = 0;
    originalY = -605;
-   originalX = 5800 - 5000;
+   originalX = 5800;
 
    currentHurtImage = 0;
 
@@ -88,9 +88,7 @@ class Endboss extends MovableObject {
       this.loadImages(this.IMAGES_HURT);
       this.loadImages(this.IMAGES_DEAD);
       this.loadImages(this.IMAGES_INTRODUCION);
-      setTimeout(() => {
-         this.checkForCharacter();
-      }, 3500);
+      this.checkForCharacter();
    }
 
    isDead() {
@@ -154,6 +152,9 @@ class Endboss extends MovableObject {
    }
 
    checkForCharacter() {
+      if (!this.world || !this.world.character) {
+         return; // Beende die Funktion frühzeitig
+     }
       this.checkInterval = setInterval(() => {
          if (Math.abs(this.x - this.world.character.x) < 450 && !this.isIntroduced) {
             this.introduceEndboss();

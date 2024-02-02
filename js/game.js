@@ -1,13 +1,15 @@
 let canvas;
 let world;
-let keyboard = new Keyboard();
+let keyboard;
+
 let musicIsPlaying = false;
 
 function init() {
    canvas = document.getElementById('canvas');
+   keyboard = new Keyboard();
    world = new World(canvas, keyboard);
    
-   console.log('My Character is', world.character);
+   console.log('Mein Charakter ist', world.character);
 }
 
 function switchSoundMute() {

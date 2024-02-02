@@ -1,5 +1,5 @@
 class World {
-   character = new Character();
+   character;
 
    level;
    statusBar = new StatusBar();
@@ -25,6 +25,7 @@ class World {
       this.ctx = canvas.getContext('2d');
       this.canvas = canvas;
       this.keyboard = keyboard;
+      this.character = new Character();
       this.draw();
       this.setWorld(this.character);
       this.level.enemies.forEach((enemy) => {
@@ -163,8 +164,8 @@ class World {
       this.ctx.translate(this.camera_x, 0);
       //---------------------------------------------
 
-      this.addObjectsToMap(this.level.enemies);
       this.addToMap(this.character);
+      this.addObjectsToMap(this.level.enemies);
       this.addObjectsToMap(this.level.collectables);
       this.addObjectsToMap(this.level.barriers);
       this.throwables.forEach((throwable) => {
