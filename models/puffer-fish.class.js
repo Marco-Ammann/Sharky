@@ -57,7 +57,7 @@ class PufferFish extends MovableObject {
       this.loadImages(this.IMAGES_WINDUP);
       setTimeout(() => {
          this.animate();
-      }, 500);
+      }, 2000);
    }
 
 
@@ -76,11 +76,11 @@ class PufferFish extends MovableObject {
       this.x -= this.speed;
 
       if (
-         Math.abs(this.characterCenterY - this.centerY) < 20 &&
-         this.x - this.world.character.x < 400 &&
+         Math.abs(this.characterCenterY - this.centerY) < 40 &&
+         this.x - this.world.character.x < 450 &&
          this.x > this.world.character.x
       ) {
-         this.x -= this.speed * 3;
+         this.x -= this.speed * 18;
          this.isAttacking = true;
       } else {
          this.isAttacking = false;

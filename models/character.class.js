@@ -11,13 +11,12 @@ class Character extends MovableObject {
    collisionBoxOffsetY = 108;
    floorY = 380;
 
-   
    bubbleCooldown = false;
 
    inventory = {
       coins: 0,
-      poisonBottles: 0
-   }
+      poisonBottles: 0,
+   };
 
    IMAGES_IDLE = [
       'img/1.Sharkie/1.IDLE/1.png',
@@ -86,8 +85,6 @@ class Character extends MovableObject {
    swim_sound = new Audio('audio/swim_sound.mp3');
    attack_sound = new Audio('audio/bubble_attack_sound.mp3');
 
-
-
    constructor() {
       super().loadImage('img/1.Sharkie/1.IDLE/1.png');
       this.loadImages(this.IMAGES_IDLE);
@@ -97,6 +94,7 @@ class Character extends MovableObject {
       this.loadImages(this.IMAGES_ATTACK);
       this.animate();
    }
+
 
    playAttackAnimation() {
       if (this.attackAnimationFrame < this.IMAGES_ATTACK.length) {
@@ -109,10 +107,12 @@ class Character extends MovableObject {
       }
    }
 
+
    playSwimSound() {
       this.swim_sound.play();
       this.swim_sound.volume = 0.15;
    }
+   
 
    animate() {
       this.movementInterval = setInterval(() => {
@@ -146,12 +146,11 @@ class Character extends MovableObject {
          }
       }, 1000 / 60);
 
-
       let attackFrameRate = 1000 / 100;
       let lastAttackFrameTime = 0;
 
       this.animationInterval = setInterval(() => {
-         const { RIGHT, LEFT, UP, DOWN} = this.world.keyboard;
+         const { RIGHT, LEFT, UP, DOWN } = this.world.keyboard;
          let isMoving = false;
          let now = Date.now();
 
@@ -190,11 +189,19 @@ class Character extends MovableObject {
    }
 
 
-
    shootBubble() {
       if (!this.isDead() && !this.bubbleCooldown) {
-         let bubble = new ThrowableObject(this.x, this.y, this.otherDirection);
+         let bubble = new ThrowableObject(
+            this.x,
+            this.y,
+            this.otherDirection,
+            this.inventory.poisonBottles
+         );
          this.world.throwables.push(bubble);
+         if (this.inventory.poisonBottles > 0) {
+            this.inventory.poisonBottles -= 1;
+            this.world.poisonBar.setPercentage(this.inventory.poisonBottles * 20);
+         }
          setTimeout(() => {
             bubble.removeBubble();
          }, 1500);

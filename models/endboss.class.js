@@ -1,8 +1,9 @@
 class Endboss extends MovableObject {
+   world;
    height = 600;
    width = this.height * 1.168;
    x = 5800;
-   y = -145;
+   y = -845;
    collisionBoxWidth = this.width * 0.75;
    collisionBoxHeight = this.height * 0.3;
    collisionBoxOffsetX = 50;
@@ -16,11 +17,13 @@ class Endboss extends MovableObject {
 
    healthPoints = 40;
 
+   isIntroduced = false;
+
    verticalSpeed = 1;
    verticalRange = 140;
    verticalDirection = 1;
    horizontalSpeed = 0;
-   originalY = -145;
+   originalY = -845;
    originalX = 5800;
 
    currentHurtImage = 0;
@@ -65,6 +68,18 @@ class Endboss extends MovableObject {
       'img/2.Enemy/3.Final_Enemy/Dead/Mesa de trabajo 2 copia 10.png',
    ];
 
+   IMAGES_INTRODUCION = [
+      'img/2.Enemy/3.Final_Enemy/1.Introduce/1.png',
+      'img/2.Enemy/3.Final_Enemy/1.Introduce/2.png',
+      'img/2.Enemy/3.Final_Enemy/1.Introduce/3.png',
+      'img/2.Enemy/3.Final_Enemy/1.Introduce/4.png',
+      'img/2.Enemy/3.Final_Enemy/1.Introduce/5.png',
+      'img/2.Enemy/3.Final_Enemy/1.Introduce/6.png',
+      'img/2.Enemy/3.Final_Enemy/1.Introduce/7.png',
+      'img/2.Enemy/3.Final_Enemy/1.Introduce/8.png',
+      'img/2.Enemy/3.Final_Enemy/1.Introduce/9.png',
+      'img/2.Enemy/3.Final_Enemy/1.Introduce/10.png',
+   ];
 
    constructor() {
       super().loadImage('img/2.Enemy/3.Final_Enemy/2.floating/1.png');
@@ -72,15 +87,15 @@ class Endboss extends MovableObject {
       this.loadImages(this.IMAGES_ATTACK);
       this.loadImages(this.IMAGES_HURT);
       this.loadImages(this.IMAGES_DEAD);
-
-      this.animate();
+      this.loadImages(this.IMAGES_INTRODUCION);
+      setTimeout(() => {
+         this.checkForCharacter();
+      }, 1500);
    }
- 
 
    isDead() {
       return this.healthPoints === 0;
    }
-
 
    getDamage() {
       if (!this.immunity && this.healthPoints > 0) {
@@ -92,13 +107,11 @@ class Endboss extends MovableObject {
       }
    }
 
-
    setHurtedState() {
       this.isHurt = true;
       this.isHurtAnimationPlaying = true;
       this.immunity = true;
    }
-
 
    unsetHurtedState() {
       this.immunity = false;
@@ -106,14 +119,11 @@ class Endboss extends MovableObject {
       this.isHurtAnimationPlaying = false;
    }
 
-
-
    move() {
       this.moveVertically();
       this.moveHorizontally();
    }
 
-   
    moveVertically() {
       this.y += this.verticalSpeed * this.verticalDirection;
       if (this.hitVerticalMovementLimit()) {
@@ -121,7 +131,6 @@ class Endboss extends MovableObject {
       }
    }
 
-   
    moveHorizontally() {
       this.x -= this.horizontalSpeed;
       if (this.isHorizontalOutOfRange()) {
@@ -129,34 +138,63 @@ class Endboss extends MovableObject {
       }
    }
 
-   
    hitVerticalMovementLimit() {
-      return this.y > this.originalY + this.verticalRange || this.y < this.originalY - this.verticalRange;
+      return (
+         this.y > this.originalY + this.verticalRange ||
+         this.y < this.originalY - this.verticalRange
+      );
    }
 
-   
    isHorizontalOutOfRange() {
       return this.x < 100;
    }
 
-   
    resetHorizontalPosition() {
       this.x = this.originalX;
    }
 
+   checkForCharacter() {
+      this.checkInterval = setInterval(() => {
+         if (Math.abs(this.x - this.world.character.x) < 450 && !this.isIntroduced) {
+            this.introduceEndboss();
+         }
+      }, 1000 / 15);
+   }
+
+   introduceEndboss() {
+      clearInterval(this.checkInterval);
+      
+      this.introduceInterval = setInterval(() => {  
+         this.y = -145;
+         this.originalY = -145;       
+
+         if ((this, this.currentImage < this.IMAGES_INTRODUCION.length && !this.isIntroduced)) {
+            this.playAnimation(this.IMAGES_INTRODUCION);
+         } else {
+            this.isIntroduced = true;
+            clearInterval(this.introduceInterval);
+         }
+      }, 1000 / 15);
+
+
+      setTimeout(() => {
+         this.animate();
+      }, this.IMAGES_INTRODUCION.length * 75);
+   }
 
    animate() {
-      this.setupMovementAnimation();
-      this.setupAttackAnimation();
-   
-      if (!this.isDead()) {
-         this.moveInterval = setInterval(() => {
-            this.move();
-         }, 1000 / 60);
+      if (this.isIntroduced) {
+         this.setupMovementAnimation();
+         this.setupAttackAnimation();
+
+         if (!this.isDead()) {
+            this.moveInterval = setInterval(() => {
+               this.move();
+            }, 1000 / 60);
+         }
       }
    }
-   
-   
+
    setupMovementAnimation() {
       this.animationInterval = setInterval(() => {
          if (this.isDead()) {
@@ -169,7 +207,6 @@ class Endboss extends MovableObject {
       }, 1000 / 10);
    }
 
-   
    setupAttackAnimation() {
       if (!this.isDead()) {
          this.attackInterval = setInterval(() => {
@@ -183,7 +220,6 @@ class Endboss extends MovableObject {
          }, 2000);
       }
    }
-
 
    playHurtAnimation() {
       if (this.currentHurtImage < this.IMAGES_HURT.length) {
@@ -199,7 +235,6 @@ class Endboss extends MovableObject {
          }
       }
    }
-
 
    playAttackAnimation() {
       let i = 0;
