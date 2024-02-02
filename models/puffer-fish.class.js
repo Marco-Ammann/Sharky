@@ -10,6 +10,7 @@ class PufferFish extends MovableObject {
    collisionBoxOffsetY = 9;
    healthPoints = 20;
    world;
+   direction = 1;
 
    characterCenterY;
    centerY;
@@ -75,12 +76,14 @@ class PufferFish extends MovableObject {
       this.centerY = this.y + this.collisionBoxOffsetY + this.collisionBoxHeight / 2;
       this.x -= this.speed;
 
+      this.y += this.speed * this.direction * Math.random();
+
       if (
-         Math.abs(this.characterCenterY - this.centerY) < 40 &&
-         this.x - this.world.character.x < 450 &&
+         Math.abs(this.characterCenterY - this.centerY) < 50 &&
+         this.x - this.world.character.x < 480 &&
          this.x > this.world.character.x
       ) {
-         this.x -= this.speed * 18;
+         this.x -= this.speed * 22;
          this.isAttacking = true;
       } else {
          this.isAttacking = false;
@@ -108,6 +111,10 @@ class PufferFish extends MovableObject {
       this.movementInterval = setInterval(() => {
          this.moveLeft();
       }, 1000 / 60);
+
+      setInterval(() => {
+         this.direction = this.direction *-1;
+      }, 3000 * Math.random());
 
       this.animationInterval = setInterval(() => {
          if (this.isAttacking) {

@@ -1,13 +1,13 @@
 class Endboss extends MovableObject {
    world;
-   height = 600;
+   height = 500;
    width = this.height * 1.168;
-   x = 5800;
-   y = -845;
+   x = 5800 - 5000;
+   y = -605;
    collisionBoxWidth = this.width * 0.75;
    collisionBoxHeight = this.height * 0.3;
    collisionBoxOffsetX = 50;
-   collisionBoxOffsetY = 295;
+   collisionBoxOffsetY = 250;
 
    floorY = 150;
 
@@ -20,11 +20,11 @@ class Endboss extends MovableObject {
    isIntroduced = false;
 
    verticalSpeed = 1;
-   verticalRange = 140;
+   verticalRange = 180;
    verticalDirection = 1;
    horizontalSpeed = 0;
-   originalY = -845;
-   originalX = 5800;
+   originalY = -605;
+   originalX = 5800 - 5000;
 
    currentHurtImage = 0;
 
@@ -165,25 +165,21 @@ class Endboss extends MovableObject {
       clearInterval(this.checkInterval);
       
       this.introduceInterval = setInterval(() => {  
-         this.y = -145;
-         this.originalY = -145;       
+         this.y = -105;
+         this.originalY = -105;       
 
          if ((this, this.currentImage < this.IMAGES_INTRODUCION.length && !this.isIntroduced)) {
             this.playAnimation(this.IMAGES_INTRODUCION);
          } else {
             this.isIntroduced = true;
-            clearInterval(this.introduceInterval);
+            this.animate();
          }
-      }, 1000 / 15);
-
-
-      setTimeout(() => {
-         this.animate();
-      }, this.IMAGES_INTRODUCION.length * 75);
+      }, 1000 / 8);
    }
 
    animate() {
       if (this.isIntroduced) {
+         clearInterval(this.introduceInterval);
          this.setupMovementAnimation();
          this.setupAttackAnimation();
 
@@ -208,17 +204,21 @@ class Endboss extends MovableObject {
    }
 
    setupAttackAnimation() {
-      if (!this.isDead()) {
-         this.attackInterval = setInterval(() => {
-            if (!this.isAttacking && !this.isHurt && !this.isHurtAnimationPlaying) {
-               this.isAttacking = true;
-               this.playAttackAnimation();
-               setTimeout(() => {
-                  this.isAttacking = false;
-               }, this.IMAGES_ATTACK.length * 100);
-            }
-         }, 2000);
-      }
+
+      setTimeout(() => {
+         
+         if (!this.isDead()) {
+            this.attackInterval = setInterval(() => {
+               if (!this.isAttacking && !this.isHurt && !this.isHurtAnimationPlaying) {
+                  this.isAttacking = true;
+                  this.playAttackAnimation();
+                  setTimeout(() => {
+                     this.isAttacking = false;
+                  }, this.IMAGES_ATTACK.length * 100);
+               }
+            }, 2000);
+         }
+      }, 1500);
    }
 
    playHurtAnimation() {
