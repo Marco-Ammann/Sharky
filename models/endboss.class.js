@@ -205,9 +205,7 @@ class Endboss extends MovableObject {
    }
 
    setupAttackAnimation() {
-
-      setTimeout(() => {
-         
+      setTimeout(() => {         
          if (!this.isDead()) {
             this.attackInterval = setInterval(() => {
                if (!this.isAttacking && !this.isHurt && !this.isHurtAnimationPlaying) {
@@ -219,7 +217,7 @@ class Endboss extends MovableObject {
                }
             }, 2000);
          }
-      }, 1500);
+      }, 1000);
    }
 
    playHurtAnimation() {

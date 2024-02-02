@@ -193,7 +193,7 @@ class World {
       }
 
       MovObj.draw(this.ctx);
-      MovObj.drawFrame(this.ctx);
+      // MovObj.drawFrame(this.ctx); //draw hitbox squares here --------------------------------------------------
 
       if (MovObj.otherDirection) {
          this.flipImageBack(MovObj);

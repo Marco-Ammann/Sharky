@@ -194,6 +194,7 @@ class Character extends MovableObject {
          let bubble = new ThrowableObject(
             this.x,
             this.y,
+            this.y,
             this.otherDirection,
             this.inventory.poisonBottles
          );
