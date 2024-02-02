@@ -16,6 +16,24 @@ body{
     background-size: cover;
 }
 
+#title {
+    font-size: 3rem;
+    position: absolute;
+    top: 3rem;
+    left: center;
+}
+
+.startButton-image {
+    height: 90px;
+}
+
+.keybindings {
+    height: 248px;
+    position: absolute;
+    bottom: 6rem;
+    right: center;
+}
+
 
 canvas {
     background-color: lightblue;
@@ -60,7 +78,7 @@ button:active {
     align-items: center;
     height: 400px;
     padding: 0 20px;
-    background-image: linear-gradient(#2F6BB1, #3DB9DB, #533AAE); /* Fügt Gelb als dritte Farbe hinzu */
+    background-image: linear-gradient(#2f65af20 5%, #3d95db 50%, #533aae80 95%); /* Fügt Gelb als dritte Farbe hinzu */
 }
 
 #main-menu h1 {

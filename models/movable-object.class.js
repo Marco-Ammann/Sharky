@@ -17,7 +17,7 @@ class MovableObject extends DrawableObject {
    collisionBoxHeight;
    collisionBoxOffsetX = 0;
    collisionBoxOffsetY = 0;
-
+ 
 
    constructor() {
       super();

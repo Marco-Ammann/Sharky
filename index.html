@@ -25,9 +25,12 @@
       <script src="./js/game.js"></script>
    </head>
    <body onload="init()">
+      <h1 id="title">Sharky</h1>
       <div id="main-menu">
-         <h1>Sharky</h1>
-         <button id="start-game" onclick="startGame()">Spiel starten</button>
+         <a id="start-game" onclick="startGame()">
+         <img class="startButton-image" src="./img/6.Buttons/Start/1.png" alt="Start Button">
+         </a>
+         <img class="keybindings" src="img/6.Buttons/Instructions 2.png" alt="keybindings">
       </div>
       <canvas id="canvas" width="720" height="480" style="display: none;"> </canvas>
       <button id="musicButton" onclick="switchSoundMute()" style="display: none;">start Music</button>
