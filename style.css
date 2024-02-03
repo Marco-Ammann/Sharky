@@ -28,7 +28,7 @@ body{
 }
 
 .keybindings {
-    height: 248px;
+    height: 280px;
     position: absolute;
     bottom: 6rem;
 }
@@ -40,7 +40,7 @@ canvas {
 
 button {
     padding: 5px 10px;
-    background-color: #0077CC; /* Ocean blue color */
+    background-color: #0077CC;
     border: none;
     border-radius: 5px;
     color: white;
@@ -60,11 +60,11 @@ button {
 }
 
 button:hover {
-    background-color: #005FA3; /* A darker shade of blue for hover effect */
+    background-color: #005FA3;
 }
 
 button:active {
-    background-color: #003157; /* Even darker for the active state */
+    background-color: #003157;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
@@ -75,9 +75,9 @@ button:active {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 400px;
-    padding: 0 20px;
-    background-image: linear-gradient(#2f65af20 5%, #3d95db 50%, #533aae80 95%); /* Fügt Gelb als dritte Farbe hinzu */
+    height: 100vh;
+    width: 720px;
+    background-image: linear-gradient(#329dac90 5%, #35459690 50%, #5a1d9690 90%);
 }
 
 #main-menu h1 {

@@ -1,7 +1,7 @@
 class Poison extends MovableObject {
-    height = 70;
+    height = 80;
     width = this.height * 0.732;
-    x = 350 + Math.random() * 5400;
+    x = 750 + Math.random() * 5000;
     y = 10 + Math.random() * 400;
 
     collisionBoxWidth = this.width * 0.6;
