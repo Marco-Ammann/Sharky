@@ -8,7 +8,7 @@ class PoisonBar extends DrawableObject{
         'img/4.Markers/green/poisoned bubbles/100.png'
      ];
   
-     percentage = 0;
+     percentage;
   
      constructor() {
         super();

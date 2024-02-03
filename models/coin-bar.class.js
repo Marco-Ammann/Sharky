@@ -8,7 +8,7 @@ class CoinBar extends DrawableObject {
         'img/4.Markers/green/Coin/100.png'
      ];
   
-     percentage = 0;
+     percentage;
   
      constructor() {
         super();

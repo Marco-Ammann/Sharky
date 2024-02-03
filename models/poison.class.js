@@ -9,6 +9,8 @@ class Poison extends MovableObject {
     collisionBoxOffsetX = 10;
     collisionBoxOffsetY = 35;
 
+    world;
+
     IMAGES_POISON = [
         'img/4.Markers/Poison/Animation/1.png',
         'img/4.Markers/Poison/Animation/2.png',

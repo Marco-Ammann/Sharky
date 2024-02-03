@@ -47,11 +47,11 @@ class ThrowableObject extends MovableObject {
       this.verticalSpeed -= this.acceleration;
       this.y += this.verticalSpeed;
 
-      if (Math.abs(this.x - this.startX) > 500) {
+      if (Math.abs(this.x - this.startX) > 550) {
          this.removeBubble();
       }
    }
-   
+
 
    removeBubble() {
       this.toBeRemoved = true;

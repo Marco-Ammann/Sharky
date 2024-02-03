@@ -15,7 +15,7 @@ class Endboss extends MovableObject {
    isHurt = false;
    isHurtAnimationPlaying = false;
 
-   healthPoints = 40;
+   healthPoints = 500;
 
    isIntroduced = false;
 
@@ -25,6 +25,8 @@ class Endboss extends MovableObject {
    horizontalSpeed = 0;
    originalY = -605;
    originalX = 5800;
+
+   damage = 20;
 
    currentHurtImage = 0;
 
@@ -97,11 +99,20 @@ class Endboss extends MovableObject {
 
    getDamage() {
       if (!this.immunity && this.healthPoints > 0) {
+         if(this.world.inventory.poisonBottles > 0){
+            this.damage = 100;
+         } else {
+            this.damage = 20;
+         }
          this.healthPoints -= this.damage;
+         console.log('Boss hit for = ' + this.damage + 'damage')
+
+         console.log('Boss HP = ' + this.healthPoints)
          this.setHurtedState();
+         clearInterval(this.IMAGES_ATTACK.attackInterval);
          setTimeout(() => {
             this.unsetHurtedState();
-         }, 500);
+         }, 600);
       }
    }
 
@@ -196,7 +207,7 @@ class Endboss extends MovableObject {
       this.animationInterval = setInterval(() => {
          if (this.isDead()) {
             this.playAnimation(this.IMAGES_DEAD);
-         } else if (this.isHurt) {
+         } else if (this.isHurt && !this.isAttacking) {
             this.playHurtAnimation();
          } else if (!this.isAttacking && !this.isHurtAnimationPlaying) {
             this.playAnimation(this.IMAGES_SWIM);

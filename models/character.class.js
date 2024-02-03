@@ -13,11 +13,6 @@ class Character extends MovableObject {
 
    bubbleCooldown = false;
 
-   inventory = {
-      coins: 0,
-      poisonBottles: 0,
-   };
-
    IMAGES_IDLE = [
       'img/1.Sharkie/1.IDLE/1.png',
       'img/1.Sharkie/1.IDLE/2.png',
@@ -196,16 +191,19 @@ class Character extends MovableObject {
             this.y,
             this.y,
             this.otherDirection,
-            this.inventory.poisonBottles
+            this.world.inventory.poisonBottles
          );
          this.world.throwables.push(bubble);
-         if (this.inventory.poisonBottles > 0) {
-            this.inventory.poisonBottles -= 1;
-            this.world.poisonBar.setPercentage(this.inventory.poisonBottles * 20);
+         if (this.world.inventory.poisonBottles > 0) {
+            this.world.inventory.poisonBottles -= 1;
+            this.world.poisonBar.setPercentage(this.world.inventory.poisonBottles * 20);
+         } else if (this.world.inventory.poisonBottles <= 0){
+            this.world.inventory.poisonBottles = 0;
+            this.world.poisonBar.setPercentage(0);
          }
          setTimeout(() => {
             bubble.removeBubble();
-         }, 1500);
+         }, 2500);
 
          this.bubbleCooldown = true;
          setTimeout(() => {

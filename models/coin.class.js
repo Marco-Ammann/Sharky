@@ -9,6 +9,9 @@ class Coin extends MovableObject {
     collisionBoxOffsetX = 3;
     collisionBoxOffsetY = 3;
 
+    world;
+
+
 
 
     IMAGES_COIN = [

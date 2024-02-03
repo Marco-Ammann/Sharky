@@ -2,8 +2,8 @@ class World {
    character;
 
    level;
-   statusBar = new StatusBar();
-   poisonBar = new PoisonBar();
+   statusBar;
+   poisonBar;
    coinBar = new CoinBar();
 
    throwables = [];
@@ -19,7 +19,11 @@ class World {
    gameOverSound = new Audio('audio/death_sound.mp3');
    gameWonSound = new Audio('audio/win_sound.mp3');
 
+   inventory = {};
+
    constructor(canvas, keyboard) {
+      this.poisonBar = new PoisonBar();
+      this.statusBar  = new StatusBar();
       this.level = level1;
       this.enemies = [];
       this.ctx = canvas.getContext('2d');
@@ -27,12 +31,21 @@ class World {
       this.keyboard = keyboard;
       this.character = new Character();
       this.draw();
+      this.inventory = {
+         coins: 0,
+         poisonBottles: 0
+      }
       this.setWorld(this.character);
       this.level.enemies.forEach((enemy) => {
          this.setWorld(enemy);
       });
+      this.level.collectables.forEach((collectable) => {
+         this.setWorld(collectable);
+      });
+      setTimeout(() => {
+         console.log('Inventory:',this.inventory)
+      }, 500);
    }
-
 
    checkCollisions() {
       this.level.enemies.forEach((enemy) => {
@@ -58,23 +71,20 @@ class World {
       });
 
       this.level.collectables.forEach((collectable, index) => {
-         if (this.character.isColliding(collectable)) {
-            if (collectable instanceof Poison) {
-               this.level.collectables.splice(index, 1);
-               collectable.playPickupSound();
-               this.character.inventory.poisonBottles += 1;
-               this.poisonBar.setPercentage(this.character.inventory.poisonBottles * 20);
-            
-            } else if (collectable instanceof Coin) {
-               this.level.collectables.splice(index, 1);
-               collectable.playPickupSound();
-               this.character.inventory.coins += 1;
-               this.coinBar.setPercentage(this.character.inventory.coins * 20);
-            }
-         }
+if (this.character.isColliding(collectable)) {
+   this.level.collectables.splice(index, 1);
+   collectable.playPickupSound();
+   if (collectable instanceof Poison) {
+       this.inventory.poisonBottles += 1;
+       this.poisonBar.setPercentage(this.inventory.poisonBottles * 20);
+   } else if (collectable instanceof Coin) {
+       this.inventory.coins += 1;
+       this.coinBar.setPercentage(this.inventory.coins * 20);
+   }
+   console.log('Inventory Updated:', this.inventory);
+}
       });
    }
-
 
    checkBubbleCollisions() {
       this.throwables.forEach((bubble, bubbleIndex) => {
@@ -108,13 +118,11 @@ class World {
       });
    }
 
-
    playGameOverSound() {
       this.gameOverSound.volume = 0.15;
       this.gameOverSound.loop = false;
       this.gameOverSound.play();
    }
-
 
    playWonSound() {
       this.gameWonSound.volume = 0.15;
@@ -122,13 +130,11 @@ class World {
       this.gameWonSound.play();
    }
 
-
    startMusic() {
       this.level.music.volume = 0.05;
       this.level.music.loop = true;
       this.level.music.play();
    }
-
 
    stopMusic() {
       this.level.music.volume = 0.05;
@@ -136,11 +142,9 @@ class World {
       this.level.music.pause();
    }
 
-
    setWorld(obj) {
       obj.world = this;
    }
-
 
    draw() {
       let now = Date.now();
@@ -179,13 +183,11 @@ class World {
       requestAnimationFrame(() => this.draw());
    }
 
-
    addObjectsToMap(objects) {
       objects.forEach((o) => {
          this.addToMap(o);
       });
    }
-
 
    addToMap(MovObj) {
       if (MovObj.otherDirection) {
@@ -200,7 +202,6 @@ class World {
       }
    }
 
-
    flipImage(MovObj) {
       this.ctx.save();
       this.ctx.translate(MovObj.width, 0);
@@ -208,7 +209,6 @@ class World {
 
       MovObj.x = MovObj.x * -1;
    }
-   
 
    flipImageBack(MovObj) {
       MovObj.x = MovObj.x * -1;
