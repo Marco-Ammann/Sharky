@@ -27,20 +27,22 @@ class MovableObject extends DrawableObject {
 
    
    applyGravity() {
-      this.gravityInterval = setInterval(() => {
+      let gravityInterval = setInterval(() => {
          this.y -= this.speedY;
          this.speedY += this.acceleration;
       }, 1000 / 60);
+      globalIntervals.push(gravityInterval);
    }
 
 
    playAttackSound() {
       this.attack_sound.play();
       this.attack_sound.volume = 0.15;
-      setTimeout(() => {
+      let attackSoundTimeout = setTimeout(() => {
           this.attack_sound.pause();
           this.attack_sound.currentTime = 0;
       }, 370);
+      globalTimeouts.push(attackSoundTimeout);
   }
 
 
@@ -48,10 +50,11 @@ class MovableObject extends DrawableObject {
    this.impact_sound.currentTime = 0;
    this.impact_sound.play();
    this.impact_sound.volume = 0.2;
-   setTimeout(() => {
+   let impactSoundTimeout = setTimeout(() => {
        this.impact_sound.pause();
        this.impact_sound.currentTime = 0;
    }, 1000);
+   globalTimeouts.push(impactSoundTimeout);
   }
 
 
@@ -60,18 +63,16 @@ class MovableObject extends DrawableObject {
           this.healthPoints -= this.damage;
           this.immunity = true;
           this.lastHit = new Date().getTime();
-          setTimeout(() => {
+          let damageTimeout = setTimeout(() => {
               this.immunity = false;
           }, 500);
+          globalTimeouts.push(damageTimeout);
       }
   }
 
-   isDead() {
-      if (this.healthPoints == 0) {
-         this.dead = true;
-      }
-      return this.dead;
-   }
+  isDead() {
+   return this.healthPoints <= 0;
+}
 
    isHurt() {
       let timepassed = new Date().getTime() - this.lastHit;
@@ -120,12 +121,13 @@ class MovableObject extends DrawableObject {
    }
 
    sink() {
-      setInterval(() => {         
+      let sinkInterval = setInterval(() => {         
          if (this.y <= this.floorY) {
             this.y += 0.1;
             this.collisionBoxOffsetY = 3500;
          }
       }, 1000 / 60);
+      globalIntervals.push(sinkInterval);
    }
 
 

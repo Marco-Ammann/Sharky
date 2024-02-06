@@ -28,11 +28,25 @@
       <h1 id="title">Sharky</h1>
       <div id="main-menu">
          <a id="start-game" onclick="startGame()">
-         <img class="startButton-image" src="./img/6.Buttons/Start/1.png" alt="Start Button">
+            <img class="startButton-image" src="./img/6.Buttons/Start/1.png" alt="Start Button" />
          </a>
-         <img class="keybindings" src="img/6.Buttons/Instructions 2.png" alt="keybindings">
+         <img class="keybindings" src="img/6.Buttons/Instructions 2.png" alt="keybindings" />
       </div>
-      <canvas id="canvas" width="720" height="480" style="display: none;"> </canvas>
-      <button id="musicButton" onclick="switchSoundMute()" style="display: none;">start Music</button>
+      <canvas id="canvas" width="720" height="480" style="display: none"> </canvas>
+
+      <div id="gameOverScreen" style="display: none;">
+         <img
+            id="gameOverImage"
+            src="img/6.Buttons/Tittles/Game Over/Recurso 12.png"
+            alt="GameOver image"
+         />
+         <a id="restart" onclick="resetGame()">
+            <img id="tryAgainImage" src="img/6.Buttons/Try again/Recurso 17.png" alt="try again text" />
+        </a>
+      </div>
+
+      <button id="musicButton" onclick="switchSoundMute()" style="display: none">
+         start Music
+      </button>
    </body>
 </html>

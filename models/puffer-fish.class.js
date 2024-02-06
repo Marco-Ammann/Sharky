@@ -11,6 +11,7 @@ class PufferFish extends MovableObject {
    healthPoints = 20;
    world;
    direction = 1;
+   deathHandled;
 
    characterCenterY;
    centerY;
@@ -34,7 +35,10 @@ class PufferFish extends MovableObject {
       'img/2.Enemy/1.Puffer_fish/3.Bubbleeswim/3.bubbleswim5.png',
    ];
 
-   IMAGES_DEAD = 'img/2.Enemy/1.Puffer_fish/4.DIE/3.png';
+   IMAGES_DEAD = [
+      'img/2.Enemy/1.Puffer_fish/4.DIE/3.png',
+      'img/2.Enemy/1.Puffer_fish/4.DIE/3.png'
+   ];
 
    IMAGES_WINDUP = [
       'img/2.Enemy/1.Puffer_fish/2.transition/3.transition1.png',
@@ -43,7 +47,6 @@ class PufferFish extends MovableObject {
       'img/2.Enemy/1.Puffer_fish/2.transition/3.transition4.png',
       'img/2.Enemy/1.Puffer_fish/2.transition/3.transition5.png',
    ];
-   
 
    /**
     * Create a new PufferFish instance.
@@ -51,15 +54,14 @@ class PufferFish extends MovableObject {
     * After a delay, starts the animation of the pufferfish.
     */
    constructor() {
-      super().loadImage(this.IMAGES_DEAD);
+      super()
+      this.loadImages(this.IMAGES_DEAD);
       this.loadImages(this.IMAGES_SWIM);
       this.loadImages(this.IMAGES_SPEED);
-      this.loadImage('img/2.Enemy/1.Puffer_fish/1.Swim/3.swim1.png');
       this.loadImages(this.IMAGES_SWIM);
       this.loadImages(this.IMAGES_WINDUP);
       // this.animate(); is callet upon starting the game with the button
    }
-
 
    /**
     * Move the pufferfish to the left.
@@ -70,7 +72,7 @@ class PufferFish extends MovableObject {
    moveLeft() {
       if (!this.world || !this.world.character) {
          return; // Beende die Funktion frühzeitig
-     }
+      }
       this.characterCenterY =
          this.world.character.y +
          this.world.character.collisionBoxOffsetY +
@@ -93,7 +95,6 @@ class PufferFish extends MovableObject {
       }
    }
 
-
    /**
     * Animate the pufferfish's behavior.
     *
@@ -102,24 +103,38 @@ class PufferFish extends MovableObject {
     */
    animate() {
       if (this.isDead()) {
-         this.img.src = this.IMAGES_DEAD;
-         setInterval(() => {
+
+         if (!this.deathHandled) {
+
+         this.clearAllIntervals();
+         this.healthPoints = 0;
+         this.img.src = 'img/2.Enemy/1.Puffer_fish/4.DIE/3.png';
+
+         this.deathHandled = true;
+         this.clearAllIntervals();
+         let deathInterval = setInterval(() => {
             this.y -= 3;
             this.collisionBoxOffsetY = -500;
          }, 1000 / 60);
+         globalIntervals.push(deathInterval);
          return;
+
       }
 
-      this.movementInterval = setInterval(() => {
+      }
+
+      let movementIntervalId = setInterval(() => {
          this.moveLeft();
       }, 1000 / 60);
-
-      this.vertivalMovementInterval = setInterval(() => {
-         this.direction = this.direction *-1;
+      globalIntervals.push(movementIntervalId);
+      
+      let verticalMovementIntervalId = setInterval(() => {
+         this.direction = this.direction * -1;
       }, 3000 * Math.random());
-
-      this.animationInterval = setInterval(() => {
-         if (this.isAttacking) {
+      globalIntervals.push(verticalMovementIntervalId);
+      
+      let animationIntervalId = setInterval(() => {
+         if (this.isAttacking && !this.isDead()) {
             if (!this.attackWindUpPlayed) {
                this.playAnimation(this.IMAGES_WINDUP);
                if ((this.currentImage = this.IMAGES_WINDUP.length - 1)) {
@@ -128,12 +143,19 @@ class PufferFish extends MovableObject {
             } else {
                this.playAnimation(this.IMAGES_SPEED);
             }
-         } else {
+         } else if(!this.isDead()){
             this.playAnimation(this.IMAGES_SWIM);
          }
       }, 1000 / 8);
+      globalIntervals.push(animationIntervalId);
    }
 
+
+   clearAllIntervals() {
+      clearInterval(this.movementIntervalId);
+      clearInterval(this.verticalMovementIntervalId);
+      clearInterval(this.animationIntervalId);
+   }
 
    /**
     * Play the attack wind-up animation if it hasn't been played already.
@@ -153,15 +175,5 @@ class PufferFish extends MovableObject {
             console.log(this.attackWindUpPlayed);
          }
       }
-   }
-
-
-   /**
-    * Check if the pufferfish is dead based on its health points.
-    *
-    * @returns {boolean} True if the pufferfish has zero health points, indicating that it is dead; otherwise, false.
-    */
-   isDead() {
-      return this.healthPoints === 0;
    }
 }

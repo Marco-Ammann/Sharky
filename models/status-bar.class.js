@@ -35,6 +35,8 @@ class StatusBar extends DrawableObject {
       else return 0;
   }
 
-
+  reset() {
+   this.setPercentage(100);
+ }
 
 }

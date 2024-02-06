@@ -23,8 +23,8 @@ class World {
 
    constructor(canvas, keyboard) {
       this.poisonBar = new PoisonBar();
-      this.statusBar  = new StatusBar();
-      this.level = level1;
+      this.statusBar = new StatusBar();
+      this.level = createLevel1();
       this.enemies = [];
       this.ctx = canvas.getContext('2d');
       this.canvas = canvas;
@@ -33,18 +33,16 @@ class World {
       this.draw();
       this.inventory = {
          coins: 0,
-         poisonBottles: 0
-      }
+         poisonBottles: 0,
+      };
       this.setWorld(this.character);
       this.level.enemies.forEach((enemy) => {
          this.setWorld(enemy);
       });
+
       this.level.collectables.forEach((collectable) => {
          this.setWorld(collectable);
       });
-      setTimeout(() => {
-         console.log('Inventory:',this.inventory)
-      }, 500);
    }
 
    checkCollisions() {
@@ -53,7 +51,6 @@ class World {
             this.character.getDamage();
             this.statusBar.setPercentage(this.character.healthPoints);
             if (this.character.healthPoints == 0) {
-               console.log('you are dead!');
                this.playGameOverSound();
             }
          }
@@ -64,25 +61,23 @@ class World {
             this.character.getDamage();
             this.statusBar.setPercentage(this.character.healthPoints);
             if (this.character.healthPoints == 0) {
-               console.log('you are dead!');
                this.playGameOverSound();
             }
          }
       });
 
       this.level.collectables.forEach((collectable, index) => {
-if (this.character.isColliding(collectable)) {
-   this.level.collectables.splice(index, 1);
-   collectable.playPickupSound();
-   if (collectable instanceof Poison) {
-       this.inventory.poisonBottles += 1;
-       this.poisonBar.setPercentage(this.inventory.poisonBottles * 20);
-   } else if (collectable instanceof Coin) {
-       this.inventory.coins += 1;
-       this.coinBar.setPercentage(this.inventory.coins * 20);
-   }
-   console.log('Inventory Updated:', this.inventory);
-}
+         if (this.character.isColliding(collectable)) {
+            this.level.collectables.splice(index, 1);
+            collectable.playPickupSound();
+            if (collectable instanceof Poison) {
+               this.inventory.poisonBottles += 1;
+               this.poisonBar.setPercentage(this.inventory.poisonBottles * 20);
+            } else if (collectable instanceof Coin) {
+               this.inventory.coins += 1;
+               this.coinBar.setPercentage(this.inventory.coins * 20);
+            }
+         }
       });
    }
 
@@ -103,7 +98,6 @@ if (this.character.isColliding(collectable)) {
                      }
                   } else {
                      enemy.animate();
-                     enemy.stopAnimations();
                      setTimeout(() => {
                         this.level.enemies.splice(enemyIndex, 1);
                      }, 3000);
@@ -180,7 +174,7 @@ if (this.character.isColliding(collectable)) {
 
       this.ctx.translate(-this.camera_x, 0);
 
-      requestAnimationFrame(() => this.draw());
+      animationFrameId = requestAnimationFrame(() => this.draw());
    }
 
    addObjectsToMap(objects) {

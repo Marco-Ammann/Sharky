@@ -99,15 +99,15 @@ class Endboss extends MovableObject {
 
    getDamage() {
       if (!this.immunity && this.healthPoints > 0) {
-         if(this.world.inventory.poisonBottles > 0){
+         if (this.world.inventory.poisonBottles > 0) {
             this.damage = 100;
          } else {
             this.damage = 20;
          }
          this.healthPoints -= this.damage;
-         console.log('Boss hit for = ' + this.damage + 'damage')
+         console.log('Boss hit for = ' + this.damage + 'damage');
 
-         console.log('Boss HP = ' + this.healthPoints)
+         console.log('Boss HP = ' + this.healthPoints);
          this.setHurtedState();
          clearInterval(this.IMAGES_ATTACK.attackInterval);
          setTimeout(() => {
@@ -164,8 +164,8 @@ class Endboss extends MovableObject {
 
    checkForCharacter() {
       if (!this.world || !this.world.character) {
-         return; // Beende die Funktion frühzeitig
-     }
+         return;
+      }
       this.checkInterval = setInterval(() => {
          if (Math.abs(this.x - this.world.character.x) < 450 && !this.isIntroduced) {
             this.introduceEndboss();
@@ -175,10 +175,10 @@ class Endboss extends MovableObject {
 
    introduceEndboss() {
       clearInterval(this.checkInterval);
-      
-      this.introduceInterval = setInterval(() => {  
+
+      this.introduceInterval = setInterval(() => {
          this.y = -105;
-         this.originalY = -105;       
+         this.originalY = -105;
 
          if ((this, this.currentImage < this.IMAGES_INTRODUCION.length && !this.isIntroduced)) {
             this.playAnimation(this.IMAGES_INTRODUCION);
@@ -216,13 +216,13 @@ class Endboss extends MovableObject {
    }
 
    setupAttackAnimation() {
-      setTimeout(() => {         
+      this.attackTimeout = setTimeout(() => {
          if (!this.isDead()) {
             this.attackInterval = setInterval(() => {
                if (!this.isAttacking && !this.isHurt && !this.isHurtAnimationPlaying) {
                   this.isAttacking = true;
                   this.playAttackAnimation();
-                  setTimeout(() => {
+                  this.timeoutToSetAttackingToFalse = setTimeout(() => {
                      this.isAttacking = false;
                   }, this.IMAGES_ATTACK.length * 100);
                }
@@ -264,5 +264,14 @@ class Endboss extends MovableObject {
             clearInterval(attackAnimation);
          }
       }, 100);
+   }
+
+   clearIntervals() {
+      clearInterval(this.moveInterval);
+      clearInterval(this.animationInterval);
+      clearInterval(this.attackAnimation);
+      clearInterval(this.attackTimeout);
+      clearInterval(this.timeoutToSetAttackingToFalse);
+      clearInterval(this.attackInterval);
    }
 }
