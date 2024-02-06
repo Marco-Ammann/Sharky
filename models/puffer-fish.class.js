@@ -63,6 +63,7 @@ class PufferFish extends MovableObject {
       // this.animate(); is callet upon starting the game with the button
    }
 
+
    /**
     * Move the pufferfish to the left.
     *
@@ -95,6 +96,7 @@ class PufferFish extends MovableObject {
       }
    }
 
+
    /**
     * Animate the pufferfish's behavior.
     *
@@ -118,10 +120,7 @@ class PufferFish extends MovableObject {
          }, 1000 / 60);
          globalIntervals.push(deathInterval);
          return;
-
-      }
-
-      }
+      }}      
 
       let movementIntervalId = setInterval(() => {
          this.moveLeft();
@@ -156,6 +155,7 @@ class PufferFish extends MovableObject {
       clearInterval(this.verticalMovementIntervalId);
       clearInterval(this.animationIntervalId);
    }
+
 
    /**
     * Play the attack wind-up animation if it hasn't been played already.

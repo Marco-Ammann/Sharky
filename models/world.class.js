@@ -45,6 +45,7 @@ class World {
       });
    }
 
+
    checkCollisions() {
       this.level.enemies.forEach((enemy) => {
          if (this.character.isColliding(enemy) && this.character.healthPoints > 0) {
@@ -81,6 +82,7 @@ class World {
       });
    }
 
+
    checkBubbleCollisions() {
       this.throwables.forEach((bubble, bubbleIndex) => {
          this.level.enemies.forEach((enemy, enemyIndex) => {
@@ -112,11 +114,13 @@ class World {
       });
    }
 
+
    playGameOverSound() {
       this.gameOverSound.volume = 0.15;
       this.gameOverSound.loop = false;
       this.gameOverSound.play();
    }
+
 
    playWonSound() {
       this.gameWonSound.volume = 0.15;
@@ -124,11 +128,13 @@ class World {
       this.gameWonSound.play();
    }
 
+
    startMusic() {
       this.level.music.volume = 0.05;
       this.level.music.loop = true;
       this.level.music.play();
    }
+
 
    stopMusic() {
       this.level.music.volume = 0.05;
@@ -136,9 +142,11 @@ class World {
       this.level.music.pause();
    }
 
+
    setWorld(obj) {
       obj.world = this;
    }
+
 
    draw() {
       let now = Date.now();
@@ -177,11 +185,13 @@ class World {
       animationFrameId = requestAnimationFrame(() => this.draw());
    }
 
+
    addObjectsToMap(objects) {
       objects.forEach((o) => {
          this.addToMap(o);
       });
    }
+
 
    addToMap(MovObj) {
       if (MovObj.otherDirection) {
@@ -196,6 +206,7 @@ class World {
       }
    }
 
+
    flipImage(MovObj) {
       this.ctx.save();
       this.ctx.translate(MovObj.width, 0);
@@ -203,6 +214,7 @@ class World {
 
       MovObj.x = MovObj.x * -1;
    }
+
 
    flipImageBack(MovObj) {
       MovObj.x = MovObj.x * -1;

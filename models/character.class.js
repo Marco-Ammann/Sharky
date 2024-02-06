@@ -107,7 +107,7 @@ class Character extends MovableObject {
       this.swim_sound.play();
       this.swim_sound.volume = 0.15;
    }
-   
+
 
    animate() {
       this.movementInterval = setInterval(() => {
@@ -186,34 +186,32 @@ class Character extends MovableObject {
 
    shootBubble() {
       if (!this.isDead() && !this.bubbleCooldown) {
-          let bubble = new ThrowableObject(
-              this.x,
-              this.y,
-              this.y,
-              this.otherDirection,
-              this.world.inventory.poisonBottles
-          );
-          this.world.throwables.push(bubble);
-          if (this.world.inventory.poisonBottles > 0) {
-              this.world.inventory.poisonBottles -= 1;
-              this.world.poisonBar.setPercentage(this.world.inventory.poisonBottles * 20);
-          } else if (this.world.inventory.poisonBottles <= 0) {
-              this.world.inventory.poisonBottles = 0;
-              this.world.poisonBar.setPercentage(0);
-          }
+         let bubble = new ThrowableObject(
+            this.x,
+            this.y,
+            this.y,
+            this.otherDirection,
+            this.world.inventory.poisonBottles
+         );
+         this.world.throwables.push(bubble);
+         if (this.world.inventory.poisonBottles > 0) {
+            this.world.inventory.poisonBottles -= 1;
+            this.world.poisonBar.setPercentage(this.world.inventory.poisonBottles * 20);
+         } else if (this.world.inventory.poisonBottles <= 0) {
+            this.world.inventory.poisonBottles = 0;
+            this.world.poisonBar.setPercentage(0);
+         }
 
-          let removeBubbleTimeout = setTimeout(() => {
-              bubble.removeBubble();
-          }, 2500);
-          globalTimeouts.push(removeBubbleTimeout);
+         let removeBubbleTimeout = setTimeout(() => {
+            bubble.removeBubble();
+         }, 2500);
+         globalTimeouts.push(removeBubbleTimeout);
 
-          this.bubbleCooldown = true;
-          let cooldownTimeout = setTimeout(() => {
-              this.bubbleCooldown = false;
-          }, 1000);
-          globalTimeouts.push(cooldownTimeout);
+         this.bubbleCooldown = true;
+         let cooldownTimeout = setTimeout(() => {
+            this.bubbleCooldown = false;
+         }, 1000);
+         globalTimeouts.push(cooldownTimeout);
       }
-  }
-
-
+   }
 }

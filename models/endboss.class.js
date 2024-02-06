@@ -93,9 +93,11 @@ class Endboss extends MovableObject {
       this.checkForCharacter();
    }
 
+
    isDead() {
       return this.healthPoints === 0;
    }
+
 
    getDamage() {
       if (!this.immunity && this.healthPoints > 0) {
@@ -116,11 +118,13 @@ class Endboss extends MovableObject {
       }
    }
 
+
    setHurtedState() {
       this.isHurt = true;
       this.isHurtAnimationPlaying = true;
       this.immunity = true;
    }
+
 
    unsetHurtedState() {
       this.immunity = false;
@@ -128,10 +132,12 @@ class Endboss extends MovableObject {
       this.isHurtAnimationPlaying = false;
    }
 
+
    move() {
       this.moveVertically();
       this.moveHorizontally();
    }
+
 
    moveVertically() {
       this.y += this.verticalSpeed * this.verticalDirection;
@@ -140,12 +146,14 @@ class Endboss extends MovableObject {
       }
    }
 
+
    moveHorizontally() {
       this.x -= this.horizontalSpeed;
       if (this.isHorizontalOutOfRange()) {
          this.resetHorizontalPosition();
       }
    }
+
 
    hitVerticalMovementLimit() {
       return (
@@ -154,13 +162,16 @@ class Endboss extends MovableObject {
       );
    }
 
+
    isHorizontalOutOfRange() {
       return this.x < 100;
    }
 
+
    resetHorizontalPosition() {
       this.x = this.originalX;
    }
+
 
    checkForCharacter() {
       if (!this.world || !this.world.character) {
@@ -172,6 +183,7 @@ class Endboss extends MovableObject {
          }
       }, 1000 / 15);
    }
+
 
    introduceEndboss() {
       clearInterval(this.checkInterval);
@@ -185,9 +197,10 @@ class Endboss extends MovableObject {
          } else {
             this.isIntroduced = true;
             this.animate();
-         }
+         }     
       }, 1000 / 8);
    }
+
 
    animate() {
       if (this.isIntroduced) {
@@ -203,6 +216,7 @@ class Endboss extends MovableObject {
       }
    }
 
+
    setupMovementAnimation() {
       this.animationInterval = setInterval(() => {
          if (this.isDead()) {
@@ -214,6 +228,7 @@ class Endboss extends MovableObject {
          }
       }, 1000 / 10);
    }
+
 
    setupAttackAnimation() {
       this.attackTimeout = setTimeout(() => {
@@ -231,6 +246,7 @@ class Endboss extends MovableObject {
       }, 1000);
    }
 
+
    playHurtAnimation() {
       if (this.currentHurtImage < this.IMAGES_HURT.length) {
          let path = this.IMAGES_HURT[this.currentHurtImage];
@@ -245,6 +261,7 @@ class Endboss extends MovableObject {
          }
       }
    }
+
 
    playAttackAnimation() {
       let i = 0;
@@ -265,6 +282,7 @@ class Endboss extends MovableObject {
          }
       }, 100);
    }
+
 
    clearIntervals() {
       clearInterval(this.moveInterval);

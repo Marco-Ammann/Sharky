@@ -17,10 +17,12 @@ function clearAllTimeOuts() {
    globalTimeouts = [];
 }
 
+
 function clearAllIntervals() {
    globalIntervals.forEach((id) => clearInterval(id));
    globalIntervals = [];
 }
+
 
 function clearAnimationFrame() {
    if (animationFrameId) {
@@ -28,6 +30,7 @@ function clearAnimationFrame() {
       animationFrameId = null;
    }
 }
+
 
 function startGame() {
    document.getElementById('main-menu').style.display = 'none';
@@ -44,6 +47,7 @@ function startGame() {
    });
 }
 
+
 function checkIfCharacterIsAlive() {
    let characterCheckInterval = setInterval(() => {
       if (world.character.healthPoints == 0 && checkIntervalOn) {
@@ -58,6 +62,7 @@ function checkIfCharacterIsAlive() {
    globalIntervals.push(characterCheckInterval);
 }
 
+
 function init() {
    canvas = document.getElementById('canvas');
    keyboard = new Keyboard();
@@ -71,9 +76,11 @@ function init() {
    }
 }
 
+
 function createNewWorld() {
    world = new World(canvas, keyboard, createLevel1());
 }
+
 
 function switchSoundMute() {
    const button = document.getElementById('musicButton');
@@ -81,6 +88,7 @@ function switchSoundMute() {
    musicIsPlaying ? world.startMusic() : world.stopMusic();
    button.textContent = musicIsPlaying ? 'stop music' : 'start music';
 }
+
 
 function resetGame() {
    clearAll();
@@ -103,6 +111,7 @@ function resetGame() {
    }, 500);
    checkIfCharacterIsAlive();
 }
+
 
 function clearAll() {
    clearAllTimeOuts();

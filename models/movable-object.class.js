@@ -43,7 +43,7 @@ class MovableObject extends DrawableObject {
           this.attack_sound.currentTime = 0;
       }, 370);
       globalTimeouts.push(attackSoundTimeout);
-  }
+   }
 
 
   playImpactSound() {
@@ -55,7 +55,7 @@ class MovableObject extends DrawableObject {
        this.impact_sound.currentTime = 0;
    }, 1000);
    globalTimeouts.push(impactSoundTimeout);
-  }
+   }
 
 
    getDamage() {
@@ -68,32 +68,39 @@ class MovableObject extends DrawableObject {
           }, 500);
           globalTimeouts.push(damageTimeout);
       }
-  }
+   }
 
-  isDead() {
+
+   isDead() {
    return this.healthPoints <= 0;
-}
+   }
+
 
    isHurt() {
       let timepassed = new Date().getTime() - this.lastHit;
       return timepassed < 500;
-  }
+   }
+
 
    moveLeft() {
       this.x -= this.speed;
    }
 
+
    moveRight() {
       this.x += this.speed;
    }
+
 
    moveUp() {
       this.y -= this.speed;
    }
 
+
    moveDown() {
       this.y += this.speed;
    }
+
 
    playAnimation(images) {
       if (this.isDead()) {
@@ -120,6 +127,7 @@ class MovableObject extends DrawableObject {
       }
    }
 
+
    sink() {
       let sinkInterval = setInterval(() => {         
          if (this.y <= this.floorY) {
@@ -129,8 +137,6 @@ class MovableObject extends DrawableObject {
       }, 1000 / 60);
       globalIntervals.push(sinkInterval);
    }
-
-
 
 
    isColliding(obj) {
@@ -145,6 +151,7 @@ class MovableObject extends DrawableObject {
             obj.y + obj.collisionBoxOffsetY + obj.collisionBoxHeight
       );
    }
+
 
    stopAnimations() {
       clearInterval(this.animationInterval);
