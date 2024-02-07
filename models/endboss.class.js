@@ -86,6 +86,7 @@ class Endboss extends MovableObject {
    introduce_sound = new Audio('audio/big_splash_sound.mp3');
    bite_sound = new Audio('audio/orca_bite.mp3');
 
+   
    constructor() {
       super().loadImage('img/2.Enemy/3.Final_Enemy/2.floating/1.png');
       this.loadImages(this.IMAGES_SWIM);
@@ -99,9 +100,11 @@ class Endboss extends MovableObject {
       }
    }
 
+
    isDead() {
       return this.healthPoints === 0;
    }
+
 
    getDamage() {
       if (!this.immunity && this.healthPoints > 0) {
@@ -118,11 +121,13 @@ class Endboss extends MovableObject {
       }
    }
 
+
    setHurtedState() {
       this.isHurt = true;
       this.isHurtAnimationPlaying = true;
       this.immunity = true;
    }
+
 
    unsetHurtedState() {
       this.immunity = false;
@@ -130,10 +135,12 @@ class Endboss extends MovableObject {
       this.isHurtAnimationPlaying = false;
    }
 
+
    move() {
       this.moveVertically();
       this.moveHorizontally();
    }
+
 
    moveVertically() {
       this.y += this.verticalSpeed * this.verticalDirection;
@@ -142,12 +149,14 @@ class Endboss extends MovableObject {
       }
    }
 
+
    moveHorizontally() {
       this.x -= this.horizontalSpeed;
       if (this.isHorizontalOutOfRange()) {
          this.resetHorizontalPosition();
       }
    }
+
 
    hitVerticalMovementLimit() {
       return (
@@ -156,13 +165,16 @@ class Endboss extends MovableObject {
       );
    }
 
+
    isHorizontalOutOfRange() {
       return this.x < 100;
    }
 
+
    resetHorizontalPosition() {
       this.x = this.originalX;
    }
+
 
    checkForCharacter() {
       if (!this.world || !this.world.character) {
@@ -181,6 +193,7 @@ class Endboss extends MovableObject {
       }, 1000 / 15);
    }
 
+
    playIntroduceSound() {
       this.introduce_sound.currentTime = 0.07;
       this.introduce_sound.volume = 0.7;
@@ -188,12 +201,14 @@ class Endboss extends MovableObject {
       this.introduce_sound.play();
    }
 
+
    playBiteSound() {
       this.bite_sound.currentTime = 0.3;
       this.bite_sound.volume = 0.15;
       this.bite_sound.loop = false;
       this.bite_sound.play();
    }
+
 
    introduceEndboss() {
       clearInterval(this.checkInterval);
@@ -218,6 +233,7 @@ class Endboss extends MovableObject {
       }, 1000 / 8);
    }
 
+
    animate() {
       if (this.isIntroduced) {
          clearInterval(this.introduceInterval);
@@ -232,6 +248,7 @@ class Endboss extends MovableObject {
       }
    }
 
+
    movementAnimation() {
       this.animationInterval = setInterval(() => {
          if (this.isDead()) {
@@ -244,6 +261,7 @@ class Endboss extends MovableObject {
          }
       }, 1000 / 10);
    }
+
 
    attack() {
       if (!this.isDead()) {
@@ -272,6 +290,7 @@ class Endboss extends MovableObject {
       }
    }
 
+
    playAttackAnimation() {
       let i = 0;
       this.isAttacking = true;
@@ -296,6 +315,7 @@ class Endboss extends MovableObject {
       }, 100);
       globalIntervals.push(attackAnimation);
    }
+
 
    clearIntervals() {
       clearInterval(this.moveInterval);
