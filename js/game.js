@@ -18,10 +18,12 @@ function clearAllTimeOuts() {
    globalTimeouts = [];
 }
 
+
 function clearAllIntervals() {
    globalIntervals.forEach((id) => clearInterval(id));
    globalIntervals = [];
 }
+
 
 function clearAnimationFrame() {
    if (animationFrameId) {
@@ -29,6 +31,7 @@ function clearAnimationFrame() {
       animationFrameId = null;
    }
 }
+
 
 function startGame() {
    document.getElementById('main-menu').style.display = 'none';
@@ -46,6 +49,7 @@ function startGame() {
    });
 }
 
+
 function checkIfCharacterOrBossIsDead() {
    let checkInterval = setInterval(() => {
       if (world.character.healthPoints <= 0 && checkIntervalOn) {
@@ -53,12 +57,12 @@ function checkIfCharacterOrBossIsDead() {
 
          world.stopMusic();
          setTimeout(() => {
-            document.getElementById('gameOverScreen').style.display = 'flex';
             checkIntervalOn = false;
-
+            
             setTimeout(() => {
+               document.getElementById('gameOverScreen').style.display = 'flex';
                clearAll();
-            }, 3000);
+            }, 2500);
          }, 500);
       }
       if (!checkIntervalOn) {
@@ -81,6 +85,7 @@ function checkIfCharacterOrBossIsDead() {
    globalIntervals.push(checkInterval);
 }
 
+
 function init() {
    canvas = document.getElementById('canvas');
    keyboard = new Keyboard();
@@ -94,9 +99,11 @@ function init() {
    }
 }
 
+
 function createNewWorld() {
    world = new World(canvas, keyboard, createLevel1());
 }
+
 
 function switchSoundMute() {
    const button = document.getElementById('musicButton');
@@ -104,6 +111,7 @@ function switchSoundMute() {
    musicIsPlaying ? world.startMusic() : world.stopMusic();
    button.textContent = musicIsPlaying ? 'stop music' : 'start music';
 }
+
 
 function switchPlayPause() {
    const endboss = world.level.enemies.find(enemy => enemy instanceof Endboss);
@@ -119,6 +127,7 @@ function switchPlayPause() {
    }
    document.getElementById('playButton').textContent = gameIsPaused ? 'resume game' : 'pause game';
 }
+
 
 function pauseGame() {
    world.isGamePaused = true;
@@ -144,9 +153,11 @@ function pauseGame() {
    }
 }
 
+
 function resumeGame() {
    world.isGamePaused = false;
    clearAll();
+   checkIfCharacterOrBossIsDead();
    console.log('Game resumed');
    world.character.animate();
    world.level.enemies.forEach((enemy) => {
@@ -163,6 +174,7 @@ function resumeGame() {
    requestAnimationFrame(world.draw.bind(world));
 }
 
+
 function resetGame() {
    clearAll();
    document.getElementById('gameOverScreen').style.display = 'none';
@@ -175,8 +187,7 @@ function resetGame() {
    if (world && world.level && world.level.enemies) {
       world.level.enemies = [];
    }
-   world.handleBossDefeat();
-
+   
    setTimeout(() => {
       gameRestartet = true;
       checkIntervalOn = true;
@@ -185,6 +196,7 @@ function resetGame() {
    }, 500);
    checkIfCharacterOrBossIsDead();
 }
+
 
 function clearAll() {
    clearAllTimeOuts();

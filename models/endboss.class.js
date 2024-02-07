@@ -221,8 +221,8 @@ class Endboss extends MovableObject {
    animate() {
       if (this.isIntroduced) {
          clearInterval(this.introduceInterval);
-         this.setupMovementAnimation();
-         this.setupAttackAnimation();
+         this.movementAnimation();
+         this.attack();
 
          if (!this.isDead()) {
             this.moveInterval = setInterval(() => {
@@ -232,7 +232,7 @@ class Endboss extends MovableObject {
       }
    }
 
-   setupMovementAnimation() {
+   movementAnimation() {
       this.animationInterval = setInterval(() => {
          if (this.isDead()) {
             this.playAnimation(this.IMAGES_DEAD);
@@ -245,24 +245,18 @@ class Endboss extends MovableObject {
       }, 1000 / 10);
    }
 
-   setupAttackAnimation() {
+   attack() {
       if (!this.isDead()) {
          this.attackInterval = setInterval(() => {
-            if (!this.isAttacking && !this.isHurt && !this.isHurtAnimationPlaying && this.checkIfCanAttack()) {
+            if (!this.isAttacking && !this.isHurt && !this.isHurtAnimationPlaying) {
                this.playAttackAnimation();
                this.playBiteSound();
             }
-         }, 2000);
+         }, 2500);
       }
    }
 
-   checkIfCanAttack() {
-      if (this.world.isGamePaused) {
-         return false;
-      }
-      return true;
-   }
-
+   
    playHurtAnimation() {
       if (this.currentHurtImage < this.IMAGES_HURT.length) {
          let path = this.IMAGES_HURT[this.currentHurtImage];
@@ -279,10 +273,6 @@ class Endboss extends MovableObject {
    }
 
    playAttackAnimation() {
-      if (!this.checkIfCanAttack()) {
-         return;
-     }
-
       let i = 0;
       this.isAttacking = true;
       console.log('attack start');
@@ -311,8 +301,6 @@ class Endboss extends MovableObject {
       clearInterval(this.moveInterval);
       clearInterval(this.animationInterval);
       clearInterval(this.attackAnimation);
-      clearTimeout(this.attackTimeout);
-      clearTimeout(this.timeoutToSetAttackingToFalse);
       clearInterval(this.attackInterval);
       clearInterval(this.checkForCharacter);
    }
