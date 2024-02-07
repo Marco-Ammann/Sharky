@@ -18,6 +18,8 @@ class World {
    lastCollisionCheck = 0;
    collisionCheckInterval = 1000 / 20;
    isGameOver = false;
+   isGamePaused = false;
+
    gameOverSound = new Audio('audio/death_sound.mp3');
    gameWonSound = new Audio('audio/win_sound.mp3');
    bossBattleSound = new Audio('audio/boss_battle_music.mp3');
@@ -149,12 +151,14 @@ class World {
       this.gameMusic.volume = 0.05;
       this.gameMusic.loop = true;
       this.gameMusic.play();
+      musicIsPlaying = true;
    }
 
    stopMusic() {
       if (this.gameMusic) {
          this.gameMusic.pause();
          this.gameMusic.currentTime = 0;
+         musicIsPlaying = false;
       }
    }
 

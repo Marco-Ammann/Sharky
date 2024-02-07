@@ -47,4 +47,8 @@ class Poison extends MovableObject {
          this.playAnimation(this.IMAGES_POISON);
       }, 1000 / 10);
    }
+
+   clearIntervals() {
+      clearInterval(this.animationInterval);
+   }
 }

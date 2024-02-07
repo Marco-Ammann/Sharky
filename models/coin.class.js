@@ -47,4 +47,8 @@ class Coin extends MovableObject {
            this.playAnimation(this.IMAGES_COIN);
         }, 1000 / 6);
      }
+
+     clearIntervals() {
+        clearInterval(this.animationInterval);
+     }
 }

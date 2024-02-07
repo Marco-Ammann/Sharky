@@ -2,7 +2,7 @@ class Endboss extends MovableObject {
    world;
    height = 500;
    width = this.height * 1.168;
-   x = 5800;
+   x = 5800 - 5000;
    y = -605;
    collisionBoxWidth = this.width * 0.75;
    collisionBoxHeight = this.height * 0.3;
@@ -94,6 +94,9 @@ class Endboss extends MovableObject {
       this.loadImages(this.IMAGES_DEAD);
       this.loadImages(this.IMAGES_INTRODUCION);
       this.checkForCharacter();
+      if (this.isIntroduced) {
+         this.animate();
+      }
    }
 
    isDead() {
@@ -165,6 +168,12 @@ class Endboss extends MovableObject {
       if (!this.world || !this.world.character) {
          return;
       }
+
+      if (this.isIntroduced) {
+         this.animate();
+         return;
+      }
+
       this.checkInterval = setInterval(() => {
          if (Math.abs(this.x - this.world.character.x) < 450 && !this.isIntroduced) {
             this.introduceEndboss();
@@ -202,6 +211,8 @@ class Endboss extends MovableObject {
             this.playAnimation(this.IMAGES_INTRODUCION);
          } else {
             this.isIntroduced = true;
+         }
+         if (this.isIntroduced) {
             this.animate();
          }
       }, 1000 / 8);
@@ -235,20 +246,21 @@ class Endboss extends MovableObject {
    }
 
    setupAttackAnimation() {
-      this.attackTimeout = setTimeout(() => {
-         if (!this.isDead()) {
-            this.attackInterval = setInterval(() => {
-               if (!this.isAttacking && !this.isHurt && !this.isHurtAnimationPlaying) {
-                  this.isAttacking = true;
-                  this.playAttackAnimation();
-                  this.playBiteSound();
-                  this.timeoutToSetAttackingToFalse = setTimeout(() => {
-                     this.isAttacking = false;
-                  }, this.IMAGES_ATTACK.length * 100);
-               }
-            }, 2000);
-         }
-      }, 1000);
+      if (!this.isDead()) {
+         this.attackInterval = setInterval(() => {
+            if (!this.isAttacking && !this.isHurt && !this.isHurtAnimationPlaying && this.checkIfCanAttack()) {
+               this.playAttackAnimation();
+               this.playBiteSound();
+            }
+         }, 2000);
+      }
+   }
+
+   checkIfCanAttack() {
+      if (this.world.isGamePaused) {
+         return false;
+      }
+      return true;
    }
 
    playHurtAnimation() {
@@ -267,7 +279,13 @@ class Endboss extends MovableObject {
    }
 
    playAttackAnimation() {
+      if (!this.checkIfCanAttack()) {
+         return;
+     }
+
       let i = 0;
+      this.isAttacking = true;
+      console.log('attack start');
       const attackAnimation = setInterval(() => {
          if (i < this.IMAGES_ATTACK.length) {
             let path = this.IMAGES_ATTACK[i];
@@ -280,18 +298,22 @@ class Endboss extends MovableObject {
             this.collisionBoxOffsetX = 50;
             this.verticalSpeed = 1;
             this.x += 150;
+            this.isAttacking = false;
+            console.log('attack end');
 
             clearInterval(attackAnimation);
          }
       }, 100);
+      globalIntervals.push(attackAnimation);
    }
 
    clearIntervals() {
       clearInterval(this.moveInterval);
       clearInterval(this.animationInterval);
       clearInterval(this.attackAnimation);
-      clearInterval(this.attackTimeout);
-      clearInterval(this.timeoutToSetAttackingToFalse);
+      clearTimeout(this.attackTimeout);
+      clearTimeout(this.timeoutToSetAttackingToFalse);
       clearInterval(this.attackInterval);
+      clearInterval(this.checkForCharacter);
    }
 }

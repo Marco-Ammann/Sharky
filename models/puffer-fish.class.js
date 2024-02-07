@@ -109,12 +109,12 @@ class PufferFish extends MovableObject {
 
          if (!this.deathHandled) {
 
-         this.clearAllIntervals();
+         this.clearIntervals();
          this.healthPoints = 0;
          this.img.src = 'img/2.Enemy/1.Puffer_fish/4.DIE/3.png';
 
          this.deathHandled = true;
-         this.clearAllIntervals();
+         this.clearIntervals();
          let deathInterval = setInterval(() => {
             this.y -= 3;
             this.collisionBoxOffsetY = -500;
@@ -127,6 +127,7 @@ class PufferFish extends MovableObject {
          this.moveLeft();
       }, 1000 / 60);
       globalIntervals.push(movementIntervalId);
+      this.movementIntervalId = movementIntervalId;
       
       let verticalMovementIntervalId = setInterval(() => {
          this.direction = this.direction * -1;
@@ -151,7 +152,7 @@ class PufferFish extends MovableObject {
    }
 
 
-   clearAllIntervals() {
+   clearIntervals() {
       clearInterval(this.movementIntervalId);
       clearInterval(this.verticalMovementIntervalId);
       clearInterval(this.animationIntervalId);
