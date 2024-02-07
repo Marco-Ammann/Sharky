@@ -15,7 +15,7 @@ class Endboss extends MovableObject {
    isHurt = false;
    isHurtAnimationPlaying = false;
 
-   healthPoints = 500;
+   healthPoints = 300;
 
    isIntroduced = false;
 
@@ -187,6 +187,10 @@ class Endboss extends MovableObject {
 
    introduceEndboss() {
       clearInterval(this.checkInterval);
+      this.world.bossHasAppeared = true;
+      if(this.world.bossHasAppeared) {
+         this.world.switchToBossMusic();
+      }
 
       this.introduceInterval = setInterval(() => {
          this.y = -105;

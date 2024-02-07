@@ -7,6 +7,7 @@ class World {
    coinBar = new CoinBar();
 
    throwables = [];
+   bossHasAppeared = false;
 
    canvas;
    ctx;
@@ -18,6 +19,8 @@ class World {
    isGameOver = false;
    gameOverSound = new Audio('audio/death_sound.mp3');
    gameWonSound = new Audio('audio/win_sound.mp3');
+   bossBattleSound = new Audio('audio/boss_battle_music.mp3');
+   gameMusic;
 
    inventory = {};
 
@@ -43,8 +46,8 @@ class World {
       this.level.collectables.forEach((collectable) => {
          this.setWorld(collectable);
       });
+      this.gameMusic = this.level.music;
    }
-
 
    checkCollisions() {
       this.level.enemies.forEach((enemy) => {
@@ -82,7 +85,6 @@ class World {
       });
    }
 
-
    checkBubbleCollisions() {
       this.throwables.forEach((bubble, bubbleIndex) => {
          this.level.enemies.forEach((enemy, enemyIndex) => {
@@ -96,6 +98,7 @@ class World {
                      enemy.animate();
                      if (enemy.healthPoints == 0) {
                         this.character.clearIntervals();
+                        this.stopMusic();
                         this.playWonSound();
                      }
                   } else {
@@ -114,39 +117,53 @@ class World {
       });
    }
 
-
    playGameOverSound() {
       this.gameOverSound.volume = 0.15;
       this.gameOverSound.loop = false;
       this.gameOverSound.play();
    }
 
-
    playWonSound() {
       this.gameWonSound.volume = 0.15;
       this.gameWonSound.loop = false;
       this.gameWonSound.play();
+      setTimeout(() => {
+         this.handleBossDefeat();
+      }, 4000);
    }
-
 
    startMusic() {
-      this.level.music.volume = 0.05;
-      this.level.music.loop = true;
-      this.level.music.play();
+      this.stopMusic();
+      this.gameMusic.volume = 0.05;
+      this.gameMusic.loop = true;
+      this.gameMusic.play();
    }
-
 
    stopMusic() {
-      this.level.music.volume = 0.05;
-      this.level.music.loop = true;
-      this.level.music.pause();
+      if (this.gameMusic) {
+         this.gameMusic.pause();
+         this.gameMusic.currentTime = 0;
+      }
    }
 
+   switchToBossMusic() {
+      this.stopMusic();
+      this.gameMusic = this.bossBattleSound;
+      this.startMusic();         
+   }
+
+   handleBossDefeat() {
+      this.stopMusic();
+      this.gameMusic = this.level.music;
+      setTimeout(() => {
+         
+         this.startMusic();
+      }, 500);
+   }
 
    setWorld(obj) {
       obj.world = this;
    }
-
 
    draw() {
       let now = Date.now();
@@ -185,13 +202,11 @@ class World {
       animationFrameId = requestAnimationFrame(() => this.draw());
    }
 
-
    addObjectsToMap(objects) {
       objects.forEach((o) => {
          this.addToMap(o);
       });
    }
-
 
    addToMap(MovObj) {
       if (MovObj.otherDirection) {
@@ -206,7 +221,6 @@ class World {
       }
    }
 
-
    flipImage(MovObj) {
       this.ctx.save();
       this.ctx.translate(MovObj.width, 0);
@@ -214,7 +228,6 @@ class World {
 
       MovObj.x = MovObj.x * -1;
    }
-
 
    flipImageBack(MovObj) {
       MovObj.x = MovObj.x * -1;

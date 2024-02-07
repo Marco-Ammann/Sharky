@@ -17,20 +17,24 @@ body {
 }
 
 #title {
+    color: #531A82;
     font-size: 3rem;
-    position: absolute;
-    top: 3rem;
-    left: center;
+    margin: 2rem;
+    filter: brightness(1.3) drop-shadow(0 0 10px #fff);
 }
 
 .startButton-image {
-    height: 90px;
+    height: 70px;
+    transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.startButton-image:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1) drop-shadow(0 0 8px #fff);
 }
 
 .keybindings {
-    height: 280px;
-    position: absolute;
-    bottom: 6rem;
+    height: 240px;
 }
 
 .d-none {
@@ -82,10 +86,6 @@ button:active {
     height: 100vh;
     width: 720px;
     background-image: linear-gradient(#40C5DB90 5%, #35459690 50%, #5a1d9690 90%);
-}
-
-#main-menu h1 {
-    color: #fff;
 }
 
 #start-game {

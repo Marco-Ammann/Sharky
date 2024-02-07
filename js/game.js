@@ -36,6 +36,7 @@ function startGame() {
    document.getElementById('main-menu').style.display = 'none';
    document.getElementById('canvas').style.display = 'block';
    document.getElementById('musicButton').style.display = 'block';
+   document.getElementById('title').style.display = 'none';
    switchSoundMute();
    checkIfCharacterIsAlive();
    world.level.enemies.forEach((enemy) => {
