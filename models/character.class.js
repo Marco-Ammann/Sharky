@@ -10,6 +10,7 @@ class Character extends MovableObject {
    collisionBoxOffsetX = 55;
    collisionBoxOffsetY = 108;
    floorY = 380;
+   damage = 20;
 
    bubbleCooldown = false;
 
@@ -79,6 +80,7 @@ class Character extends MovableObject {
 
    swim_sound = new Audio('audio/swim_sound.mp3');
    attack_sound = new Audio('audio/bubble_attack_sound.mp3');
+   hit_sound = new Audio('audio/character_got_hit.mp3');
 
    constructor() {
       super().loadImage('img/1.Sharkie/1.IDLE/1.png');
@@ -106,6 +108,12 @@ class Character extends MovableObject {
    playSwimSound() {
       this.swim_sound.play();
       this.swim_sound.volume = 0.15;
+   }
+
+   playGotHitSound() {
+      this.hit_sound.loop = false;
+      this.hit_sound.play();
+      this.hit_sound.volume = 0.15;
    }
 
 
@@ -195,9 +203,11 @@ class Character extends MovableObject {
          );
          this.world.throwables.push(bubble);
          if (this.world.inventory.poisonBottles > 0) {
+            this.damage = 100;
             this.world.inventory.poisonBottles -= 1;
             this.world.poisonBar.setPercentage(this.world.inventory.poisonBottles * 20);
          } else if (this.world.inventory.poisonBottles <= 0) {
+            this.damage = 20;
             this.world.inventory.poisonBottles = 0;
             this.world.poisonBar.setPercentage(0);
          }

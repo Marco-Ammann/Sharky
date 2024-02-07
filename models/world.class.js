@@ -8,6 +8,7 @@ class World {
 
    throwables = [];
    bossHasAppeared = false;
+   endbossDefeated = false;
 
    canvas;
    ctx;
@@ -51,8 +52,16 @@ class World {
 
    checkCollisions() {
       this.level.enemies.forEach((enemy) => {
-         if (this.character.isColliding(enemy) && this.character.healthPoints > 0) {
-            this.character.getDamage();
+         if (
+            this.character.isColliding(enemy) &&
+            this.character.healthPoints > 0 &&
+            !this.character.isHurt()
+         ) {
+            this.character.getDamage(enemy);
+            this.character.playGotHitSound();
+            console.log('you got damaged for ', enemy.damage, 'by the enemy');
+            console.log('HP left: ', this.character.healthPoints);
+
             this.statusBar.setPercentage(this.character.healthPoints);
             if (this.character.healthPoints == 0) {
                this.playGameOverSound();
@@ -61,8 +70,10 @@ class World {
       });
 
       this.level.barriers.forEach((barrier) => {
-         if (this.character.isColliding(barrier)) {
-            this.character.getDamage();
+         if (this.character.isColliding(barrier) && !this.character.isHurt() && !this.character.isHurt()) {
+            this.character.getDamage(barrier);
+            console.log('you got damaged for ', barrier.damage, ' by the barrier');
+            console.log('HP left: ', this.character.healthPoints);
             this.statusBar.setPercentage(this.character.healthPoints);
             if (this.character.healthPoints == 0) {
                this.playGameOverSound();
@@ -90,7 +101,7 @@ class World {
          this.level.enemies.forEach((enemy, enemyIndex) => {
             if (bubble.isColliding(enemy)) {
                this.character.playImpactSound();
-               enemy.getDamage();
+               enemy.getDamage(this.character);
                bubble.removeBubble();
 
                if (enemy.isDead()) {
@@ -149,14 +160,13 @@ class World {
    switchToBossMusic() {
       this.stopMusic();
       this.gameMusic = this.bossBattleSound;
-      this.startMusic();         
+      this.startMusic();
    }
 
    handleBossDefeat() {
       this.stopMusic();
       this.gameMusic = this.level.music;
       setTimeout(() => {
-         
          this.startMusic();
       }, 500);
    }

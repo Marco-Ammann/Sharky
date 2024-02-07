@@ -1,4 +1,5 @@
 class BarrierStone extends MovableObject {
+   damage = 5;
    constructor() {
       super();
       this.loadImage('img/3.Background/Barrier/2.png');
@@ -16,6 +17,7 @@ class BarrierStone extends MovableObject {
 
 
 class BarrierPillar extends MovableObject {
+   damage = 5;
    constructor() {
       super();
       this.loadImage('img/3.Background/Barrier/3.png');

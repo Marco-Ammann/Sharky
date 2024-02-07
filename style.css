@@ -106,12 +106,24 @@ button:active {
     height: 100vh;
 }
 
-#tryAgainImage {
+#gameWonScreen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    background-image: linear-gradient(#40C5DB90 5%, #35459690 50%, #5a1d9690 90%);
+    width: 720px;
+    height: 480px;
+    position: absolute;
+}
+
+.tryAgainImage {
     height: 2.5rem;
     transition: transform 0.3s ease, filter 0.3s ease;
 }
 
-#tryAgainImage:hover {
+.tryAgainImage:hover {
     transform: scale(1.05);
     filter: brightness(1.1) drop-shadow(0 0 8px #fff);
 }
@@ -120,6 +132,18 @@ button:active {
     height: 3rem;
 }
 
+#gameWonImage {
+    height: 100%;
+    width: 100%;
+}
+
 #restart {
     cursor: pointer;
+}
+
+#restartIfWon {
+    cursor: pointer;
+    position: absolute;
+    top: center;
+    margin-bottom: 4rem;
 }

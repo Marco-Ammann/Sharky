@@ -3,7 +3,7 @@ let world;
 let keyboard;
 
 let musicIsPlaying = false;
-let characterCheckInterval;
+let checkInterval;
 let checkIntervalOn = true;
 
 let globalTimeouts = [];
@@ -38,7 +38,7 @@ function startGame() {
    document.getElementById('musicButton').style.display = 'block';
    document.getElementById('title').style.display = 'none';
    switchSoundMute();
-   checkIfCharacterIsAlive();
+   checkIfCharacterOrBossIsDead();
    world.level.enemies.forEach((enemy) => {
       if (enemy instanceof Endboss) {
          enemy.checkForCharacter();
@@ -49,18 +49,36 @@ function startGame() {
 }
 
 
-function checkIfCharacterIsAlive() {
-   let characterCheckInterval = setInterval(() => {
-      if (world.character.healthPoints == 0 && checkIntervalOn) {
-         document.getElementById('gameOverScreen').style.display = 'flex';
+function checkIfCharacterOrBossIsDead() {
+   let checkInterval = setInterval(() => {
+      if (world.character.healthPoints <= 0 && checkIntervalOn) {
          switchSoundMute();
-         checkIntervalOn = false;
-         clearAll();
-      } else if (!checkIntervalOn) {
-         clearInterval(characterCheckInterval);
+         setTimeout(() => {            
+            document.getElementById('gameOverScreen').style.display = 'flex';
+            checkIntervalOn = false;
+
+            setTimeout(() => {               
+               clearAll();
+            }, 3000);
+         }, 500);
+      } 
+      if (!checkIntervalOn) {
+         clearInterval(checkInterval);
+      }
+
+      if(world.endbossDefeated && checkIntervalOn) {
+         switchSoundMute();
+         setTimeout(() => {            
+            document.getElementById('gameWonScreen').style.display = 'flex';
+            checkIntervalOn = false;
+
+            setTimeout(() => {               
+               clearAll();
+            }, 3000);
+         }, 500);
       }
    }, 1000 / 10);
-   globalIntervals.push(characterCheckInterval);
+   globalIntervals.push(checkInterval);
 }
 
 
@@ -94,6 +112,7 @@ function switchSoundMute() {
 function resetGame() {
    clearAll();
    document.getElementById('gameOverScreen').style.display = 'none';
+   document.getElementById('gameWonScreen').style.display = 'none';
    
    if (world.character) {
       world.character.clearIntervals();
@@ -102,6 +121,7 @@ function resetGame() {
    if (world && world.level && world.level.enemies) {
       world.level.enemies = [];
    }
+   world.handleBossDefeat();
    
    setTimeout(() => {
       gameRestartet = true;
@@ -110,7 +130,7 @@ function resetGame() {
       
       init();
    }, 500);
-   checkIfCharacterIsAlive();
+   checkIfCharacterOrBossIsDead();
 }
 
 

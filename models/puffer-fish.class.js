@@ -12,6 +12,7 @@ class PufferFish extends MovableObject {
    world;
    direction = 1;
    deathHandled;
+   damage = 20;
 
    characterCenterY;
    centerY;

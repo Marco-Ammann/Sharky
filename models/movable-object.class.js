@@ -10,6 +10,7 @@ class MovableObject extends DrawableObject {
    dead = false;
    isAttacking = false;
    floorY = 480;
+   damage;
 
    impact_sound = new Audio ('audio/bubble_impact_sound.mp3');
 
@@ -58,9 +59,9 @@ class MovableObject extends DrawableObject {
    }
 
 
-   getDamage() {
+   getDamage(dmgSource) {
       if (!this.immunity && this.healthPoints > 0) {
-          this.healthPoints -= this.damage;
+          this.healthPoints -= dmgSource.damage;
           this.immunity = true;
           this.lastHit = new Date().getTime();
           let damageTimeout = setTimeout(() => {
@@ -78,7 +79,7 @@ class MovableObject extends DrawableObject {
 
    isHurt() {
       let timepassed = new Date().getTime() - this.lastHit;
-      return timepassed < 500;
+      return timepassed <= 500;
    }
 
 
