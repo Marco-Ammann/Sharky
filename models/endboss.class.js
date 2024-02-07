@@ -109,27 +109,20 @@ class Endboss extends MovableObject {
    getDamage() {
       if (!this.immunity && this.healthPoints > 0) {
          this.healthPoints -= this.world.character.damage;
-         console.log('Boss hit for = ' + this.world.character.damage + 'damage');
-         console.log(this.world.inventory.poisonBottles);
-
-         console.log('Boss HP = ' + this.healthPoints);
-         this.setHurtedState();
-         clearInterval(this.IMAGES_ATTACK.attackInterval);
-         setTimeout(() => {
-            this.unsetHurtedState();
-         }, 600);
+         this.setHurtState();
+         setTimeout(() => this.unsetHurtState(), 600);
       }
    }
 
 
-   setHurtedState() {
+   setHurtState() {
       this.isHurt = true;
       this.isHurtAnimationPlaying = true;
       this.immunity = true;
    }
 
 
-   unsetHurtedState() {
+   unsetHurtState() {
       this.immunity = false;
       this.isHurt = false;
       this.isHurtAnimationPlaying = false;
@@ -254,6 +247,7 @@ class Endboss extends MovableObject {
          if (this.isDead()) {
             this.playAnimation(this.IMAGES_DEAD);
             this.world.endbossDefeated = true;
+            this.clearIntervals();
          } else if (this.isHurt && !this.isAttacking) {
             this.playHurtAnimation();
          } else if (!this.isAttacking && !this.isHurtAnimationPlaying) {
@@ -274,20 +268,25 @@ class Endboss extends MovableObject {
       }
    }
 
-   
+
    playHurtAnimation() {
-      if (this.currentHurtImage < this.IMAGES_HURT.length) {
-         let path = this.IMAGES_HURT[this.currentHurtImage];
-         this.img = this.imageCache[path];
-         this.currentHurtImage++;
-      } else {
+      this.playAnimationOnce(this.IMAGES_HURT, () => {
          this.currentHurtImage = 0;
-         if (this.isAttacking) {
-            this.playAttackAnimation();
+         this.isHurtAnimationPlaying = false;
+      });
+   }
+
+
+   playAnimationOnce(images, callback) {
+      let i = 0;
+      const interval = setInterval(() => {
+         if (i < images.length) {
+            this.img = this.imageCache[images[i++]];
          } else {
-            this.playAnimation(this.IMAGES_SWIM);
+            clearInterval(interval);
+            callback();
          }
-      }
+      }, 100);
    }
 
 
