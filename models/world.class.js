@@ -59,11 +59,11 @@ class World {
          ) {
             this.character.getDamage(enemy);
             this.character.playGotHitSound();
-            console.log('you got damaged for ', enemy.damage, 'by the enemy');
+            console.log('damage recieved: ', enemy.damage, 'by the enemy');
             console.log('HP left: ', this.character.healthPoints);
 
             this.statusBar.setPercentage(this.character.healthPoints);
-            if (this.character.healthPoints == 0) {
+            if (this.character.healthPoints <= 0) {
                this.playGameOverSound();
             }
          }
@@ -72,10 +72,11 @@ class World {
       this.level.barriers.forEach((barrier) => {
          if (this.character.isColliding(barrier) && !this.character.isHurt() && !this.character.isHurt()) {
             this.character.getDamage(barrier);
-            console.log('you got damaged for ', barrier.damage, ' by the barrier');
+            this.character.playGotHitSound();
+            console.log('damage recieved: ', barrier.damage, ' by the barrier');
             console.log('HP left: ', this.character.healthPoints);
             this.statusBar.setPercentage(this.character.healthPoints);
-            if (this.character.healthPoints == 0) {
+            if (this.character.healthPoints <= 0) {
                this.playGameOverSound();
             }
          }
@@ -107,7 +108,7 @@ class World {
                if (enemy.isDead()) {
                   if (enemy instanceof Endboss) {
                      enemy.animate();
-                     if (enemy.healthPoints == 0) {
+                     if (enemy.healthPoints <= 0) {
                         this.character.clearIntervals();
                         this.stopMusic();
                         this.playWonSound();

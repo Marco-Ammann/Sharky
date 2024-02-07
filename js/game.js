@@ -52,7 +52,9 @@ function startGame() {
 function checkIfCharacterOrBossIsDead() {
    let checkInterval = setInterval(() => {
       if (world.character.healthPoints <= 0 && checkIntervalOn) {
-         switchSoundMute();
+         console.log('Character fainted')
+
+         world.stopMusic();
          setTimeout(() => {            
             document.getElementById('gameOverScreen').style.display = 'flex';
             checkIntervalOn = false;
@@ -67,6 +69,7 @@ function checkIfCharacterOrBossIsDead() {
       }
 
       if(world.endbossDefeated && checkIntervalOn) {
+         console.log('Boss defeated')
          switchSoundMute();
          setTimeout(() => {            
             document.getElementById('gameWonScreen').style.display = 'flex';
