@@ -338,6 +338,16 @@ button:active {
         margin: unset;
         bottom: 0;
     }
+}
+
+/* Smartphones------------*/
+@media only screen and (max-height: 720px) {
+    .buttonDiv {
+        position: absolute;
+        max-height: min-content;
+        margin: unset;
+        bottom: 0;
+    }
 
     .keybindings {
         display: none;
