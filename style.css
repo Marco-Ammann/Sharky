@@ -209,7 +209,7 @@ button:active {
 .mobilePanel {
     position: fixed;
     bottom: 0;
-    display: flex;
+    display: none;
     justify-content: space-between;
     align-items: flex-end;
     width: calc(100vw - 10%);
@@ -235,6 +235,7 @@ button:active {
     display: flex;
     align-items: center;
     justify-content: center; 
+    gap: 15px;
 }
 
 .right {
@@ -244,7 +245,7 @@ button:active {
 }
 
 .arrowKeys-img {
-    width: 35px;
+    width: 45px;
     aspect-ratio: 1 / 1;
     filter: invert();
     background-color: #ffffff79;
@@ -253,15 +254,10 @@ button:active {
 }
 
 .sword-img{
-    width: 45px!important;
+    width: 55px!important;
 }
 
-/* Smartphones------------*/
-@media only screen and (max-width: 1020px) {
-    .mobilePanel {
-        display: flex; /* Show the mobile panel on small screens */
-    }
-}
+
 
 /* Smartphones------------*/
 @media only screen and (max-width: 720px) {
@@ -310,10 +306,6 @@ button:active {
         max-width: 100vw;
         height: 100vh;
     }
-
-    .mobilePanel {
-        display: flex; /* Show the mobile panel on small screens */
-    }
 }
 
 
@@ -328,10 +320,6 @@ button:active {
 
     .keybindings {
         display: none;
-    }
-
-    .mobilePanel {
-        display: flex; /* Show the mobile panel on small screens */
     }
 }
 

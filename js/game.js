@@ -38,7 +38,7 @@ function startGame() {
    document.getElementById('canvas').style.display = 'block';
    document.getElementById('playButton').style.display = 'block';
    document.getElementById('title').style.display = 'none';
-   if (window.innerWidth > 1000) {
+   if (window.innerHeight < 800) {
       document.querySelector('.mobilePanel').style.display = 'flex';
       
    }
@@ -224,8 +224,10 @@ function simulateKeyUp(keyCode) {
 
 function handleTouchStart(keyCode) {
    simulateKeyDown(keyCode);
+   event.preventDefault();
 }
 
 function handleTouchEnd(keyCode) {
    simulateKeyUp(keyCode);
+   event.preventDefault();
 }
