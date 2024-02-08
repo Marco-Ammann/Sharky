@@ -1,3 +1,6 @@
+/**
+ * Represents the end boss in the game, extending the capabilities of MovableObject.
+ */
 class Endboss extends MovableObject {
    world;
    height = 500;
@@ -8,26 +11,19 @@ class Endboss extends MovableObject {
    collisionBoxHeight = this.height * 0.3;
    collisionBoxOffsetX = 50;
    collisionBoxOffsetY = 250;
-
    floorY = 150;
-
    isAttacking = false;
    isHurt = false;
    isHurtAnimationPlaying = false;
-
    healthPoints = 300;
-
    isIntroduced = false;
-
    verticalSpeed = 1;
    verticalRange = 180;
    verticalDirection = 1;
    horizontalSpeed = 0;
    originalY = -605;
    originalX = 5800;
-
    damage = 20;
-
    currentHurtImage = 0;
 
    IMAGES_SWIM = [
@@ -45,7 +41,6 @@ class Endboss extends MovableObject {
       'img/2.Enemy/3.Final_Enemy/2.floating/12.png',
       'img/2.Enemy/3.Final_Enemy/2.floating/13.png',
    ];
-
    IMAGES_ATTACK = [
       'img/2.Enemy/3.Final_Enemy/Attack/1.png',
       'img/2.Enemy/3.Final_Enemy/Attack/2.png',
@@ -54,14 +49,12 @@ class Endboss extends MovableObject {
       'img/2.Enemy/3.Final_Enemy/Attack/5.png',
       'img/2.Enemy/3.Final_Enemy/Attack/6.png',
    ];
-
    IMAGES_HURT = [
       'img/2.Enemy/3.Final_Enemy/Hurt/1.png',
       'img/2.Enemy/3.Final_Enemy/Hurt/2.png',
       'img/2.Enemy/3.Final_Enemy/Hurt/3.png',
       'img/2.Enemy/3.Final_Enemy/Hurt/4.png',
    ];
-
    IMAGES_DEAD = [
       'img/2.Enemy/3.Final_Enemy/Dead/Mesa de trabajo 2 copia 6.png',
       'img/2.Enemy/3.Final_Enemy/Dead/Mesa de trabajo 2 copia 7.png',
@@ -69,7 +62,6 @@ class Endboss extends MovableObject {
       'img/2.Enemy/3.Final_Enemy/Dead/Mesa de trabajo 2 copia 9.png',
       'img/2.Enemy/3.Final_Enemy/Dead/Mesa de trabajo 2 copia 10.png',
    ];
-
    IMAGES_INTRODUCION = [
       'img/2.Enemy/3.Final_Enemy/1.Introduce/1.png',
       'img/2.Enemy/3.Final_Enemy/1.Introduce/2.png',
@@ -82,10 +74,8 @@ class Endboss extends MovableObject {
       'img/2.Enemy/3.Final_Enemy/1.Introduce/9.png',
       'img/2.Enemy/3.Final_Enemy/1.Introduce/10.png',
    ];
-
    introduce_sound = new Audio('audio/big_splash_sound.mp3');
    bite_sound = new Audio('audio/orca_bite.mp3');
-
 
    constructor() {
       super().loadImage('img/2.Enemy/3.Final_Enemy/2.floating/1.png');
@@ -101,11 +91,18 @@ class Endboss extends MovableObject {
    }
 
 
+   /**
+    * Checks if the end boss is dead by comparing its health points.
+    * @returns {boolean} True if health points are 0, false otherwise.
+    */
    isDead() {
       return this.healthPoints === 0;
    }
 
 
+   /**
+    * Applies damage to the end boss, updates its state, and triggers hurt animation.
+    */
    getDamage() {
       if (!this.immunity && this.healthPoints > 0) {
          this.healthPoints -= this.world.character.damage;
@@ -115,6 +112,9 @@ class Endboss extends MovableObject {
    }
 
 
+   /**
+    * Sets the end boss to a hurt state, enabling hurt animation and temporary immunity.
+    */
    setHurtState() {
       this.isHurt = true;
       this.isHurtAnimationPlaying = true;
@@ -122,6 +122,9 @@ class Endboss extends MovableObject {
    }
 
 
+   /**
+    * Removes the hurt state from the end boss, disabling hurt animation and immunity.
+    */
    unsetHurtState() {
       this.immunity = false;
       this.isHurt = false;
@@ -129,12 +132,18 @@ class Endboss extends MovableObject {
    }
 
 
+   /**
+    * Handles the vertical and horizontal movement of the end boss.
+    */
    move() {
       this.moveVertically();
       this.moveHorizontally();
    }
 
 
+   /**
+    * Manages the vertical movement limits and direction of the end boss.
+    */
    moveVertically() {
       this.y += this.verticalSpeed * this.verticalDirection;
       if (this.hitVerticalMovementLimit()) {
@@ -143,6 +152,9 @@ class Endboss extends MovableObject {
    }
 
 
+   /**
+    * Manages the horizontal movement and resets position if out of range.
+    */
    moveHorizontally() {
       this.x -= this.horizontalSpeed;
       if (this.isHorizontalOutOfRange()) {
@@ -151,6 +163,10 @@ class Endboss extends MovableObject {
    }
 
 
+   /**
+    * Manages the end boss's vertical movement, adjusting its direction based on movement limits.
+    * @returns {boolean} True if the end boss hits the vertical movement limit, false otherwise.
+    */
    hitVerticalMovementLimit() {
       return (
          this.y > this.originalY + this.verticalRange ||
@@ -159,16 +175,26 @@ class Endboss extends MovableObject {
    }
 
 
+   /**
+    * Checks if the end boss has moved out of the horizontal range.
+    * @returns {boolean} True if out of range, false otherwise.
+    */
    isHorizontalOutOfRange() {
       return this.x < 100;
    }
 
 
+   /**
+    * Resets the end boss's horizontal position to its original value.
+    */
    resetHorizontalPosition() {
       this.x = this.originalX;
    }
 
 
+   /**
+    * Checks if the character is close enough to trigger the end boss's introduction.
+    */
    checkForCharacter() {
       if (!this.world || !this.world.character) {
          return;
@@ -187,6 +213,9 @@ class Endboss extends MovableObject {
    }
 
 
+   /**
+    * Plays the introduction sound for the end boss.
+    */
    playIntroduceSound() {
       this.introduce_sound.currentTime = 0.07;
       this.introduce_sound.volume = 0.7;
@@ -195,6 +224,9 @@ class Endboss extends MovableObject {
    }
 
 
+   /**
+    * Plays the biting sound, typically used during the attack animation.
+    */
    playBiteSound() {
       this.bite_sound.currentTime = 0.3;
       this.bite_sound.volume = 0.15;
@@ -203,6 +235,9 @@ class Endboss extends MovableObject {
    }
 
 
+   /**
+    * Initiates the end boss's introduction sequence.
+    */
    introduceEndboss() {
       clearInterval(this.checkInterval);
       this.world.bossHasAppeared = true;
@@ -227,6 +262,9 @@ class Endboss extends MovableObject {
    }
 
 
+   /**
+    * Manages the animation of the end boss based on its state (idle, moving, attacking, hurt).
+    */
    animate() {
       if (this.isIntroduced) {
          clearInterval(this.introduceInterval);
@@ -242,6 +280,9 @@ class Endboss extends MovableObject {
    }
 
 
+   /**
+    * Manages the end boss's movement animations.
+    */
    movementAnimation() {
       this.animationInterval = setInterval(() => {
          if (this.isDead()) {
@@ -257,6 +298,9 @@ class Endboss extends MovableObject {
    }
 
 
+   /**
+    * Initiates an attack sequence, changing the end boss's images and state.
+    */
    attack() {
       if (!this.isDead()) {
          this.attackInterval = setInterval(() => {
@@ -269,6 +313,9 @@ class Endboss extends MovableObject {
    }
 
 
+   /**
+    * Plays the animation for when the end boss is hurt.
+    */
    playHurtAnimation() {
       this.playAnimationOnce(this.IMAGES_HURT, () => {
          this.currentHurtImage = 0;
@@ -277,6 +324,11 @@ class Endboss extends MovableObject {
    }
 
 
+   /**
+    * Plays a single animation sequence and executes a callback function afterwards.
+    * @param {Array} images Array of image paths for the animation.
+    * @param {Function} callback Function to execute after the animation completes.
+    */
    playAnimationOnce(images, callback) {
       let i = 0;
       const interval = setInterval(() => {
@@ -290,6 +342,9 @@ class Endboss extends MovableObject {
    }
 
 
+   /**
+    * Manages the attack animation, moving the end boss forward during the attack and back afterward.
+    */
    playAttackAnimation() {
       let i = 0;
       this.isAttacking = true;
@@ -309,12 +364,19 @@ class Endboss extends MovableObject {
    }
 
 
+   /**
+    * Moves the end boss forward when attacking.
+    */
    moveForwardWithAttack() {
       this.collisionBoxOffsetX -= 10;
       this.verticalSpeed = 7;
       this.x -= 25;
    }
 
+
+   /**
+    * Moves the end boss back to its original position after an attack.
+    */
    moveBackFromAttack() {
       this.collisionBoxOffsetX = 50;
       this.verticalSpeed = 1;
@@ -322,6 +384,9 @@ class Endboss extends MovableObject {
    }
 
 
+   /**
+    * Clears all intervals and animations associated with the end boss.
+    */
    clearIntervals() {
       clearInterval(this.moveInterval);
       clearInterval(this.animationInterval);

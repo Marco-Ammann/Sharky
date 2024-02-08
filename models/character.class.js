@@ -1,3 +1,7 @@
+/**
+ * Represents the main character in the game, inheriting from MovableObject.
+ * This character can move, attack, and interact with the game world
+ */
 class Character extends MovableObject {
    height = 200;
    width = this.height * 1.227;
@@ -45,7 +49,7 @@ class Character extends MovableObject {
    ];
 
    IMAGES_DEAD = [
-      'img/1.Sharkie/6.dead/1.Poisoned/1.png', // 0
+      'img/1.Sharkie/6.dead/1.Poisoned/1.png',
       'img/1.Sharkie/6.dead/1.Poisoned/2.png',
       'img/1.Sharkie/6.dead/1.Poisoned/3.png',
       'img/1.Sharkie/6.dead/1.Poisoned/4.png',
@@ -56,7 +60,7 @@ class Character extends MovableObject {
       'img/1.Sharkie/6.dead/1.Poisoned/9.png',
       'img/1.Sharkie/6.dead/1.Poisoned/10.png',
       'img/1.Sharkie/6.dead/1.Poisoned/11.png',
-      'img/1.Sharkie/6.dead/1.Poisoned/12.png', //11
+      'img/1.Sharkie/6.dead/1.Poisoned/12.png',
    ];
 
    IMAGES_HURT = [
@@ -93,6 +97,9 @@ class Character extends MovableObject {
    }
 
 
+   /**
+    * Plays the character's attack animation sequence
+    */
    playAttackAnimation() {
       if (this.attackAnimationFrame < this.IMAGES_ATTACK.length) {
          let path = this.IMAGES_ATTACK[this.attackAnimationFrame];
@@ -105,11 +112,18 @@ class Character extends MovableObject {
    }
 
 
+   /**
+    * Plays the swimming sound effect
+    */
    playSwimSound() {
       this.swim_sound.play();
       this.swim_sound.volume = 0.15;
    }
 
+
+   /**
+    * Plays the soundeffect when the character gets hit
+    */
    playGotHitSound() {
       this.hit_sound.loop = false;
       this.hit_sound.play();
@@ -117,6 +131,9 @@ class Character extends MovableObject {
    }
 
 
+   /**
+    * Handles the character's movement and actions, updating the state based on keyboard input
+    */
    animate() {
       this.movementInterval = setInterval(() => {
          const { RIGHT, LEFT, UP, DOWN } = this.world.keyboard;
@@ -186,12 +203,18 @@ class Character extends MovableObject {
    }
 
 
+   /**
+    * clears ongoing intervals to stop the characters movement
+    */
    clearIntervals() {
       clearInterval(this.movementInterval);
       clearInterval(this.animationInterval);
    }
 
 
+   /**
+    * initiates characters attack, creating a bubble as a throwable object
+    */
    shootBubble() {
       if (!this.isDead() && !this.bubbleCooldown) {
          let bubble = new ThrowableObject(

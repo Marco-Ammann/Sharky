@@ -1,3 +1,7 @@
+/**
+ * Represents a poison item in the game, capable of moving and being collected by the player.
+ * Extends MovableObject to add specific properties and behaviors for poison items.
+ */
 class Poison extends MovableObject {
    height = 80;
    width = this.height * 0.732;
@@ -24,7 +28,7 @@ class Poison extends MovableObject {
 
    pickup_sound = new Audio('audio/bottle_sound.mp3');
 
-
+   
    constructor() {
       super().loadImage('img/4.Markers/Poison/Animation/1.png');
       this.loadImages(this.IMAGES_POISON);
@@ -32,6 +36,9 @@ class Poison extends MovableObject {
    }
 
 
+   /**
+    * Plays the sound effect when the poison is picked up.
+    */
    playPickupSound() {
       this.pickup_sound.play();
       this.pickup_sound.volume = 0.15;
@@ -42,12 +49,19 @@ class Poison extends MovableObject {
    }
 
 
+   /**
+    * Animates the poison by cycling through its images.
+    */
    animate() {
       this.animationInterval = setInterval(() => {
          this.playAnimation(this.IMAGES_POISON);
       }, 1000 / 10);
    }
 
+
+   /**
+    * Clears any ongoing animation intervals, stopping the poison's animation.
+    */
    clearIntervals() {
       clearInterval(this.animationInterval);
    }

@@ -1,3 +1,7 @@
+/**
+ * Represents a barrier stone object in the game, inheriting from MovableObject
+ * Barrier stones cause damage to the player upon collision
+ */
 class BarrierStone extends MovableObject {
    damage = 20;
    constructor() {
@@ -16,6 +20,10 @@ class BarrierStone extends MovableObject {
 }
 
 
+/**
+ * Represents a barrier pillar object in the game, inheriting from MovableObject
+ * Barrier pillars cause damage to the player upon collision
+ */
 class BarrierPillar extends MovableObject {
    damage = 20;
    constructor() {

@@ -1,3 +1,6 @@
+/**
+ * Represents a pufferfish enemy in the game. Inherits from MovableObject to add movement and interaction capabilities.
+ */
 class PufferFish extends MovableObject {
    height = 60;
    width = this.height * 1.217;
@@ -36,10 +39,7 @@ class PufferFish extends MovableObject {
       'img/2.Enemy/1.Puffer_fish/3.Bubbleeswim/3.bubbleswim5.png',
    ];
 
-   IMAGES_DEAD = [
-      'img/2.Enemy/1.Puffer_fish/4.DIE/3.png',
-      'img/2.Enemy/1.Puffer_fish/4.DIE/3.png'
-   ];
+   IMAGES_DEAD = ['img/2.Enemy/1.Puffer_fish/4.DIE/3.png', 'img/2.Enemy/1.Puffer_fish/4.DIE/3.png'];
 
    IMAGES_WINDUP = [
       'img/2.Enemy/1.Puffer_fish/2.transition/3.transition1.png',
@@ -49,13 +49,9 @@ class PufferFish extends MovableObject {
       'img/2.Enemy/1.Puffer_fish/2.transition/3.transition5.png',
    ];
 
-   /**
-    * Create a new PufferFish instance.
-    * Initializes the pufferfish with random attributes and loads its images.
-    * After a delay, starts the animation of the pufferfish.
-    */
+
    constructor() {
-      super()
+      super();
       this.loadImages(this.IMAGES_DEAD);
       this.loadImages(this.IMAGES_SWIM);
       this.loadImages(this.IMAGES_SPEED);
@@ -66,14 +62,12 @@ class PufferFish extends MovableObject {
 
 
    /**
-    * Move the pufferfish to the left.
-    *
-    * Calculates the pufferfish's position relative to the character and checks if it should attack.
-    * If the character is within a certain range, the pufferfish attacks by moving faster.
+    * Handles the pufferfish's movement to the left, simulating its swimming behavior.
+    * The pufferfish will speed up if the player character is close, indicating an attack.
     */
    moveLeft() {
       if (!this.world || !this.world.character) {
-         return; // Beende die Funktion frühzeitig
+         return;
       }
       this.characterCenterY =
          this.world.character.y +
@@ -99,41 +93,38 @@ class PufferFish extends MovableObject {
 
 
    /**
-    * Animate the pufferfish's behavior.
-    *
-    * If the pufferfish is dead, it sets the image source to the dead image and starts an animation to move upward.
-    * If the pufferfish is alive, it sets up intervals to continuously move left and play swimming or attacking animations.
+    * Controls the animation and behavior of the pufferfish, including moving and attacking.
+    * Different animations are played based on whether the pufferfish is attacking or swimming normally.
     */
    animate() {
       if (this.isDead()) {
-
          if (!this.deathHandled) {
+            this.clearIntervals();
+            this.healthPoints = 0;
+            this.img.src = 'img/2.Enemy/1.Puffer_fish/4.DIE/3.png';
 
-         this.clearIntervals();
-         this.healthPoints = 0;
-         this.img.src = 'img/2.Enemy/1.Puffer_fish/4.DIE/3.png';
-
-         this.deathHandled = true;
-         this.clearIntervals();
-         let deathInterval = setInterval(() => {
-            this.y -= 3;
-            this.collisionBoxOffsetY = -500;
-         }, 1000 / 60);
-         globalIntervals.push(deathInterval);
-         return;
-      }}      
+            this.deathHandled = true;
+            this.clearIntervals();
+            let deathInterval = setInterval(() => {
+               this.y -= 3;
+               this.collisionBoxOffsetY = -500;
+            }, 1000 / 60);
+            globalIntervals.push(deathInterval);
+            return;
+         }
+      }
 
       let movementIntervalId = setInterval(() => {
          this.moveLeft();
       }, 1000 / 60);
       globalIntervals.push(movementIntervalId);
       this.movementIntervalId = movementIntervalId;
-      
+
       let verticalMovementIntervalId = setInterval(() => {
          this.direction = this.direction * -1;
       }, 3000 * Math.random());
       globalIntervals.push(verticalMovementIntervalId);
-      
+
       let animationIntervalId = setInterval(() => {
          if (this.isAttacking && !this.isDead()) {
             if (!this.attackWindUpPlayed) {
@@ -144,7 +135,7 @@ class PufferFish extends MovableObject {
             } else {
                this.playAnimation(this.IMAGES_SPEED);
             }
-         } else if(!this.isDead()){
+         } else if (!this.isDead()) {
             this.playAnimation(this.IMAGES_SWIM);
          }
       }, 1000 / 8);
@@ -152,6 +143,9 @@ class PufferFish extends MovableObject {
    }
 
 
+   /**
+    * Clears all intervals associated with the pufferfish's movement and animation, stopping its behavior.
+    */
    clearIntervals() {
       clearInterval(this.movementIntervalId);
       clearInterval(this.verticalMovementIntervalId);
@@ -160,11 +154,7 @@ class PufferFish extends MovableObject {
 
 
    /**
-    * Play the attack wind-up animation if it hasn't been played already.
-    *
-    * If the attack wind-up animation has not been played and there are more frames to play,
-    * it updates the image source, increments the current image index, and checks if the animation is complete.
-    * If the animation is complete, it sets the attackWindUpPlayed flag to true and logs it.
+    * Plays the windup animation for the pufferfish's attack, preparing for a speed increase.
     */
    playAttackWindupAnimation() {
       if (!this.attackWindUpPlayed && this.currentImage < this.IMAGES_WINDUP.length) {

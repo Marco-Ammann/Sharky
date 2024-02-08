@@ -1,3 +1,6 @@
+/**
+ * Manages the game world, including the character, enemies, collectables, and environment
+ */
 class World {
    character;
 
@@ -5,16 +8,13 @@ class World {
    statusBar;
    poisonBar;
    coinBar = new CoinBar();
-
    throwables = [];
    bossHasAppeared = false;
    endbossDefeated = false;
-
    canvas;
    ctx;
    keyboard;
    camera_x = 0;
-
    lastCollisionCheck = 0;
    collisionCheckInterval = 1000 / 20;
    isGameOver = false;
@@ -24,8 +24,8 @@ class World {
    gameWonSound = new Audio('audio/win_sound.mp3');
    bossBattleSound = new Audio('audio/boss_battle_music.mp3');
    gameMusic;
-
    inventory = {};
+
 
    constructor(canvas, keyboard) {
       this.poisonBar = new PoisonBar();
@@ -53,6 +53,9 @@ class World {
    }
 
 
+   /**
+    * Checks for collisions between the character and enemies or collectables.
+    */
    checkCollisions() {
       this.level.enemies.forEach((enemy) => {
          if (
@@ -71,7 +74,11 @@ class World {
       });
 
       this.level.barriers.forEach((barrier) => {
-         if (this.character.isColliding(barrier) && !this.character.isHurt() && !this.character.isHurt()) {
+         if (
+            this.character.isColliding(barrier) &&
+            !this.character.isHurt() &&
+            !this.character.isHurt()
+         ) {
             this.character.getDamage(barrier);
             this.character.playGotHitSound();
             this.statusBar.setPercentage(this.character.healthPoints);
@@ -97,6 +104,9 @@ class World {
    }
 
 
+   /**
+    * Checks for collisions between throwable objects and enemies.
+    */
    checkBubbleCollisions() {
       this.throwables.forEach((bubble, bubbleIndex) => {
          this.level.enemies.forEach((enemy, enemyIndex) => {
@@ -130,6 +140,9 @@ class World {
    }
 
 
+   /**
+    * Plays the game over sound.
+    */
    playGameOverSound() {
       this.gameOverSound.volume = 0.15;
       this.gameOverSound.loop = false;
@@ -137,6 +150,9 @@ class World {
    }
 
 
+   /**
+    * Plays the game won sound.
+    */
    playWonSound() {
       this.gameWonSound.volume = 0.15;
       this.gameWonSound.loop = false;
@@ -144,6 +160,9 @@ class World {
    }
 
 
+   /**
+    * Starts or resumes the game music.
+    */
    startMusic() {
       this.stopMusic();
       this.gameMusic.volume = 0.05;
@@ -153,6 +172,9 @@ class World {
    }
 
 
+   /**
+    * Stops the game music.
+    */
    stopMusic() {
       if (this.gameMusic) {
          this.gameMusic.pause();
@@ -161,6 +183,9 @@ class World {
    }
 
 
+   /**
+    * Switches the game music to the boss battle theme.
+    */
    switchToBossMusic() {
       this.stopMusic();
       this.gameMusic = this.bossBattleSound;
@@ -168,6 +193,9 @@ class World {
    }
 
 
+   /**
+    * Handles actions and changes after the boss is defeated.
+    */
    handleBossDefeat() {
       this.stopMusic();
       this.gameMusic = this.level.music;
@@ -177,11 +205,18 @@ class World {
    }
 
 
+   /**
+    * Sets the world reference for an object to enable interaction with the game world.
+    * @param {MovableObject} obj - The object to set the world for.
+    */
    setWorld(obj) {
       obj.world = this;
    }
 
 
+   /**
+    * The main drawing function of the game loop, rendering all game objects.
+    */
    draw() {
       let now = Date.now();
       if (now - this.lastCollisionCheck > this.collisionCheckInterval) {
@@ -219,14 +254,20 @@ class World {
       animationFrameId = requestAnimationFrame(() => this.draw());
    }
 
-
+   /**
+    * Adds an array of objects to the game map.
+    * @param {MovableObject[]} objects - The objects to add.
+    */
    addObjectsToMap(objects) {
       objects.forEach((o) => {
          this.addToMap(o);
       });
    }
 
-
+   /**
+    * Adds a single movable object to the game map.
+    * @param {MovableObject} MovObj - The object to add.
+    */
    addToMap(MovObj) {
       if (MovObj.otherDirection) {
          this.flipImage(MovObj);
@@ -240,7 +281,10 @@ class World {
       }
    }
 
-
+   /**
+    * Flips the image of a movable object for rendering it facing the opposite direction.
+    * @param {MovableObject} MovObj - The object to flip.
+    */
    flipImage(MovObj) {
       this.ctx.save();
       this.ctx.translate(MovObj.width, 0);
@@ -249,7 +293,10 @@ class World {
       MovObj.x = MovObj.x * -1;
    }
 
-
+   /**
+    * Restores the flipped image of a movable object to its original direction after rendering.
+    * @param {MovableObject} MovObj - The object to restore.
+    */
    flipImageBack(MovObj) {
       MovObj.x = MovObj.x * -1;
       this.ctx.restore();

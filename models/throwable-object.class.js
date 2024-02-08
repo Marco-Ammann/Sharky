@@ -1,3 +1,7 @@
+/**
+ * Represents objects that can be thrown in the game, like bubbles or poisoned bubbles
+ * Inherits from MovableObject to add specific properties and behaviors for throwable items
+ */
 class ThrowableObject extends MovableObject {
    IMAGE = 'img/1.Sharkie/4.Attack/Bubble trap/Bubble.png';
    IMAGE_POISON = 'img/1.Sharkie/4.Attack/Bubble trap/Poisoned Bubble (for whale).png';
@@ -9,6 +13,7 @@ class ThrowableObject extends MovableObject {
    originalY;
    startX;
    acceleration = -0.08;
+   
 
    constructor(x, fixedY, y, otherDirection, poisonBottleAmount) {
       super();
@@ -37,6 +42,9 @@ class ThrowableObject extends MovableObject {
    }
 
 
+   /**
+    * Moves the throwable object, simulating a parabolic trajectory
+    */
    move() {
       this.x += this.speed;
 
@@ -53,6 +61,9 @@ class ThrowableObject extends MovableObject {
    }
 
 
+   /**
+    * Marks the object for removal from the game
+    */
    removeBubble() {
       this.toBeRemoved = true;
    }
