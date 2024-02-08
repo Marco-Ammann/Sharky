@@ -26,6 +26,7 @@ class World {
    gameMusic;
    inventory = {};
 
+
    constructor(canvas, keyboard) {
       this.poisonBar = new PoisonBar();
       this.statusBar = new StatusBar();
@@ -51,21 +52,11 @@ class World {
       this.gameMusic = this.level.music;
    }
 
-   
+
    /**
     * Checks for collisions between the character and enemies or collectables.
     */
    checkCollisions() {
-      this.isCollidingWithEnemy();
-      this.isCollidingWithBarrier();
-      this.isCollidingWithCollectable();
-   }
-
-
-   /**
-    * Checks for and handles collisions between the character and enemies
-    */
-   isCollidingWithEnemy() {
       this.level.enemies.forEach((enemy) => {
          if (
             this.character.isColliding(enemy) &&
@@ -81,13 +72,7 @@ class World {
             }
          }
       });
-   }
 
-
-   /**
-    * Checks for and handles collisions between the character and barriers
-    */
-   isCollidingWithBarrier() {
       this.level.barriers.forEach((barrier) => {
          if (
             this.character.isColliding(barrier) &&
@@ -102,13 +87,7 @@ class World {
             }
          }
       });
-   }
 
-
-   /**
-    * Checks for and handles collisions between the character and collectables
-    */
-   isCollidingWithCollectable() {
       this.level.collectables.forEach((collectable, index) => {
          if (this.character.isColliding(collectable)) {
             this.level.collectables.splice(index, 1);
@@ -130,78 +109,34 @@ class World {
     */
    checkBubbleCollisions() {
       this.throwables.forEach((bubble, bubbleIndex) => {
-         this.checkBubbleEnemyCollisions(bubble, bubbleIndex);
-         this.removeBubbleIfNecessary(bubble, bubbleIndex);
-      });
-   }
+         this.level.enemies.forEach((enemy, enemyIndex) => {
+            if (bubble.isColliding(enemy)) {
+               this.character.playImpactSound();
+               enemy.getDamage(this.character);
+               bubble.removeBubble();
 
+               if (enemy.isDead()) {
+                  if (enemy instanceof Endboss) {
+                     enemy.animate();
+                     if (enemy.healthPoints <= 0) {
+                        this.character.clearIntervals();
+                        this.stopMusic();
+                        this.playWonSound();
+                     }
+                  } else {
+                     enemy.animate();
+                     setTimeout(() => {
+                        this.level.enemies.splice(enemyIndex, 1);
+                     }, 3000);
+                  }
+               }
+            }
+         });
 
-   /**
-    * Checks and handles collisions between a single bubble and all enemies.
-    * @param {ThrowableObject} bubble The bubble to check collisions for.
-    * @param {number} bubbleIndex The index of the bubble in the throwables array.
-    */
-   checkBubbleEnemyCollisions(bubble, bubbleIndex) {
-      this.level.enemies.forEach((enemy, enemyIndex) => {
-         if (bubble.isColliding(enemy)) {
-            this.handleBubbleEnemyCollision(bubble, enemy, enemyIndex);
+         if (bubble.toBeRemoved) {
+            this.throwables.splice(bubbleIndex, 1);
          }
       });
-   }
-
-
-   /**
-    * Handles the effects of a collision between a bubble and an enemy.
-    * @param {ThrowableObject} bubble The bubble involved in the collision.
-    * @param {MovableObject} enemy The enemy involved in the collision.
-    * @param {number} enemyIndex The index of the enemy in the enemies array.
-    */
-   handleBubbleEnemyCollision(bubble, enemy, enemyIndex) {
-      this.character.playImpactSound();
-      enemy.getDamage(this.character);
-      bubble.removeBubble();
-
-      if (enemy.isDead()) {
-         this.handleEnemyDeath(enemy, enemyIndex);
-      }
-   }
-
-
-   /**
-    * Removes a bubble from the throwables array if it's marked to be removed.
-    * @param {ThrowableObject} bubble The bubble to potentially remove.
-    * @param {number} bubbleIndex The index of the bubble in the throwables array.
-    */
-   removeBubbleIfNecessary(bubble, bubbleIndex) {
-      if (bubble.toBeRemoved) {
-         this.throwables.splice(bubbleIndex, 1);
-      }
-   }
-
-
-   /**
-    * Handles actions to take when an enemy dies, including removing it from the game or handling special cases like the Endboss.
-    * @param {MovableObject} enemy The enemy that has died.
-    * @param {number} enemyIndex The index of the enemy in the enemies array.
-    */
-   handleEnemyDeath(enemy, enemyIndex) {
-      if (enemy instanceof Endboss && enemy.healthPoints <= 0) {
-         this.finalizeBossDefeat();
-      } else {
-         setTimeout(() => {
-            this.level.enemies.splice(enemyIndex, 1);
-         }, 3000);
-      }
-   }
-
-
-   /**
-    * Finalizes the game actions when the Endboss is defeated.
-    */
-   finalizeBossDefeat() {
-      this.character.clearIntervals();
-      this.stopMusic();
-      this.playWonSound();
    }
 
 
@@ -319,7 +254,6 @@ class World {
       animationFrameId = requestAnimationFrame(() => this.draw());
    }
 
-
    /**
     * Adds an array of objects to the game map.
     * @param {MovableObject[]} objects - The objects to add.
@@ -329,7 +263,6 @@ class World {
          this.addToMap(o);
       });
    }
-
 
    /**
     * Adds a single movable object to the game map.
@@ -348,7 +281,6 @@ class World {
       }
    }
 
-
    /**
     * Flips the image of a movable object for rendering it facing the opposite direction.
     * @param {MovableObject} MovObj - The object to flip.
@@ -360,7 +292,6 @@ class World {
 
       MovObj.x = MovObj.x * -1;
    }
-
 
    /**
     * Restores the flipped image of a movable object to its original direction after rendering.
