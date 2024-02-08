@@ -160,7 +160,6 @@ class World {
    stopMusic() {
       if (this.gameMusic) {
          this.gameMusic.pause();
-         this.gameMusic.currentTime = 0;
          musicIsPlaying = false;
       }
    }

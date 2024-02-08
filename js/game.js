@@ -36,9 +36,12 @@ function clearAnimationFrame() {
 function startGame() {
    document.getElementById('main-menu').style.display = 'none';
    document.getElementById('canvas').style.display = 'block';
-   document.getElementById('musicButton').style.display = 'block';
    document.getElementById('playButton').style.display = 'block';
    document.getElementById('title').style.display = 'none';
+   if (window.innerWidth < 720) {
+      document.querySelector('.mobilePanel').style.display = 'flex';
+      
+   }
    world.startMusic();
    checkIfCharacterOrBossIsDead();
    world.level.enemies.forEach((enemy) => {
@@ -107,10 +110,8 @@ function createNewWorld() {
 
 
 function switchSoundMute() {
-   const button = document.getElementById('musicButton');
    musicIsPlaying = !musicIsPlaying;
    musicIsPlaying ? world.startMusic() : world.stopMusic();
-   button.textContent = musicIsPlaying ? 'stop music' : 'start music';
 }
 
 
@@ -126,7 +127,7 @@ function switchPlayPause() {
    } else {
       resumeGame();
    }
-   document.getElementById('playButton').textContent = gameIsPaused ? 'resume game' : 'pause game';
+   document.getElementById('playButton').textContent = gameIsPaused ? 'resume' : 'pause';
 }
 
 
@@ -136,6 +137,7 @@ function pauseGame() {
    if (!endboss.isAttacking) {
       
       console.log('Game paused');
+      switchSoundMute();
       world.character.clearIntervals();
       world.level.enemies.forEach((enemy) => {
             enemy.clearIntervals();
@@ -159,6 +161,7 @@ function resumeGame() {
    world.isGamePaused = false;
    clearAll();
    checkIfCharacterOrBossIsDead();
+   switchSoundMute();
    console.log('Game resumed');
    world.character.animate();
    world.level.enemies.forEach((enemy) => {
@@ -188,6 +191,8 @@ function resetGame() {
    if (world && world.level && world.level.enemies) {
       world.level.enemies = [];
    }
+
+   world.stopMusic();
    
    setTimeout(() => {
       gameRestartet = true;

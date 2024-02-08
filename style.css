@@ -4,6 +4,7 @@
     font-size: 1.5rem;
     margin: 0;
     text-transform: uppercase;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -29,6 +30,7 @@ body {
 .startButton-image {
     height: 70px;
     transition: transform 0.3s ease, filter 0.3s ease;
+    z-index: 999;
 }
 
 .startButton-image:hover {
@@ -95,6 +97,7 @@ button:active {
     padding: 10px 20px;
     font-size: 20px;
     cursor: pointer;
+    z-index: 999;
 }
 
 #gameOverScreen {
@@ -156,7 +159,15 @@ button:active {
     gap: 2rem;
     position: absolute;
     z-index: 999;
-    bottom: 3rem;
+    bottom: calc(50% - 240px);
+}
+
+#playButton {
+    padding: 10px 15px;
+    font-size: 14px;
+    background-color: rgba(0, 0, 0, 0.623);
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
 }
 
 .turnDevice {
@@ -191,6 +202,7 @@ button:active {
     align-items: flex-end;
     width: calc(100vw - 10%);
     margin-bottom: 1rem;
+    z-index: 0;
 }
 
 .left {
@@ -198,6 +210,18 @@ button:active {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+}
+
+.leftTop {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+}
+
+.leftBottom {
+    display: flex;
+    align-items: center;
+    justify-content: center; 
 }
 
 .right {
@@ -263,7 +287,7 @@ button:active {
         max-width: 100vw;
         height: 100vh;
     }
-    
+
     .mobilePanel {
         display: flex; /* Show the mobile panel on small screens */
     }
