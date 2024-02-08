@@ -150,7 +150,6 @@ class Jellyfish extends MovableObject {
 
          if (this.currentImage === this.IMAGES_WINDUP.length) {
             this.attackWindUpPlayed = true;
-            console.log(this.attackWindUpPlayed);
          }
       }
    }

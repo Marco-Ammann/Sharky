@@ -110,6 +110,8 @@ button:active {
     position: absolute;
     width: 720px;
     height: 100vh;
+    z-index: 999;
+
 }
 
 #gameWonScreen {
@@ -122,6 +124,21 @@ button:active {
     width: 720px;
     height: 480px;
     position: absolute;
+    z-index: 999;
+}
+
+#switchSoundMuteButton {
+    padding: 10px 15px;
+    font-size: 14px;
+    background-color: rgba(0, 0, 0, 0.623);
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+#switchSoundMuteButton.muted {
+    background-color: rgba(255, 0, 0, 0.623);
 }
 
 .tryAgainImage {
@@ -170,11 +187,15 @@ button:active {
     margin-bottom: 0.5rem;
 }
 
+#playButton.paused {
+    background-color: rgba(255, 0, 0, 0.623);
+}
+
 #fullscreenButton {
     position: absolute;
-    left: 63%;
+    left: 69%;
     z-index: 999;
-    top: 80%;
+    top: 85%;
     margin: 0;
     max-width: min-content;
     opacity: 0.7;

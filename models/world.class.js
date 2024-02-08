@@ -62,8 +62,6 @@ class World {
          ) {
             this.character.getDamage(enemy);
             this.character.playGotHitSound();
-            console.log('damage recieved: ', enemy.damage, 'by the enemy');
-            console.log('HP left: ', this.character.healthPoints);
 
             this.statusBar.setPercentage(this.character.healthPoints);
             if (this.character.healthPoints <= 0) {
@@ -76,8 +74,6 @@ class World {
          if (this.character.isColliding(barrier) && !this.character.isHurt() && !this.character.isHurt()) {
             this.character.getDamage(barrier);
             this.character.playGotHitSound();
-            console.log('damage recieved: ', barrier.damage, ' by the barrier');
-            console.log('HP left: ', this.character.healthPoints);
             this.statusBar.setPercentage(this.character.healthPoints);
             if (this.character.healthPoints <= 0) {
                this.playGameOverSound();
