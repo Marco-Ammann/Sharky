@@ -146,3 +146,12 @@ button:active {
     top: center;
     margin-bottom: 4rem;
 }
+
+.buttonDiv{
+    display: flex;
+    gap: 2rem;
+    position: absolute;
+    z-index: 999;
+    top: 0;
+    margin-top: 3rem;
+}

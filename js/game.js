@@ -38,7 +38,7 @@ function startGame() {
    document.getElementById('canvas').style.display = 'block';
    document.getElementById('musicButton').style.display = 'block';
    document.getElementById('title').style.display = 'none';
-   switchSoundMute();
+   world.startMusic();
    checkIfCharacterOrBossIsDead();
    world.level.enemies.forEach((enemy) => {
       if (enemy instanceof Endboss) {
@@ -71,7 +71,7 @@ function checkIfCharacterOrBossIsDead() {
 
       if (world.endbossDefeated && checkIntervalOn) {
          console.log('Boss defeated');
-         switchSoundMute();
+         world.stopMusic();
          setTimeout(() => {
             document.getElementById('gameWonScreen').style.display = 'flex';
             checkIntervalOn = false;

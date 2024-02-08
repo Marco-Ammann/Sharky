@@ -86,7 +86,7 @@ class Endboss extends MovableObject {
    introduce_sound = new Audio('audio/big_splash_sound.mp3');
    bite_sound = new Audio('audio/orca_bite.mp3');
 
-   
+
    constructor() {
       super().loadImage('img/2.Enemy/3.Final_Enemy/2.floating/1.png');
       this.loadImages(this.IMAGES_SWIM);
@@ -293,26 +293,32 @@ class Endboss extends MovableObject {
    playAttackAnimation() {
       let i = 0;
       this.isAttacking = true;
-      console.log('attack start');
       const attackAnimation = setInterval(() => {
          if (i < this.IMAGES_ATTACK.length) {
             let path = this.IMAGES_ATTACK[i];
             this.img = this.imageCache[path];
             i++;
-            this.collisionBoxOffsetX -= 10;
-            this.verticalSpeed = 7;
-            this.x -= 25;
+            this.moveForwardWithAttack();
          } else {
-            this.collisionBoxOffsetX = 50;
-            this.verticalSpeed = 1;
-            this.x += 150;
+            this.moveBackFromAttack();
             this.isAttacking = false;
-            console.log('attack end');
-
             clearInterval(attackAnimation);
          }
       }, 100);
       globalIntervals.push(attackAnimation);
+   }
+
+
+   moveForwardWithAttack() {
+      this.collisionBoxOffsetX -= 10;
+      this.verticalSpeed = 7;
+      this.x -= 25;
+   }
+
+   moveBackFromAttack() {
+      this.collisionBoxOffsetX = 50;
+      this.verticalSpeed = 1;
+      this.x += 150;
    }
 
 

@@ -145,9 +145,6 @@ class World {
       this.gameWonSound.volume = 0.15;
       this.gameWonSound.loop = false;
       this.gameWonSound.play();
-      setTimeout(() => {
-         this.handleBossDefeat();
-      }, 4000);
    }
 
 
@@ -257,7 +254,7 @@ class World {
       MovObj.x = MovObj.x * -1;
    }
 
-   
+
    flipImageBack(MovObj) {
       MovObj.x = MovObj.x * -1;
       this.ctx.restore();
