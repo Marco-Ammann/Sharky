@@ -26,7 +26,6 @@ class World {
    gameMusic;
    inventory = {};
 
-
    constructor(canvas, keyboard) {
       this.poisonBar = new PoisonBar();
       this.statusBar = new StatusBar();
@@ -52,11 +51,20 @@ class World {
       this.gameMusic = this.level.music;
    }
 
-
    /**
-    * Checks for collisions between the character and enemies or collectables.
+    * Main collision checking method, orchestrates different collision check methods
     */
    checkCollisions() {
+      this.isCollidingWithEnemy();
+      this.isCollidingWithBarrier();
+      this.isCollidingWithCollectable();
+   }
+
+
+   /**
+    * Checks for and handles collisions between the character and enemies
+    */
+   isCollidingWithEnemy() {
       this.level.enemies.forEach((enemy) => {
          if (
             this.character.isColliding(enemy) &&
@@ -72,7 +80,13 @@ class World {
             }
          }
       });
+   }
 
+
+   /**
+    * Checks for and handles collisions between the character and barriers
+    */
+   isCollidingWithBarrier() {
       this.level.barriers.forEach((barrier) => {
          if (
             this.character.isColliding(barrier) &&
@@ -87,7 +101,13 @@ class World {
             }
          }
       });
+   }
 
+
+   /**
+    * Checks for and handles collisions between the character and collectables
+    */
+   isCollidingWithCollectable() {
       this.level.collectables.forEach((collectable, index) => {
          if (this.character.isColliding(collectable)) {
             this.level.collectables.splice(index, 1);
@@ -254,6 +274,7 @@ class World {
       animationFrameId = requestAnimationFrame(() => this.draw());
    }
 
+
    /**
     * Adds an array of objects to the game map.
     * @param {MovableObject[]} objects - The objects to add.
@@ -263,6 +284,7 @@ class World {
          this.addToMap(o);
       });
    }
+
 
    /**
     * Adds a single movable object to the game map.
@@ -281,6 +303,7 @@ class World {
       }
    }
 
+
    /**
     * Flips the image of a movable object for rendering it facing the opposite direction.
     * @param {MovableObject} MovObj - The object to flip.
@@ -292,6 +315,7 @@ class World {
 
       MovObj.x = MovObj.x * -1;
    }
+   
 
    /**
     * Restores the flipped image of a movable object to its original direction after rendering.
