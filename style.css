@@ -172,13 +172,13 @@ button:active {
 
 #fullscreenButton {
     position: absolute;
-    left: 42%;
+    left: 63%;
     z-index: 999;
-    top: -288%;
+    top: 80%;
     margin: 0;
     max-width: min-content;
     opacity: 0.7;
-    background-color: #3daad8;
+    background-color: #000c11;
 }
 
 .turnDevice {
@@ -194,6 +194,7 @@ button:active {
     left: 0;
     background-color: rgba(0,0,0,0.8);
     color: white;
+    z-index: 999;
 }
 
 .turnDevice p {
@@ -208,7 +209,7 @@ button:active {
 .mobilePanel {
     position: fixed;
     bottom: 0;
-    display: none;
+    display: flex;
     justify-content: space-between;
     align-items: flex-end;
     width: calc(100vw - 10%);
@@ -221,6 +222,7 @@ button:active {
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
+    gap: 15px;
 }
 
 .leftTop {
@@ -242,7 +244,7 @@ button:active {
 }
 
 .arrowKeys-img {
-    width: 30px;
+    width: 35px;
     aspect-ratio: 1 / 1;
     filter: invert();
     background-color: #ffffff79;
@@ -250,6 +252,16 @@ button:active {
     padding: 5px;
 }
 
+.sword-img{
+    width: 45px!important;
+}
+
+/* Smartphones------------*/
+@media only screen and (max-width: 1020px) {
+    .mobilePanel {
+        display: flex; /* Show the mobile panel on small screens */
+    }
+}
 
 /* Smartphones------------*/
 @media only screen and (max-width: 720px) {
@@ -306,7 +318,7 @@ button:active {
 
 
 /* Smartphones------------*/
-@media only screen and (max-height: 620px) {
+@media only screen and (max-height: 1050px) {
     .buttonDiv {
         position: absolute;
         max-height: min-content;
@@ -316,6 +328,10 @@ button:active {
 
     .keybindings {
         display: none;
+    }
+
+    .mobilePanel {
+        display: flex; /* Show the mobile panel on small screens */
     }
 }
 

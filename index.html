@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
-      <link rel="icon" type="image/svg+xml" href="img/favicon/shark-color-icon.svg">
+      <link rel="icon" type="image/svg+xml" href="img/favicon/shark-color-icon.svg" />
 
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -28,119 +28,162 @@
    </head>
    <body onload="init()">
       <div id="main-menu">
-         <h1 id="title" style="display: block;">Sharky</h1>
+         <h1 id="title" style="display: block">Sharky</h1>
          <a id="start-game" onclick="startGame()">
             <img class="startButton-image" src="./img/6.Buttons/Start/1.png" alt="Start Button" />
          </a>
          <img class="keybindings" src="img/6.Buttons/Instructions 2.png" alt="keybindings" />
       </div>
 
-
       <div class="buttonDiv">
-
-      <button id="playButton" onclick="switchPlayPause()" style="display: none">
-         pause
-      </button>
-
+         <button id="playButton" onclick="switchPlayPause()" style="display: none">pause</button>
       </div>
 
       <canvas id="canvas" width="720" height="480" style="display: none"> </canvas>
 
-      <div id="gameOverScreen" style="display: none;">
+      <div id="gameOverScreen" style="display: none">
          <img
             id="gameOverImage"
             src="img/6.Buttons/Tittles/Game Over/Recurso 12.png"
             alt="GameOver image"
          />
          <a id="restart" onclick="resetGame()">
-            <img id="tryAgainImage" class="tryAgainImage" src="img/6.Buttons/Try again/Recurso 17.png" alt="try again text" />
-        </a>
+            <img
+               id="tryAgainImage"
+               class="tryAgainImage"
+               src="img/6.Buttons/Try again/Recurso 17.png"
+               alt="try again text"
+            />
+         </a>
       </div>
 
-      <div id="gameWonScreen" style="display: none;">
+      <div id="gameWonScreen" style="display: none">
          <img
             id="gameWonImage"
             src="img/6.Buttons/Tittles/You win/Mesa de trabajo 1.png"
             alt="GameOver image"
          />
          <a id="restartIfWon" onclick="resetGame()">
-            <img id="tryAgainImage" class="tryAgainImage" src="img/6.Buttons/Try again/Recurso 17.png" alt="try again text" />
-        </a>
+            <img
+               id="tryAgainImage"
+               class="tryAgainImage"
+               src="img/6.Buttons/Try again/Recurso 17.png"
+               alt="try again text"
+            />
+         </a>
       </div>
 
       <div class="turnDevice">
          <p>turn your device</p>
-         <img class="landscapeModeImage" src="./img/mobile-landscape-mode-icon.svg" alt="landscape mode image">
+         <img
+            class="landscapeModeImage"
+            src="./img/mobile-landscape-mode-icon.svg"
+            alt="landscape mode image"
+         />
       </div>
 
       <div class="mobilePanel">
          <div class="left">
             <div class="leftTop">
-               <img class="arrowKeys-img" src="./img/touch/angle-circle-up-icon.svg" alt="ArrowUp" ontouchstart="handleTouchStart('ArrowUp')" ontouchend="handleTouchEnd('ArrowUp')">
+               <img
+                  class="arrowKeys-img"
+                  src="./img/touch/angle-circle-up-icon.svg"
+                  alt="ArrowUp"
+                  ontouchstart="handleTouchStart('ArrowUp')"
+                  ontouchend="handleTouchEnd('ArrowUp')"
+               />
             </div>
             <div class="leftBottom">
-               <img class="arrowKeys-img" src="./img/touch/angle-circle-left-icon.svg" alt="ArrowLeft" ontouchstart="handleTouchStart('ArrowLeft')" ontouchend="handleTouchEnd('ArrowLeft')">
-               <img class="arrowKeys-img" src="./img/touch/angle-circle-down-icon.svg" alt="ArrowDown" ontouchstart="handleTouchStart('ArrowDown')" ontouchend="handleTouchEnd('ArrowDown')">
-               <img class="arrowKeys-img" src="./img/touch/angle-circle-right-icon.svg" alt="ArrowRight" ontouchstart="handleTouchStart('ArrowRight')" ontouchend="handleTouchEnd('ArrowRight')">
+               <img
+                  class="arrowKeys-img"
+                  src="./img/touch/angle-circle-left-icon.svg"
+                  alt="ArrowLeft"
+                  ontouchstart="handleTouchStart('ArrowLeft')"
+                  ontouchend="handleTouchEnd('ArrowLeft')"
+               />
+               <img
+                  class="arrowKeys-img"
+                  src="./img/touch/angle-circle-down-icon.svg"
+                  alt="ArrowDown"
+                  ontouchstart="handleTouchStart('ArrowDown')"
+                  ontouchend="handleTouchEnd('ArrowDown')"
+               />
+               <img
+                  class="arrowKeys-img"
+                  src="./img/touch/angle-circle-right-icon.svg"
+                  alt="ArrowRight"
+                  ontouchstart="handleTouchStart('ArrowRight')"
+                  ontouchend="handleTouchEnd('ArrowRight')"
+               />
             </div>
          </div>
          <button id="fullscreenButton">Fullscreen</button>
 
          <div class="right">
-            <img class="arrowKeys-img" src="./img/touch/sword-icon.svg" alt="attack Button" ontouchstart="handleTouchStart('Space')" ontouchend="handleTouchEnd('Space')">
+            <img
+               class="arrowKeys-img sword-img"
+               src="./img/touch/sword-icon.svg"
+               alt="attack Button"
+               ontouchstart="handleTouchStart('Space')"
+               ontouchend="handleTouchEnd('Space')"
+            />
          </div>
       </div>
 
-
       <script>
          function checkOrientation() {
-             if (window.innerHeight > window.innerWidth && window.innerWidth < 720) {
-                 document.querySelector('.turnDevice').style.display = 'flex';
-                 document.querySelector('.mobilePanel').style.display = 'none';
-
-             } else {
-                 document.querySelector('.turnDevice').style.display = 'none';
-                 document.querySelector('.mobilePanel').style.display = 'none';
-             }
+            if (window.innerHeight > window.innerWidth) {
+               document.querySelector('.turnDevice').style.display = 'flex';
+            } else {
+               document.querySelector('.turnDevice').style.display = 'none';
+            }
          }
-     
+
          window.addEventListener('load', checkOrientation);
-     
+
          window.addEventListener('resize', checkOrientation);
          window.addEventListener('orientationchange', checkOrientation);
 
-
-
-         document.getElementById('fullscreenButton').addEventListener('click', function() {
-             if (!document.fullscreenElement) {
-                 // Enter fullscreen
-                 if (document.documentElement.requestFullscreen) {
-                     document.documentElement.requestFullscreen();
-                 } else if (document.documentElement.mozRequestFullScreen) { /* Firefox */
-                     document.documentElement.mozRequestFullScreen();
-                 } else if (document.documentElement.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-                     document.documentElement.webkitRequestFullscreen();
-                 } else if (document.documentElement.msRequestFullscreen) { /* IE/Edge */
-                     document.documentElement.msRequestFullscreen();
-                 }
-             } else {
-                 // Exit fullscreen
-                 if (document.exitFullscreen) {
-                     document.exitFullscreen();
-                 } else if (document.mozCancelFullScreen) { /* Firefox */
-                     document.mozCancelFullScreen();
-                 } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
-                     document.webkitExitFullscreen();
-                 } else if (document.msExitFullscreen) { /* IE/Edge */
-                     document.msExitFullscreen();
-                 }
-             }
+         document.getElementById('fullscreenButton').addEventListener('click', function () {
+            if (!document.fullscreenElement) {
+               // Enter fullscreen
+               if (document.documentElement.requestFullscreen) {
+                  document.documentElement.requestFullscreen();
+               } else if (document.documentElement.mozRequestFullScreen) {
+                  /* Firefox */
+                  document.documentElement.mozRequestFullScreen();
+               } else if (document.documentElement.webkitRequestFullscreen) {
+                  /* Chrome, Safari and Opera */
+                  document.documentElement.webkitRequestFullscreen();
+               } else if (document.documentElement.msRequestFullscreen) {
+                  /* IE/Edge */
+                  document.documentElement.msRequestFullscreen();
+               }
+            } else {
+               // Exit fullscreen
+               if (document.exitFullscreen) {
+                  document.exitFullscreen();
+               } else if (document.mozCancelFullScreen) {
+                  /* Firefox */
+                  document.mozCancelFullScreen();
+               } else if (document.webkitExitFullscreen) {
+                  /* Chrome, Safari and Opera */
+                  document.webkitExitFullscreen();
+               } else if (document.msExitFullscreen) {
+                  /* IE/Edge */
+                  document.msExitFullscreen();
+               }
+            }
          });
-     </script>
 
-
-
-   
-
+         document.addEventListener('DOMContentLoaded', function () {
+            const imageButtons = document.querySelectorAll('.arrowKeys-img');
+            imageButtons.forEach((button) => {
+               button.addEventListener('contextmenu', function (e) {
+                  e.preventDefault();
+               });
+            });
+         });
+      </script>
    </body>
 </html>

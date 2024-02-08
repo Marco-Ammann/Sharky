@@ -38,7 +38,7 @@ function startGame() {
    document.getElementById('canvas').style.display = 'block';
    document.getElementById('playButton').style.display = 'block';
    document.getElementById('title').style.display = 'none';
-   if (window.innerWidth < 720) {
+   if (window.innerWidth > 1000) {
       document.querySelector('.mobilePanel').style.display = 'flex';
       
    }
