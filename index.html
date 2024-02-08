@@ -84,6 +84,8 @@
                <img class="arrowKeys-img" src="./img/touch/angle-circle-right-icon.svg" alt="ArrowRight" ontouchstart="handleTouchStart('ArrowRight')" ontouchend="handleTouchEnd('ArrowRight')">
             </div>
          </div>
+         <button id="fullscreenButton">Fullscreen</button>
+
          <div class="right">
             <img class="arrowKeys-img" src="./img/touch/sword-icon.svg" alt="attack Button" ontouchstart="handleTouchStart('Space')" ontouchend="handleTouchEnd('Space')">
          </div>
@@ -106,7 +108,39 @@
      
          window.addEventListener('resize', checkOrientation);
          window.addEventListener('orientationchange', checkOrientation);
+
+
+
+         document.getElementById('fullscreenButton').addEventListener('click', function() {
+             if (!document.fullscreenElement) {
+                 // Enter fullscreen
+                 if (document.documentElement.requestFullscreen) {
+                     document.documentElement.requestFullscreen();
+                 } else if (document.documentElement.mozRequestFullScreen) { /* Firefox */
+                     document.documentElement.mozRequestFullScreen();
+                 } else if (document.documentElement.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+                     document.documentElement.webkitRequestFullscreen();
+                 } else if (document.documentElement.msRequestFullscreen) { /* IE/Edge */
+                     document.documentElement.msRequestFullscreen();
+                 }
+             } else {
+                 // Exit fullscreen
+                 if (document.exitFullscreen) {
+                     document.exitFullscreen();
+                 } else if (document.mozCancelFullScreen) { /* Firefox */
+                     document.mozCancelFullScreen();
+                 } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+                     document.webkitExitFullscreen();
+                 } else if (document.msExitFullscreen) { /* IE/Edge */
+                     document.msExitFullscreen();
+                 }
+             }
+         });
      </script>
+
+
+
+   
 
    </body>
 </html>

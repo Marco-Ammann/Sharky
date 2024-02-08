@@ -170,6 +170,17 @@ button:active {
     margin-bottom: 0.5rem;
 }
 
+#fullscreenButton {
+    position: absolute;
+    left: 42%;
+    z-index: 999;
+    top: -288%;
+    margin: 0;
+    max-width: min-content;
+    opacity: 0.7;
+    background-color: #3daad8;
+}
+
 .turnDevice {
     position: fixed;
     height: 100vh;
