@@ -204,3 +204,23 @@ function clearAll() {
    clearAllIntervals();
    clearAnimationFrame();
 }
+
+
+
+function simulateKeyDown(keyCode) {
+   const event = new KeyboardEvent('keydown', { code: keyCode });
+   window.dispatchEvent(event);
+}
+
+function simulateKeyUp(keyCode) {
+   const event = new KeyboardEvent('keyup', { code: keyCode });
+   window.dispatchEvent(event);
+}
+
+function handleTouchStart(keyCode) {
+   simulateKeyDown(keyCode);
+}
+
+function handleTouchEnd(keyCode) {
+   simulateKeyUp(keyCode);
+}

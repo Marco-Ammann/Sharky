@@ -75,13 +75,32 @@
          <img class="landscapeModeImage" src="./img/mobile-landscape-mode-icon.svg" alt="landscape mode image">
       </div>
 
+      <div class="mobilePanel">
+         <div class="left">
+            <div class="leftTop">
+               <img class="arrowKeys-img" src="./img/touch/angle-circle-up-icon.svg" alt="ArrowUp" ontouchstart="handleTouchStart('ArrowUp')" ontouchend="handleTouchEnd('ArrowUp')">
+            </div>
+            <div class="leftBottom">
+               <img class="arrowKeys-img" src="./img/touch/angle-circle-left-icon.svg" alt="ArrowLeft" ontouchstart="handleTouchStart('ArrowLeft')" ontouchend="handleTouchEnd('ArrowLeft')">
+               <img class="arrowKeys-img" src="./img/touch/angle-circle-down-icon.svg" alt="ArrowDown" ontouchstart="handleTouchStart('ArrowDown')" ontouchend="handleTouchEnd('ArrowDown')">
+               <img class="arrowKeys-img" src="./img/touch/angle-circle-right-icon.svg" alt="ArrowRight" ontouchstart="handleTouchStart('ArrowRight')" ontouchend="handleTouchEnd('ArrowRight')">
+            </div>
+         </div>
+         <div class="right">
+            <img class="arrowKeys-img" src="./img/touch/sword-icon.svg" alt="attack Button" ontouchstart="handleTouchStart('Space')" ontouchend="handleTouchEnd('Space')">
+         </div>
+      </div>
+
 
       <script>
          function checkOrientation() {
              if (window.innerHeight > window.innerWidth && window.innerWidth < 720) {
                  document.querySelector('.turnDevice').style.display = 'flex';
+                 document.querySelector('.mobilePanel').style.display = 'none';
+
              } else {
                  document.querySelector('.turnDevice').style.display = 'none';
+                 document.querySelector('.mobilePanel').style.display = 'flex';
              }
          }
      
