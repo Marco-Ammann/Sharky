@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
    <head>
+      <link rel="icon" type="image/svg+xml" href="img/favicon/shark-color-icon.svg">
+
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="stylesheet" href="style.css" />
@@ -38,7 +40,7 @@
       <button id="musicButton" onclick="switchSoundMute()" style="display: none">
          start Music
       </button>      
-      <button id="playButton" onclick="switchPlayPause()">
+      <button id="playButton" onclick="switchPlayPause()" style="display: none">
          pause game
       </button>
 
@@ -53,7 +55,7 @@
             alt="GameOver image"
          />
          <a id="restart" onclick="resetGame()">
-            <img id="tryAgainImage" src="img/6.Buttons/Try again/Recurso 17.png" alt="try again text" />
+            <img id="tryAgainImage" class="tryAgainImage" src="img/6.Buttons/Try again/Recurso 17.png" alt="try again text" />
         </a>
       </div>
 
@@ -67,6 +69,27 @@
             <img id="tryAgainImage" class="tryAgainImage" src="img/6.Buttons/Try again/Recurso 17.png" alt="try again text" />
         </a>
       </div>
+
+      <div class="turnDevice">
+         <p>turn your device</p>
+         <img class="landscapeModeImage" src="./img/mobile-landscape-mode-icon.svg" alt="landscape mode image">
+      </div>
+
+
+      <script>
+         function checkOrientation() {
+             if (window.innerHeight > window.innerWidth && window.innerWidth < 720) {
+                 document.querySelector('.turnDevice').style.display = 'flex';
+             } else {
+                 document.querySelector('.turnDevice').style.display = 'none';
+             }
+         }
+     
+         window.addEventListener('load', checkOrientation);
+     
+         window.addEventListener('resize', checkOrientation);
+         window.addEventListener('orientationchange', checkOrientation);
+     </script>
 
    </body>
 </html>

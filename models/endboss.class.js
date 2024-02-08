@@ -2,7 +2,7 @@ class Endboss extends MovableObject {
    world;
    height = 500;
    width = this.height * 1.168;
-   x = 5800 - 5000;
+   x = 5800;
    y = -605;
    collisionBoxWidth = this.width * 0.75;
    collisionBoxHeight = this.height * 0.3;
