@@ -51,6 +51,7 @@ class World {
       this.gameMusic = this.level.music;
    }
 
+
    /**
     * Main collision checking method, orchestrates different collision check methods
     */
@@ -125,8 +126,8 @@ class World {
 
 
    /**
-    * Checks for collisions between throwable objects and enemies.
-    */
+   * Processes collisions between bubbles and enemies, applying damage and removing bubbles.
+   */
    checkBubbleCollisions() {
       this.throwables.forEach((bubble, bubbleIndex) => {
          this.level.enemies.forEach((enemy, enemyIndex) => {
@@ -134,22 +135,7 @@ class World {
                this.character.playImpactSound();
                enemy.getDamage(this.character);
                bubble.removeBubble();
-
-               if (enemy.isDead()) {
-                  if (enemy instanceof Endboss) {
-                     enemy.animate();
-                     if (enemy.healthPoints <= 0) {
-                        this.character.clearIntervals();
-                        this.stopMusic();
-                        this.playWonSound();
-                     }
-                  } else {
-                     enemy.animate();
-                     setTimeout(() => {
-                        this.level.enemies.splice(enemyIndex, 1);
-                     }, 3000);
-                  }
-               }
+               this.handleEnemyDeathEvent(enemy, enemyIndex);
             }
          });
 
@@ -157,6 +143,30 @@ class World {
             this.throwables.splice(bubbleIndex, 1);
          }
       });
+   }
+
+
+   /**
+   * Manages actions following an enemy's death, including special handling for the Endboss.
+   * @param {MovableObject} enemy - The enemy hit by a bubble.
+   * @param {number} enemyIndex - Index of the enemy for potential removal.
+   */
+   handleEnemyDeathEvent(enemy, enemyIndex) {
+      if (enemy.isDead()) {
+         if (enemy instanceof Endboss) {
+            enemy.animate();
+            if (enemy.healthPoints <= 0) {
+               this.character.clearIntervals();
+               this.stopMusic();
+               this.playWonSound();
+            }
+         } else {
+            enemy.animate();
+            setTimeout(() => {
+               this.level.enemies.splice(enemyIndex, 1);
+            }, 3000);
+         }
+      }
    }
 
 
@@ -315,7 +325,7 @@ class World {
 
       MovObj.x = MovObj.x * -1;
    }
-   
+
 
    /**
     * Restores the flipped image of a movable object to its original direction after rendering.
