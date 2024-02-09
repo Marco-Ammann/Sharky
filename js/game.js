@@ -72,7 +72,6 @@ function startGame() {
 function checkIfCharacterOrBossIsDead() {
    let checkInterval = setInterval(() => {
       if (world.character.healthPoints <= 0 && checkIntervalOn) {
-         console.log('Character fainted');
 
          world.stopMusic();
          setTimeout(() => {
@@ -89,7 +88,6 @@ function checkIfCharacterOrBossIsDead() {
       }
 
       if (world.endbossDefeated && checkIntervalOn) {
-         console.log('Boss defeated');
          world.stopMusic();
          setTimeout(() => {
             document.getElementById('gameWonScreen').style.display = 'flex';
@@ -148,7 +146,6 @@ function switchSoundMute() {
 function switchPlayPause() {
    const endboss = world.level.enemies.find((enemy) => enemy instanceof Endboss);
    if (endboss.isAttacking) {
-      console.log('cant pause during boss attack');
       return;
    }
    gameIsPaused = !gameIsPaused;
@@ -173,7 +170,6 @@ function pauseGame() {
    world.isGamePaused = true;
    const endboss = world.level.enemies.find((enemy) => enemy instanceof Endboss);
    if (!endboss.isAttacking) {
-      console.log('Game paused');
       switchSoundMute();
       world.character.clearIntervals();
       world.level.enemies.forEach((enemy) => {
@@ -188,8 +184,6 @@ function pauseGame() {
       });
 
       cancelAnimationFrame(animationFrameId);
-   } else {
-      console.log('cant pause during boss attack');
    }
 }
 
@@ -202,7 +196,6 @@ function resumeGame() {
    clearAll();
    checkIfCharacterOrBossIsDead();
    switchSoundMute();
-   console.log('Game resumed');
    world.character.animate();
    world.level.enemies.forEach((enemy) => {
       if (!(enemy instanceof Endboss)) {
