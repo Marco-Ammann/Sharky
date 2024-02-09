@@ -16,6 +16,10 @@ class Character extends MovableObject {
    floorY = 380;
    damage = 20;
 
+   isSleeping = false;
+
+   sleepTimeout = null;
+
    bubbleCooldown = false;
 
    IMAGES_IDLE = [
@@ -37,6 +41,35 @@ class Character extends MovableObject {
       'img/1.Sharkie/1.IDLE/16.png',
       'img/1.Sharkie/1.IDLE/17.png',
       'img/1.Sharkie/1.IDLE/18.png',
+   ];
+
+   IMAGES_FALLASLEEP = [
+      'img/1.Sharkie/2.Long_IDLE/i1.png',
+      'img/1.Sharkie/2.Long_IDLE/I2.png',
+      'img/1.Sharkie/2.Long_IDLE/I3.png',
+      'img/1.Sharkie/2.Long_IDLE/I4.png',
+      'img/1.Sharkie/2.Long_IDLE/I5.png',
+      'img/1.Sharkie/2.Long_IDLE/I6.png',
+      'img/1.Sharkie/2.Long_IDLE/I7.png',
+      'img/1.Sharkie/2.Long_IDLE/I8.png',
+      'img/1.Sharkie/2.Long_IDLE/I9.png',
+      'img/1.Sharkie/2.Long_IDLE/I10.png',
+      'img/1.Sharkie/2.Long_IDLE/I11.png',
+      'img/1.Sharkie/2.Long_IDLE/I12.png',
+      'img/1.Sharkie/2.Long_IDLE/I13.png',
+      'img/1.Sharkie/2.Long_IDLE/I14.png',
+      'img/1.Sharkie/2.Long_IDLE/I11.png',
+      'img/1.Sharkie/2.Long_IDLE/I12.png',
+      'img/1.Sharkie/2.Long_IDLE/I13.png',
+      'img/1.Sharkie/2.Long_IDLE/I14.png',
+      'img/1.Sharkie/2.Long_IDLE/I11.png',
+      'img/1.Sharkie/2.Long_IDLE/I12.png',
+      'img/1.Sharkie/2.Long_IDLE/I13.png',
+      'img/1.Sharkie/2.Long_IDLE/I14.png',
+      'img/1.Sharkie/2.Long_IDLE/I11.png',
+      'img/1.Sharkie/2.Long_IDLE/I12.png',
+      'img/1.Sharkie/2.Long_IDLE/I13.png',
+      'img/1.Sharkie/2.Long_IDLE/I14.png',
    ];
 
    IMAGES_SWIM = [
@@ -86,6 +119,7 @@ class Character extends MovableObject {
    attack_sound;
    hit_sound;
 
+
    constructor() {
       super().loadImage('img/1.Sharkie/1.IDLE/1.png');
       this.loadImages(this.IMAGES_IDLE);
@@ -93,6 +127,7 @@ class Character extends MovableObject {
       this.loadImages(this.IMAGES_DEAD);
       this.loadImages(this.IMAGES_HURT);
       this.loadImages(this.IMAGES_ATTACK);
+      this.loadImages(this.IMAGES_FALLASLEEP);
       this.animate();
       this.swim_sound = new Audio('audio/swim_sound.mp3');
       this.attack_sound = new Audio('audio/bubble_attack_sound.mp3');
@@ -132,6 +167,40 @@ class Character extends MovableObject {
    }
 
 
+   resetSleepTimeout() {
+      clearTimeout(this.sleepTimeout);
+      this.isSleeping = false;
+      this.sleepTimeout = setTimeout(() => {
+         this.isSleeping = true;
+         this.currentImage = 0;
+      }, 3000);
+   }
+
+
+   moveRight() {
+      super.moveRight();
+      this.resetSleepTimeout();
+   }
+
+
+   moveLeft() {
+      super.moveLeft();
+      this.resetSleepTimeout();
+   }
+
+
+   moveUp() {
+      super.moveUp();
+      this.resetSleepTimeout();
+   }
+
+
+   moveDown() {
+      super.moveDown();
+      this.resetSleepTimeout();
+   }
+
+
    /**
     * Handles the character's movement and actions, updating the state based on keyboard input
     */
@@ -161,6 +230,7 @@ class Character extends MovableObject {
          }
          if (this.world.keyboard.SPACE && !this.isAttacking && !this.bubbleCooldown) {
             this.isAttacking = true;
+            this.resetSleepTimeout();
             setTimeout(() => {
                this.shootBubble();
             }, 600);
@@ -174,6 +244,10 @@ class Character extends MovableObject {
          const { RIGHT, LEFT, UP, DOWN } = this.world.keyboard;
          let isMoving = false;
          let now = Date.now();
+
+         if (RIGHT || LEFT || UP || (DOWN && this.isSleeping)) {
+            this.resetSleepTimeout();
+         }
 
          if (this.isAttacking) {
             if (now - lastAttackFrameTime > attackFrameRate) {
@@ -190,8 +264,10 @@ class Character extends MovableObject {
                if (RIGHT || UP || DOWN || LEFT) {
                   this.playAnimation(this.IMAGES_SWIM);
                   isMoving = true;
-               } else {
+               } else if (!this.isSleeping) {
                   this.playAnimation(this.IMAGES_IDLE);
+               } else {
+                  this.playAnimation(this.IMAGES_FALLASLEEP);
                }
 
                if (!isMoving) {
@@ -210,8 +286,9 @@ class Character extends MovableObject {
    clearIntervals() {
       clearInterval(this.movementInterval);
       clearInterval(this.animationInterval);
+      clearTimeout(this.sleepTimeout);
    }
-
+   
 
    /**
     * initiates characters attack, creating a bubble as a throwable object

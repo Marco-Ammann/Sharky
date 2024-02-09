@@ -57,6 +57,7 @@ function startGame() {
    }
    world.startMusic();
    checkIfCharacterOrBossIsDead();
+   world.character.resetSleepTimeout();
    world.level.enemies.forEach((enemy) => {
       if (enemy instanceof Endboss) {
          enemy.checkForCharacter();
@@ -152,6 +153,7 @@ function resetGame() {
       checkIntervalOn = true;
 
       init();
+      world.character.resetSleepTimeout();
       muteAllSounds();
    }, 500);
    checkIfCharacterOrBossIsDead();
