@@ -174,7 +174,6 @@ class World {
     * Plays the game over sound.
     */
    playGameOverSound() {
-      this.gameOverSound.volume = 0.15;
       this.gameOverSound.loop = false;
       this.gameOverSound.play();
    }
@@ -184,7 +183,6 @@ class World {
     * Plays the game won sound.
     */
    playWonSound() {
-      this.gameWonSound.volume = 0.15;
       this.gameWonSound.loop = false;
       this.gameWonSound.play();
    }
@@ -195,7 +193,6 @@ class World {
     */
    startMusic() {
       this.stopMusic();
-      this.gameMusic.volume = 0.05;
       this.gameMusic.loop = true;
       this.gameMusic.play();
       musicIsPlaying = true;

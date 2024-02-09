@@ -41,7 +41,6 @@ class Poison extends MovableObject {
     */
    playPickupSound() {
       this.pickup_sound.play();
-      this.pickup_sound.volume = 0.15;
       setTimeout(() => {
          this.pickup_sound.pause();
          this.pickup_sound.currentTime = 0;

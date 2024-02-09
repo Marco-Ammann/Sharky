@@ -82,9 +82,9 @@ class Character extends MovableObject {
       'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png',
    ];
 
-   swim_sound = new Audio('audio/swim_sound.mp3');
-   attack_sound = new Audio('audio/bubble_attack_sound.mp3');
-   hit_sound = new Audio('audio/character_got_hit.mp3');
+   swim_sound;
+   attack_sound;
+   hit_sound;
 
    constructor() {
       super().loadImage('img/1.Sharkie/1.IDLE/1.png');
@@ -94,6 +94,9 @@ class Character extends MovableObject {
       this.loadImages(this.IMAGES_HURT);
       this.loadImages(this.IMAGES_ATTACK);
       this.animate();
+      this.swim_sound = new Audio('audio/swim_sound.mp3');
+      this.attack_sound = new Audio('audio/bubble_attack_sound.mp3');
+      this.hit_sound = new Audio('audio/character_got_hit.mp3');
    }
 
 
@@ -117,7 +120,6 @@ class Character extends MovableObject {
     */
    playSwimSound() {
       this.swim_sound.play();
-      this.swim_sound.volume = 0.15;
    }
 
 
@@ -127,7 +129,6 @@ class Character extends MovableObject {
    playGotHitSound() {
       this.hit_sound.loop = false;
       this.hit_sound.play();
-      this.hit_sound.volume = 0.15;
    }
 
 

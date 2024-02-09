@@ -48,7 +48,6 @@ class MovableObject extends DrawableObject {
     */
    playAttackSound() {
       this.attack_sound.play();
-      this.attack_sound.volume = 0.15;
       let attackSoundTimeout = setTimeout(() => {
          this.attack_sound.pause();
          this.attack_sound.currentTime = 0;
@@ -63,7 +62,6 @@ class MovableObject extends DrawableObject {
    playImpactSound() {
       this.impact_sound.currentTime = 0;
       this.impact_sound.play();
-      this.impact_sound.volume = 0.4;
       let impactSoundTimeout = setTimeout(() => {
          this.impact_sound.pause();
          this.impact_sound.currentTime = 0;

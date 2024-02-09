@@ -3,6 +3,7 @@ let world;
 let keyboard;
 
 let musicIsPlaying = false;
+let isMuted = false;
 let gameIsPaused = false;
 let checkInterval;
 let checkIntervalOn = true;
@@ -48,8 +49,8 @@ function clearAnimationFrame() {
 function startGame() {
    document.getElementById('main-menu').style.display = 'none';
    document.getElementById('canvas').style.display = 'block';
-   document.getElementById('playButton').style.display = 'block';
-   document.getElementById('switchSoundMuteButton').style.display = 'block';
+   document.getElementById('playButton').style.display = 'flex';
+   document.getElementById('switchSoundMuteButton').style.display = 'flex';
    document.getElementById('title').style.display = 'none';
    if (window.innerHeight < 800) {
       document.querySelector('.mobilePanel').style.display = 'flex';
@@ -72,7 +73,6 @@ function startGame() {
 function checkIfCharacterOrBossIsDead() {
    let checkInterval = setInterval(() => {
       if (world.character.healthPoints <= 0 && checkIntervalOn) {
-
          world.stopMusic();
          setTimeout(() => {
             checkIntervalOn = false;
@@ -110,6 +110,7 @@ function init() {
    canvas = document.getElementById('canvas');
    keyboard = new Keyboard();
    createNewWorld();
+   setIndividualVolumes();
 
    if (gameRestartet) {
       let gameRestartTimeout = setTimeout(() => {
@@ -125,90 +126,6 @@ function init() {
  */
 function createNewWorld() {
    world = new World(canvas, keyboard, createLevel1());
-}
-
-
-/**
- * toggles the games sound between muted and unmuted
- */
-function switchSoundMute() {
-   let button = document.getElementById('switchSoundMuteButton');
-   button.classList.toggle('muted');
-   musicIsPlaying = !musicIsPlaying;
-   musicIsPlaying ? world.startMusic() : world.stopMusic();
-}
-
-
-/**
- * toggles the game's play state between paused and resumed
- * @return cancel pause request while Boss is attacking
- */
-function switchPlayPause() {
-   const endboss = world.level.enemies.find((enemy) => enemy instanceof Endboss);
-   if (endboss.isAttacking) {
-      return;
-   }
-   gameIsPaused = !gameIsPaused;
-
-   const playButton = document.getElementById('playButton');
-   if (gameIsPaused) {
-      pauseGame();
-      playButton.textContent = 'resume';
-      playButton.classList.add('paused');
-   } else {
-      resumeGame();
-      playButton.textContent = 'pause';
-      playButton.classList.remove('paused');
-   }
-}
-
-
-/**
- * pauses the game, stopping animations and gameplay
- */
-function pauseGame() {
-   world.isGamePaused = true;
-   const endboss = world.level.enemies.find((enemy) => enemy instanceof Endboss);
-   if (!endboss.isAttacking) {
-      switchSoundMute();
-      world.character.clearIntervals();
-      world.level.enemies.forEach((enemy) => {
-         enemy.clearIntervals();
-         if (enemy instanceof Endboss) {
-            enemy.clearIntervals();
-         }
-      });
-
-      world.level.collectables.forEach((collectable) => {
-         collectable.clearIntervals();
-      });
-
-      cancelAnimationFrame(animationFrameId);
-   }
-}
-
-
-/**
- * resumes the game from a paused state, restarting animations and gameplay
- */
-function resumeGame() {
-   world.isGamePaused = false;
-   clearAll();
-   checkIfCharacterOrBossIsDead();
-   switchSoundMute();
-   world.character.animate();
-   world.level.enemies.forEach((enemy) => {
-      if (!(enemy instanceof Endboss)) {
-         enemy.animate();
-      } else if (enemy instanceof Endboss && enemy.isIntroduced) {
-         enemy.animate();
-      }
-   });
-
-   world.level.collectables.forEach((collectable) => {
-      collectable.animate();
-   });
-   requestAnimationFrame(world.draw.bind(world));
 }
 
 
@@ -235,6 +152,7 @@ function resetGame() {
       checkIntervalOn = true;
 
       init();
+      muteAllSounds();
    }, 500);
    checkIfCharacterOrBossIsDead();
 }

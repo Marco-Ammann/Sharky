@@ -24,6 +24,9 @@
       <script src="./models/level.class.js"></script>
       <script src="./models/endboss.class.js"></script>
       <script src="./levels/level1.js"></script>
+      <script src="./js/sound-config.js"></script>
+      <script src="./js/sound-handling.js"></script>
+      <script src="./js/gameState-handling.js"></script>
       <script src="./js/game.js"></script>
    </head>
    <body onload="init()">
@@ -36,15 +39,12 @@
       </div>
 
       <div class="buttonDiv">
-         <button
-            id="switchSoundMuteButton"
-            class="switchSoundMute"
-            onclick="switchSoundMute()"
-            style="display: none"
-         >
-            Music
+         <button id="switchSoundMuteButton" class="switchSoundMute" onclick="switchSoundMute()" style="display: none">
+            <img id="switchSoundImage" class="icons" src="./img/6.Buttons/music-on-icon.svg" alt="sound on/off">
          </button>
-         <button id="playButton" onclick="switchPlayPause()" style="display: none">pause</button>
+         <button id="playButton" onclick="switchPlayPause()" style="display: none">
+         <img id="playButtonImage" class="icons" src="./img/6.Buttons/pause-icon.svg" alt="play/pause">
+         </button>
       </div>
 
       <canvas id="canvas" width="720" height="480" style="display: none"> </canvas>
@@ -92,16 +92,9 @@
 
       <div class="mobilePanel">
          <div class="left">
-            <div class="leftTop">
-               <img
-                  class="arrowKeys-img"
-                  src="./img/touch/angle-circle-up-icon.svg"
-                  alt="ArrowUp"
-                  ontouchstart="handleTouchStart('ArrowUp')"
-                  ontouchend="handleTouchEnd('ArrowUp')"
-               />
-            </div>
-            <div class="leftBottom">
+
+
+            <div class="left-left">
                <img
                   class="arrowKeys-img"
                   src="./img/touch/angle-circle-left-icon.svg"
@@ -109,13 +102,26 @@
                   ontouchstart="handleTouchStart('ArrowLeft')"
                   ontouchend="handleTouchEnd('ArrowLeft')"
                />
+            </div>
+            
+            <div class="left-middle">
                <img
                   class="arrowKeys-img"
-                  src="./img/touch/angle-circle-down-icon.svg"
-                  alt="ArrowDown"
-                  ontouchstart="handleTouchStart('ArrowDown')"
-                  ontouchend="handleTouchEnd('ArrowDown')"
+                  src="./img/touch/angle-circle-up-icon.svg"
+                  alt="ArrowUp"
+                  ontouchstart="handleTouchStart('ArrowUp')"
+                  ontouchend="handleTouchEnd('ArrowUp')"
                />
+               <img
+               class="arrowKeys-img"
+               src="./img/touch/angle-circle-down-icon.svg"
+               alt="ArrowDown"
+               ontouchstart="handleTouchStart('ArrowDown')"
+               ontouchend="handleTouchEnd('ArrowDown')"
+            /> 
+            </div>
+
+            <div class="left-right">
                <img
                   class="arrowKeys-img"
                   src="./img/touch/angle-circle-right-icon.svg"
@@ -123,9 +129,12 @@
                   ontouchstart="handleTouchStart('ArrowRight')"
                   ontouchend="handleTouchEnd('ArrowRight')"
                />
+
             </div>
+
+
+
          </div>
-         <button id="fullscreenButton">Fullscreen</button>
 
          <div class="right">
             <img
@@ -152,38 +161,7 @@
          window.addEventListener('resize', checkOrientation);
          window.addEventListener('orientationchange', checkOrientation);
 
-         document.getElementById('fullscreenButton').addEventListener('click', function () {
-            if (!document.fullscreenElement) {
-               // Enter fullscreen
-               if (document.documentElement.requestFullscreen) {
-                  document.documentElement.requestFullscreen();
-               } else if (document.documentElement.mozRequestFullScreen) {
-                  /* Firefox */
-                  document.documentElement.mozRequestFullScreen();
-               } else if (document.documentElement.webkitRequestFullscreen) {
-                  /* Chrome, Safari and Opera */
-                  document.documentElement.webkitRequestFullscreen();
-               } else if (document.documentElement.msRequestFullscreen) {
-                  /* IE/Edge */
-                  document.documentElement.msRequestFullscreen();
-               }
-            } else {
-               // Exit fullscreen
-               if (document.exitFullscreen) {
-                  document.exitFullscreen();
-               } else if (document.mozCancelFullScreen) {
-                  /* Firefox */
-                  document.mozCancelFullScreen();
-               } else if (document.webkitExitFullscreen) {
-                  /* Chrome, Safari and Opera */
-                  document.webkitExitFullscreen();
-               } else if (document.msExitFullscreen) {
-                  /* IE/Edge */
-                  document.msExitFullscreen();
-               }
-            }
-         });
-
+         
          document.addEventListener('DOMContentLoaded', function () {
             const imageButtons = document.querySelectorAll('.arrowKeys-img');
             imageButtons.forEach((button) => {

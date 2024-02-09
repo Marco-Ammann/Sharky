@@ -218,7 +218,6 @@ class Endboss extends MovableObject {
     */
    playIntroduceSound() {
       this.introduce_sound.currentTime = 0.07;
-      this.introduce_sound.volume = 0.7;
       this.introduce_sound.loop = false;
       this.introduce_sound.play();
    }
@@ -229,7 +228,6 @@ class Endboss extends MovableObject {
     */
    playBiteSound() {
       this.bite_sound.currentTime = 0.3;
-      this.bite_sound.volume = 0.15;
       this.bite_sound.loop = false;
       this.bite_sound.play();
    }

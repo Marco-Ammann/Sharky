@@ -90,7 +90,6 @@ button:active {
     align-items: center;
     height: 100vh;
     width: 720px;
-    background-image: linear-gradient(#40C5DB90 5%, #35459690 50%, #5a1d9690 90%);
 }
 
 #start-game {
@@ -128,9 +127,12 @@ button:active {
 }
 
 #switchSoundMuteButton {
-    padding: 10px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 10px;
     font-size: 14px;
-    background-color: rgba(0, 0, 0, 0.623);
+    background-color: #0000005b;
     border-radius: 50%;
     margin-bottom: 0.5rem;
     transition: background-color 0.3s;
@@ -138,7 +140,7 @@ button:active {
 }
 
 #switchSoundMuteButton.muted {
-    background-color: rgba(255, 0, 0, 0.623);
+    background-color: #ff00005b;
 }
 
 .tryAgainImage {
@@ -180,26 +182,14 @@ button:active {
 }
 
 #playButton {
-    padding: 10px 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 10px;
     font-size: 14px;
-    background-color: rgba(0, 0, 0, 0.623);
+    background-color: #0000005b;
     border-radius: 50%;
     margin-bottom: 0.5rem;
-}
-
-#playButton.paused {
-    background-color: rgba(255, 0, 0, 0.623);
-}
-
-#fullscreenButton {
-    position: absolute;
-    left: 69%;
-    z-index: 999;
-    top: 85%;
-    margin: 0;
-    max-width: min-content;
-    opacity: 0.7;
-    background-color: #000c11;
 }
 
 .turnDevice {
@@ -232,50 +222,62 @@ button:active {
     bottom: 0;
     display: none;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
     width: calc(100vw - 10%);
-    margin-bottom: 1rem;
+    margin-bottom: 8px;
     z-index: 0;
+    width: 97%;
 }
 
 .left {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.4;
+}
+
+.left-left {
+    display: flex;
+    align-items: center;
+}
+
+.left-middle {
+    display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
+    gap: 40px;
 }
 
-.leftTop {
+.left-right {
     display: flex;
     align-items: center;
-    justify-content: center; 
-}
-
-.leftBottom {
-    display: flex;
-    align-items: center;
-    justify-content: center; 
-    gap: 15px;
 }
 
 .right {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 15px;
+    opacity: 0.8;
 }
 
 .arrowKeys-img {
-    width: 45px;
+    width: 40px;
     aspect-ratio: 1 / 1;
     filter: invert();
-    background-color: #ffffff79;
+    background-color: #ffffff5b;
     border-radius: 50%;
-    padding: 5px;
+    padding: 2px;
 }
 
 .sword-img{
     width: 55px!important;
+}
+
+.icons {
+    width: 16px;
+    height: 16px;
+    filter: invert();
 }
 
 
@@ -319,7 +321,7 @@ button:active {
     }
 
     .tryAgainImage {
-        height: 1rem;
+        height: 2rem;
         transition: transform 0.3s ease, filter 0.3s ease;
     }
 
@@ -363,6 +365,12 @@ button:active {
         position: absolute;
         max-height: min-content;
         margin: unset;
-        bottom: 0;
+        bottom: unset;
+        display: flex;
+        flex-direction: column;
+        right: 0;
+        top: 5px;
+        gap: 0px;
+        margin-right: 5px;
     }
 }
