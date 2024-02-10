@@ -154,7 +154,9 @@ function resetGame() {
 
       init();
       world.character.resetSleepTimeout();
-      muteAllSounds();
+      if (isMuted) {
+         muteAllSounds();         
+      }
    }, 500);
    checkIfCharacterOrBossIsDead();
 }
