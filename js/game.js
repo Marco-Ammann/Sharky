@@ -116,7 +116,7 @@ function init() {
    if (gameRestartet) {
       let gameRestartTimeout = setTimeout(() => {
          startGame();
-      }, 1000);
+      }, 1500);
       globalTimeouts.push(gameRestartTimeout);
    }
 }
