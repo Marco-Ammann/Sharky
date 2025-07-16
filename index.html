@@ -7,29 +7,9 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <link rel="stylesheet" href="style.css" />
       <title>Sharky</title>
-      <script src="./models/drawable-object.class.js"></script>
-      <script src="./models/movable-object.class.js"></script>
-      <script src="./models/throwable-object.class.js"></script>
-      <script src="./models/background-layers.class.js"></script>
-      <script src="./models/character.class.js"></script>
-      <script src="./models/puffer-fish.class.js"></script>
-      <script src="./models/barrier.class.js"></script>
-      <script src="./models/status-bar.class.js"></script>
-      <script src="./models/poison-bar.class.js"></script>
-      <script src="./models/coin-bar.class.js"></script>
-      <script src="./models/coin.class.js"></script>
-      <script src="./models/poison.class.js"></script>
-      <script src="./models/world.class.js"></script>
-      <script src="./models/keyboard.class.js"></script>
-      <script src="./models/level.class.js"></script>
-      <script src="./models/endboss.class.js"></script>
-      <script src="./levels/level1.js"></script>
-      <script src="./js/sound-config.js"></script>
-      <script src="./js/sound-handling.js"></script>
-      <script src="./js/gameState-handling.js"></script>
-      <script src="./js/game.js"></script>
+
    </head>
-   <body onload="init()">
+   <body>
       <div id="main-menu">
          <h1 id="title" style="display: block">Sharky</h1>
          <a id="start-game" onclick="startGame()">
@@ -173,5 +153,6 @@
 
 
       </script>
+   <script type="module" src="./src/main.js"></script>
    </body>
 </html>
