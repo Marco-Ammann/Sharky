@@ -1,468 +1,575 @@
 /**
- * Entry point for the modernized Sharky game with complete scene management.
+ * @file Core Game class with integrated scene management and enhanced features.
  * 
  * IMPROVEMENTS:
- * - Integrated scene system with title screen
- * - Enhanced error handling
- * - Performance optimization
- * - Better asset loading with fallbacks
- * - Improved mobile support detection
- * - Debug mode integration
+ * - Integrated SceneManager for proper game states
+ * - Enhanced audio system integration
+ * - Particle system integration
+ * - Performance monitoring
+ * - Better error handling and cleanup
+ * - Settings overlay integration
+ * - Pause functionality
  */
 
-import { AssetLoader } from './utils/AssetLoader.js';
-import { Game } from './game/Game.js';
-import { InputManager } from './managers/InputManager.js';
-import { AudioManager } from './managers/AudioManager.js';
-import { TitleScene } from './scenes/TitleScene.js';
-import { GameConfig } from './config/GameConfig.js';
-
-/** @type {import('./utils/AssetLoader.js').AssetManifest} */
-const manifest = {
-    images: {
-        // Core game assets
-        logo: 'img/favicon/shark-color-icon.svg',
-        
-        // Character animations
-        shark_swim1: 'img/1.Sharkie/3.Swim/1.png',
-        shark_swim2: 'img/1.Sharkie/3.Swim/2.png',
-        shark_swim3: 'img/1.Sharkie/3.Swim/3.png',
-        shark_swim4: 'img/1.Sharkie/3.Swim/4.png',
-        shark_swim5: 'img/1.Sharkie/3.Swim/5.png',
-        shark_swim6: 'img/1.Sharkie/3.Swim/6.png',
-        
-        shark_idle1: 'img/1.Sharkie/1.IDLE/1.png',
-        shark_idle2: 'img/1.Sharkie/1.IDLE/2.png',
-        shark_idle3: 'img/1.Sharkie/1.IDLE/3.png',
-        shark_idle4: 'img/1.Sharkie/1.IDLE/4.png',
-        shark_idle5: 'img/1.Sharkie/1.IDLE/5.png',
-        shark_idle6: 'img/1.Sharkie/1.IDLE/6.png',
-        
-        shark_attack1: 'img/1.Sharkie/4.Attack/Fin slap/1.png',
-        shark_attack2: 'img/1.Sharkie/4.Attack/Fin slap/2.png',
-        shark_attack3: 'img/1.Sharkie/4.Attack/Fin slap/3.png',
-        shark_attack4: 'img/1.Sharkie/4.Attack/Fin slap/4.png',
-        shark_attack5: 'img/1.Sharkie/4.Attack/Fin slap/5.png',
-        shark_attack6: 'img/1.Sharkie/4.Attack/Fin slap/6.png',
-        shark_attack7: 'img/1.Sharkie/4.Attack/Fin slap/7.png',
-        shark_attack8: 'img/1.Sharkie/4.Attack/Fin slap/8.png',
-        
-        // Bubble attack
-        bubble: 'img/1.Sharkie/4.Attack/Bubble trap/Bubble.png',
-        shark_bubble1: 'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/1.png',
-        shark_bubble2: 'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/2.png',
-        shark_bubble3: 'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/3.png',
-        shark_bubble4: 'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/4.png',
-        shark_bubble5: 'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/5.png',
-        shark_bubble6: 'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/6.png',
-        shark_bubble7: 'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/7.png',
-        shark_bubble8: 'img/1.Sharkie/4.Attack/Bubble trap/op1 (with bubble formation)/8.png',
-        
-        // Enemies
-        puffer_swim1: 'img/2.Enemy/1.Puffer_fish/1.Swim/3.swim1.png',
-        puffer_swim2: 'img/2.Enemy/1.Puffer_fish/1.Swim/3.swim2.png',
-        puffer_swim3: 'img/2.Enemy/1.Puffer_fish/1.Swim/3.swim3.png',
-        puffer_swim4: 'img/2.Enemy/1.Puffer_fish/1.Swim/3.swim4.png',
-        puffer_swim5: 'img/2.Enemy/1.Puffer_fish/1.Swim/3.swim5.png',
-        
-        // Collectibles
-        coin: 'img/4.Markers/1. Coins/1.png',
-        
-        // Backgrounds (all layers)
-        bg_godrays: 'img/3.Background/Layers/1. Godrays/1.png',
-        bg_far: 'img/3.Background/Layers/4.Fondo 2/L.png',
-        bg_mid: 'img/3.Background/Layers/3.Fondo 1/L.png',
-        bg_near: 'img/3.Background/Layers/2. Floor/L.png',
-        bg_water: 'img/3.Background/Layers/5. Water/L.png',
-        
-        // Night variants
-        bg_far_dark: 'img/3.Background/Layers/4.Fondo 2/D.png',
-        bg_mid_dark: 'img/3.Background/Layers/3.Fondo 1/D.png',
-        bg_near_dark: 'img/3.Background/Layers/2. Floor/D.png',
-        bg_water_dark: 'img/3.Background/Layers/5. Water/D.png',
-        
-        // Obstacles and hazards (placeholder - could be expanded)
-        coral_danger: 'img/3.Background/Barrier/1.png',
-        stone: 'img/3.Background/Barrier/2.png',
-        poison_cloud: 'img/3.Background/Barrier/3.png',
-        
-        // Jellyfish (placeholder)
-        jellyfish: 'img/2.Enemy/2.Jelly fish/Regular damage/Lila 1.png',
-    },
-    
-    sounds: {
-        // Core game sounds
-        bubble_shoot: 'audio/bubble_attack_sound.mp3',
-        bubble_pop: 'audio/bubble_impact_sound.mp3',
-        puffer_inflate: 'audio/big_splash_sound.mp3',
-        coin_pickup: 'audio/coin_pickup_sound.mp3',
-        
-        // UI sounds (placeholder - would need actual files)
-        menu_navigate: 'audio/menu_navigate.mp3',
-        menu_select: 'audio/menu_select.mp3',
-        
-        // Game state sounds
-        win_sound: 'audio/win_sound.mp3',
-        lose_sound: 'audio/lose_sound.mp3',
-        
-        // Music (placeholder - would need actual files)
-        title_music: 'audio/title_theme.mp3',
-        level_music: 'audio/level_theme.mp3',
-        boss_music: 'audio/boss_theme.mp3',
-        victory_music: 'audio/victory_theme.mp3',
-        defeat_music: 'audio/defeat_theme.mp3',
-        
-        // Boss sounds (placeholder)
-        boss_attack: 'audio/boss_attack.mp3',
-        boss_hurt: 'audio/boss_hurt.mp3',
-        boss_death: 'audio/boss_death.mp3',
-        
-        // Player sounds (placeholder)
-        player_hurt: 'audio/player_hurt.mp3',
-        enemy_death: 'audio/enemy_death.mp3',
-    },
-};
-
-// Global game instance
-let game = null;
-
-// Loading UI elements
-const loadingElements = {
-    progressBar: null,
-    loadingText: null,
-    errorDisplay: null
-};
+import { SettingsOverlay } from '../ui/SettingsOverlay.js';
+import { SceneManager } from '../managers/SceneManager.js';
+import { ParticleSystem } from '../effects/ParticleSystem.js';
+import { GameConfig } from '../config/GameConfig.js';
 
 /**
- * Initialize loading UI
+ * @typedef {import('../utils/AssetLoader.js').LoadedAssets} LoadedAssets
+ * @typedef {import('../managers/InputManager.js').InputManager} InputManager
+ * @typedef {import('../managers/AudioManager.js').AudioManager} AudioManager
  */
-function initializeLoadingUI() {
-    // Create loading container
-    const loadingContainer = document.createElement('div');
-    loadingContainer.id = 'loading-container';
-    loadingContainer.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        z-index: 10000;
-        font-family: Arial, sans-serif;
-        color: white;
-    `;
 
-    // Create logo
-    const logo = document.createElement('div');
-    logo.innerHTML = '🦈';
-    logo.style.cssText = `
-        font-size: 4rem;
-        margin-bottom: 2rem;
-        animation: pulse 2s ease-in-out infinite;
-    `;
+/**
+ * Enhanced Game class with scene management and performance optimization
+ */
+export class Game {
+    /**
+     * @param {{ canvasId: string; assets: LoadedAssets; input: InputManager; audio: AudioManager }} options
+     */
+    constructor({ canvasId, assets, input, audio }) {
+        /** @private */
+        this._canvas = /** @type {HTMLCanvasElement} */ (document.getElementById(canvasId));
+        if (!this._canvas) throw new Error(`Canvas with id "${canvasId}" not found.`);
 
-    // Create title
-    const title = document.createElement('h1');
-    title.textContent = 'SHARKY';
-    title.style.cssText = `
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-    `;
+        /** @private */
+        this._ctx = /** @type {CanvasRenderingContext2D} */ (this._canvas.getContext('2d'));
 
-    // Create loading text
-    loadingElements.loadingText = document.createElement('div');
-    loadingElements.loadingText.textContent = 'Loading...';
-    loadingElements.loadingText.style.cssText = `
-        font-size: 1.2rem;
-        margin-bottom: 2rem;
-        opacity: 0.8;
-    `;
+        /** @private */
+        this._assets = assets;
 
-    // Create progress bar
-    const progressContainer = document.createElement('div');
-    progressContainer.style.cssText = `
-        width: 400px;
-        height: 8px;
-        background: rgba(255,255,255,0.3);
-        border-radius: 4px;
-        overflow: hidden;
-        margin-bottom: 1rem;
-    `;
+        /** @private */
+        this._input = input;
+        /** @private */
+        this._audio = audio;
 
-    loadingElements.progressBar = document.createElement('div');
-    loadingElements.progressBar.style.cssText = `
-        width: 0%;
-        height: 100%;
-        background: linear-gradient(90deg, #4CAF50, #45a049);
-        transition: width 0.3s ease;
-    `;
+        // Game loop timing
+        /** @private */
+        this._lastTime = 0;
+        /** @private */
+        this._rafId = 0;
+        /** @private */
+        this._running = false;
 
-    progressContainer.appendChild(loadingElements.progressBar);
+        // Scene management
+        /** @private */
+        this._sceneManager = new SceneManager(this);
 
-    // Create error display
-    loadingElements.errorDisplay = document.createElement('div');
-    loadingElements.errorDisplay.style.cssText = `
-        color: #ff6b6b;
-        font-size: 1rem;
-        margin-top: 1rem;
-        padding: 1rem;
-        background: rgba(255,107,107,0.1);
-        border-radius: 4px;
-        border: 1px solid rgba(255,107,107,0.3);
-        display: none;
-        max-width: 400px;
-        text-align: center;
-    `;
+        // Global particle system
+        /** @private */
+        this._particleSystem = new ParticleSystem(GameConfig.performance.maxEntities.particles);
 
-    // Add pulse animation
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+        // Settings overlay
+        /** @private */
+        this._overlay = new SettingsOverlay();
+        this._overlay.loadPersisted();
+
+        // Game state
+        /** @private */
+        this._paused = false;
+        /** @private */
+        this._gameStats = {
+            score: 0,
+            time: 0,
+            coins: 0,
+            enemies: 0,
+            startTime: 0
+        };
+
+        // Performance monitoring
+        /** @private */
+        this._performanceStats = {
+            fps: 60,
+            frameTime: 0,
+            updateTime: 0,
+            renderTime: 0,
+            lastFrameTime: 0
+        };
+
+        // Debug mode
+        /** @private */
+        this._debugMode = GameConfig.debug.showPerformanceStats;
+
+        // Initialize canvas
+        this._resizeCanvas();
+        window.addEventListener('resize', () => this._resizeCanvas());
+
+        // Setup input handlers
+        this._setupInputHandlers();
+
+        // Error handling
+        this._setupErrorHandling();
+
+        console.log('[Game] Game initialized with scene management');
+    }
+
+    /**
+     * Start the main game loop
+     */
+    start() {
+        if (this._running) {
+            console.warn('[Game] Game is already running');
+            return;
         }
-    `;
-    document.head.appendChild(style);
 
-    // Assemble loading UI
-    loadingContainer.appendChild(logo);
-    loadingContainer.appendChild(title);
-    loadingContainer.appendChild(loadingElements.loadingText);
-    loadingContainer.appendChild(progressContainer);
-    loadingContainer.appendChild(loadingElements.errorDisplay);
+        this._running = true;
+        this._gameStats.startTime = Date.now();
+        
+        // Ensure canvas is properly sized
+        this._resizeCanvas();
 
-    document.body.appendChild(loadingContainer);
-}
+        // Start game loop
+        this._lastTime = performance.now();
+        this._performanceStats.lastFrameTime = this._lastTime;
+        
+        const gameLoop = (currentTime) => {
+            if (!this._running) return;
 
-/**
- * Update loading progress
- * @param {number} progress Progress percentage (0-100)
- * @param {string} message Loading message
- */
-function updateLoadingProgress(progress, message = 'Loading...') {
-    if (loadingElements.progressBar) {
-        loadingElements.progressBar.style.width = `${progress}%`;
+            // Calculate delta time
+            const deltaTime = Math.min((currentTime - this._lastTime) / 1000, 0.1); // Cap at 100ms
+            this._lastTime = currentTime;
+
+            // Update performance stats
+            this._updatePerformanceStats(currentTime, deltaTime);
+
+            // Update game
+            const updateStartTime = performance.now();
+            this._update(deltaTime);
+            this._performanceStats.updateTime = performance.now() - updateStartTime;
+
+            // Render game
+            const renderStartTime = performance.now();
+            this._render();
+            this._performanceStats.renderTime = performance.now() - renderStartTime;
+
+            // Continue loop
+            this._rafId = requestAnimationFrame(gameLoop);
+        };
+
+        this._rafId = requestAnimationFrame(gameLoop);
+        console.log('[Game] Game loop started');
     }
-    if (loadingElements.loadingText) {
-        loadingElements.loadingText.textContent = message;
-    }
-}
 
-/**
- * Show loading error
- * @param {string} message Error message
- */
-function showLoadingError(message) {
-    if (loadingElements.errorDisplay) {
-        loadingElements.errorDisplay.textContent = message;
-        loadingElements.errorDisplay.style.display = 'block';
-    }
-    if (loadingElements.loadingText) {
-        loadingElements.loadingText.textContent = 'Loading failed';
-    }
-}
-
-/**
- * Hide loading UI
- */
-function hideLoadingUI() {
-    const loadingContainer = document.getElementById('loading-container');
-    if (loadingContainer) {
-        loadingContainer.style.opacity = '0';
-        loadingContainer.style.transition = 'opacity 0.5s ease';
-        setTimeout(() => {
-            loadingContainer.remove();
-        }, 500);
-    }
-}
-
-/**
- * Detect mobile device
- * @returns {boolean} True if mobile
- */
-function isMobileDevice() {
-    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
-           (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
-}
-
-/**
- * Setup mobile controls
- */
-function setupMobileControls() {
-    if (isMobileDevice()) {
-        const mobilePanel = document.querySelector('.mobilePanel');
-        if (mobilePanel) {
-            mobilePanel.style.display = 'flex';
-            console.log('[Main] Mobile controls enabled');
+    /**
+     * Stop the game loop
+     */
+    stop() {
+        if (!this._running) {
+            console.warn('[Game] Game is not running');
+            return;
         }
+
+        this._running = false;
+        cancelAnimationFrame(this._rafId);
+        console.log('[Game] Game loop stopped');
     }
-}
 
-/**
- * Initialize global error handling
- */
-function initializeErrorHandling() {
-    window.addEventListener('error', (event) => {
-        console.error('[Main] Global error:', event.error);
-        showLoadingError('An error occurred while loading the game');
-    });
-
-    window.addEventListener('unhandledrejection', (event) => {
-        console.error('[Main] Unhandled promise rejection:', event.reason);
-        showLoadingError('Failed to load game resources');
-    });
-}
-
-/**
- * Main initialization function
- */
-async function initializeGame() {
-    try {
-        console.log('[Main] Starting Sharky game initialization...');
+    /**
+     * Pause/unpause the game
+     */
+    togglePause() {
+        this._paused = !this._paused;
         
-        // Initialize error handling
-        initializeErrorHandling();
-        
-        // Initialize loading UI
-        initializeLoadingUI();
-        
-        // Check for required features
-        if (!window.AudioContext && !window.webkitAudioContext) {
-            throw new Error('Web Audio API is not supported in this browser');
-        }
-        
-        updateLoadingProgress(10, 'Initializing systems...');
-        
-        // Create core managers
-        const input = new InputManager();
-        const audio = new AudioManager();
-        
-        updateLoadingProgress(20, 'Loading assets...');
-        
-        // Load all assets
-        const loader = new AssetLoader(manifest);
-        const assets = await loader.loadAll((progress) => {
-            updateLoadingProgress(20 + (progress * 0.6), `Loading assets... ${progress}%`);
-        });
-        
-        updateLoadingProgress(80, 'Initializing game...');
-        
-        // Create game instance
-        game = new Game({
-            canvasId: 'canvas',
-            assets,
-            input,
-            audio,
-        });
-        
-        updateLoadingProgress(90, 'Setting up scenes...');
-        
-        // Create and set initial scene
-        const titleScene = new TitleScene({
-            game,
-            input,
-            audio,
-            assets
-        });
-        
-        await game.setInitialScene(titleScene);
-        
-        updateLoadingProgress(95, 'Finalizing...');
-        
-        // Setup mobile controls
-        setupMobileControls();
-        
-        // Hide main menu and show canvas
-        const mainMenu = document.getElementById('main-menu');
-        if (mainMenu) {
-            mainMenu.style.display = 'none';
-        }
-        
-        const canvas = document.getElementById('canvas');
-        if (canvas) {
-            canvas.style.display = 'block';
-        }
-        
-        updateLoadingProgress(100, 'Ready!');
-        
-        // Start the game
-        game.start();
-        
-        // Hide loading UI
-        setTimeout(() => {
-            hideLoadingUI();
-        }, 500);
-        
-        console.log('[Main] Game initialization complete');
-        
-    } catch (error) {
-        console.error('[Main] Failed to initialize game:', error);
-        showLoadingError(error.message || 'Failed to initialize game');
-    }
-}
-
-/**
- * Legacy support for HTML start button
- */
-window.startGame = function() {
-    console.log('[Main] Legacy startGame() called - game should already be running');
-    
-    // If game hasn't started yet, try to initialize
-    if (!game) {
-        initializeGame();
-    }
-};
-
-/**
- * Expose game instance for debugging
- */
-window.game = game;
-
-/**
- * Handle page visibility changes
- */
-document.addEventListener('visibilitychange', () => {
-    if (game && game.isRunning) {
-        if (document.hidden) {
-            // Page is hidden, pause game
-            if (!game.isPaused) {
-                game.togglePause();
-            }
-            console.log('[Main] Game paused due to page visibility change');
+        if (this._paused) {
+            this._overlay.show();
         } else {
-            // Page is visible, resume game
-            if (game.isPaused) {
-                game.togglePause();
-            }
-            console.log('[Main] Game resumed due to page visibility change');
+            this._overlay.hide();
+        }
+        
+        console.log(`[Game] Game ${this._paused ? 'paused' : 'resumed'}`);
+    }
+
+    /**
+     * Set the initial scene
+     * @param {Object} scene Scene instance
+     */
+    async setInitialScene(scene) {
+        await this._sceneManager.pushScene(scene, { transition: 'instant' });
+    }
+
+    /**
+     * Get current scene
+     * @returns {Object|null} Current scene
+     */
+    getCurrentScene() {
+        return this._sceneManager.getCurrentScene();
+    }
+
+    /**
+     * Get game statistics
+     * @returns {Object} Current game stats
+     */
+    getGameStats() {
+        // Update time
+        this._gameStats.time = (Date.now() - this._gameStats.startTime) / 1000;
+        return { ...this._gameStats };
+    }
+
+    /**
+     * Add to score
+     * @param {number} points Points to add
+     */
+    addScore(points) {
+        this._gameStats.score += points;
+    }
+
+    /**
+     * Add coin collected
+     * @param {number} coins Coins to add
+     */
+    addCoins(coins = 1) {
+        this._gameStats.coins += coins;
+    }
+
+    /**
+     * Add enemy defeated
+     * @param {number} enemies Enemies to add
+     */
+    addEnemies(enemies = 1) {
+        this._gameStats.enemies += enemies;
+    }
+
+    /**
+     * Reset game statistics
+     */
+    resetGameStats() {
+        this._gameStats = {
+            score: 0,
+            time: 0,
+            coins: 0,
+            enemies: 0,
+            startTime: Date.now()
+        };
+        console.log('[Game] Game statistics reset');
+    }
+
+    /**
+     * Clean up game resources
+     */
+    destroy() {
+        // Stop game loop
+        this.stop();
+
+        // Clean up scene manager
+        this._sceneManager.destroy();
+
+        // Clean up particle system
+        this._particleSystem.clear();
+
+        // Clean up audio
+        this._audio.destroy();
+
+        // Clean up settings overlay
+        this._overlay.hide();
+
+        // Remove event listeners
+        window.removeEventListener('resize', this._resizeCanvas);
+        window.removeEventListener('error', this._handleError);
+        window.removeEventListener('unhandledrejection', this._handleUnhandledRejection);
+
+        console.log('[Game] Game destroyed');
+    }
+
+    // =============================================================================
+    // PRIVATE METHODS
+    // =============================================================================
+
+    /**
+     * Main update loop
+     * @param {number} dt Delta time in seconds
+     * @private
+     */
+    _update(dt) {
+        if (this._paused) return;
+
+        // Update audio manager
+        this._audio.update(dt);
+
+        // Update global particle system
+        this._particleSystem.update(dt);
+
+        // Update scene manager
+        this._sceneManager.update(dt);
+
+        // Update game stats
+        this._gameStats.time = (Date.now() - this._gameStats.startTime) / 1000;
+    }
+
+    /**
+     * Main render loop
+     * @param {CanvasRenderingContext2D} ctx Canvas context
+     * @private
+     */
+    _render() {
+        // Clear canvas
+        this._ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
+
+        // Render scene manager
+        this._sceneManager.render(this._ctx);
+
+        // Render global particle system
+        this._particleSystem.render(this._ctx);
+
+        // Render debug info
+        if (this._debugMode) {
+            this._renderDebugInfo(this._ctx);
+        }
+
+        // Render pause overlay
+        if (this._paused) {
+            this._renderPauseOverlay(this._ctx);
         }
     }
-});
 
-/**
- * Handle page unload
- */
-window.addEventListener('beforeunload', () => {
-    if (game) {
-        game.destroy();
+    /**
+     * Setup input handlers
+     * @private
+     */
+    _setupInputHandlers() {
+        // Pause/Settings toggle
+        this._input.onAction('pause', (pressed) => {
+            if (pressed) {
+                this.togglePause();
+            }
+        });
+
+        // Debug toggle (F3)
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'F3') {
+                this._debugMode = !this._debugMode;
+                console.log(`[Game] Debug mode ${this._debugMode ? 'enabled' : 'disabled'}`);
+            }
+        });
     }
-});
 
-// Start the game when the page loads
-document.addEventListener('DOMContentLoaded', () => {
-    console.log('[Main] DOM loaded, initializing game...');
-    initializeGame();
-});
+    /**
+     * Setup error handling
+     * @private
+     */
+    _setupErrorHandling() {
+        this._handleError = (error) => {
+            console.error('[Game] Runtime error:', error);
+            // Could show error screen or gracefully handle
+        };
 
-// Also support direct script loading
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeGame);
-} else {
-    initializeGame();
+        this._handleUnhandledRejection = (event) => {
+            console.error('[Game] Unhandled promise rejection:', event.reason);
+            // Could show error screen or gracefully handle
+        };
+
+        window.addEventListener('error', this._handleError);
+        window.addEventListener('unhandledrejection', this._handleUnhandledRejection);
+    }
+
+    /**
+     * Update performance statistics
+     * @param {number} currentTime Current time
+     * @param {number} deltaTime Delta time
+     * @private
+     */
+    _updatePerformanceStats(currentTime, deltaTime) {
+        // Calculate FPS
+        this._performanceStats.frameTime = currentTime - this._performanceStats.lastFrameTime;
+        this._performanceStats.fps = 1000 / this._performanceStats.frameTime;
+        this._performanceStats.lastFrameTime = currentTime;
+
+        // Log performance warnings
+        if (this._performanceStats.fps < 30) {
+            console.warn(`[Game] Low FPS detected: ${this._performanceStats.fps.toFixed(1)}`);
+        }
+
+        if (deltaTime > 0.05) { // 50ms
+            console.warn(`[Game] High frame time detected: ${(deltaTime * 1000).toFixed(1)}ms`);
+        }
+    }
+
+    /**
+     * Render debug information
+     * @param {CanvasRenderingContext2D} ctx Canvas context
+     * @private
+     */
+    _renderDebugInfo(ctx) {
+        ctx.save();
+        
+        // Debug background
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+        ctx.fillRect(10, 10, 200, 120);
+
+        // Debug text
+        ctx.fillStyle = '#00ff00';
+        ctx.font = '12px monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';
+
+        const debugInfo = [
+            `FPS: ${this._performanceStats.fps.toFixed(1)}`,
+            `Frame: ${this._performanceStats.frameTime.toFixed(1)}ms`,
+            `Update: ${this._performanceStats.updateTime.toFixed(1)}ms`,
+            `Render: ${this._performanceStats.renderTime.toFixed(1)}ms`,
+            `Particles: ${this._particleSystem.activeParticleCount}`,
+            `Scenes: ${this._sceneManager.getSceneCount()}`,
+            `Memory: ${this._getMemoryUsage()}MB`,
+            `Audio: ${this._audio.isMuted ? 'Muted' : 'Active'}`
+        ];
+
+        debugInfo.forEach((info, index) => {
+            ctx.fillText(info, 15, 20 + index * 14);
+        });
+
+        ctx.restore();
+    }
+
+    /**
+     * Render pause overlay
+     * @param {CanvasRenderingContext2D} ctx Canvas context
+     * @private
+     */
+    _renderPauseOverlay(ctx) {
+        ctx.save();
+        
+        // Semi-transparent overlay
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+        ctx.fillRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+
+        // Pause text
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 48px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('PAUSED', ctx.canvas.width / 2, ctx.canvas.height / 2);
+
+        // Instructions
+        ctx.font = '24px Arial';
+        ctx.fillText('Press ESC to resume', ctx.canvas.width / 2, ctx.canvas.height / 2 + 60);
+
+        ctx.restore();
+    }
+
+    /**
+     * Get memory usage estimate
+     * @returns {string} Memory usage in MB
+     * @private
+     */
+    _getMemoryUsage() {
+        if (performance.memory) {
+            return (performance.memory.usedJSHeapSize / 1024 / 1024).toFixed(1);
+        }
+        return 'N/A';
+    }
+
+    /**
+     * Resize canvas to match CSS size with device pixel ratio
+     * @private
+     */
+    _resizeCanvas() {
+        let { clientWidth, clientHeight } = this._canvas;
+        
+        // Fallback if canvas is not styled yet
+        if (clientWidth === 0 || clientHeight === 0) {
+            clientWidth = parseInt(this._canvas.getAttribute('width') || '720', 10);
+            clientHeight = parseInt(this._canvas.getAttribute('height') || '480', 10);
+            
+            // Set CSS size
+            this._canvas.style.width = clientWidth + 'px';
+            this._canvas.style.height = clientHeight + 'px';
+        }
+
+        const ratio = window.devicePixelRatio || 1;
+        this._canvas.width = clientWidth * ratio;
+        this._canvas.height = clientHeight * ratio;
+        this._ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+
+        // Update canvas size in GameConfig for other systems
+        GameConfig.canvas = {
+            width: clientWidth,
+            height: clientHeight,
+            ratio: ratio
+        };
+    }
+
+    // =============================================================================
+    // GETTERS FOR EXTERNAL ACCESS
+    // =============================================================================
+
+    /**
+     * Get canvas element
+     * @returns {HTMLCanvasElement} Canvas element
+     */
+    get canvas() {
+        return this._canvas;
+    }
+
+    /**
+     * Get canvas context
+     * @returns {CanvasRenderingContext2D} Canvas context
+     */
+    get context() {
+        return this._ctx;
+    }
+
+    /**
+     * Get scene manager
+     * @returns {SceneManager} Scene manager
+     */
+    get sceneManager() {
+        return this._sceneManager;
+    }
+
+    /**
+     * Get particle system
+     * @returns {ParticleSystem} Particle system
+     */
+    get particleSystem() {
+        return this._particleSystem;
+    }
+
+    /**
+     * Get audio manager
+     * @returns {AudioManager} Audio manager
+     */
+    get audio() {
+        return this._audio;
+    }
+
+    /**
+     * Get input manager
+     * @returns {InputManager} Input manager
+     */
+    get input() {
+        return this._input;
+    }
+
+    /**
+     * Get assets
+     * @returns {LoadedAssets} Loaded assets
+     */
+    get assets() {
+        return this._assets;
+    }
+
+    /**
+     * Check if game is running
+     * @returns {boolean} True if running
+     */
+    get isRunning() {
+        return this._running;
+    }
+
+    /**
+     * Check if game is paused
+     * @returns {boolean} True if paused
+     */
+    get isPaused() {
+        return this._paused;
+    }
+
+    /**
+     * Get performance stats
+     * @returns {Object} Performance statistics
+     */
+    get performanceStats() {
+        return { ...this._performanceStats };
+    }
 }
