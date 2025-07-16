@@ -87,7 +87,7 @@ const manifest = {
         poison_cloud: 'img/3.Background/Barrier/3.png',
 
         // Jellyfish (placeholder)
-        jellyfish: 'img/2.Enemy/2.Jelly fish/Regular damage/Lila 1.png',
+        jellyfish: 'img/2.Enemy/2.Jelly_fish/Regular damage/Lila 1.png',
     },
 
     sounds: {
@@ -98,33 +98,35 @@ const manifest = {
         coin_pickup: 'audio/coin_pickup_sound.mp3',
 
         // UI sounds (placeholder - would need actual files)
-        menu_navigate: 'audio/menu_navigate.mp3',
-        menu_select: 'audio/menu_select.mp3',
+        menu_navigate: 'audio/bottle_sound.mp3', // fallback
+        menu_select: 'audio/swim_sound.mp3', // fallback
 
         // Game state sounds
         win_sound: 'audio/win_sound.mp3',
-        lose_sound: 'audio/lose_sound.mp3',
+        lose_sound: 'audio/death_sound.mp3',
 
         // Music (placeholder - would need actual files)
-        title_music: 'audio/title_theme.mp3',
-        level_music: 'audio/level_theme.mp3',
-        boss_music: 'audio/boss_theme.mp3',
-        victory_music: 'audio/victory_theme.mp3',
-        defeat_music: 'audio/defeat_theme.mp3',
+        title_music: 'audio/game_music.mp3',
+        level_music: 'audio/game_music.mp3',
+        boss_music: 'audio/boss_battle_music.mp3',
+        victory_music: 'audio/win_sound.mp3',
+        defeat_music: 'audio/death_sound.mp3',
 
         // Boss sounds (placeholder)
-        boss_attack: 'audio/boss_attack.mp3',
-        boss_hurt: 'audio/boss_hurt.mp3',
-        boss_death: 'audio/boss_death.mp3',
+        boss_attack: 'audio/orca_bite.mp3',
+        boss_hurt: 'audio/character_got_hit.mp3',
+        boss_death: 'audio/death_sound.mp3',
 
         // Player sounds (placeholder)
-        player_hurt: 'audio/player_hurt.mp3',
-        enemy_death: 'audio/enemy_death.mp3',
+        player_hurt: 'audio/character_got_hit.mp3',
+        enemy_death: 'audio/death_sound.mp3',
     },
 };
 
 // Global game instance
 let game = null;
+// Prevent double initialization when multiple listeners or user actions call startGame()
+let gameInitialized = false; // guards initializeGame()
 
 // Loading UI elements
 const loadingElements = {
@@ -327,6 +329,11 @@ function initializeErrorHandling() {
  * Main initialization function
  */
 async function initializeGame() {
+    if (gameInitialized) {
+        console.warn('[Main] initializeGame() has already been invoked, ignoring subsequent call');
+        return;
+    }
+    gameInitialized = true;
     try {
         console.log('[Main] Starting Sharky game initialization...');
 
